@@ -138,10 +138,11 @@ class CPAC_Settings {
 		$storage_model = $this->cpac->get_storage_model( 'post' );
 
 
-		$columns = $storage_model->get_columns();
+		$columns = $storage_model->get_custom_registered_columns();
 
 		foreach( $columns as $column ){
-			if( 'default' == $column->get_property( 'group' ) ){
+			echo $column->get_property( 'group' );
+			if( 'default' != $column->get_property( 'group' ) ){
 				$column->display();
 				break;
 			}
