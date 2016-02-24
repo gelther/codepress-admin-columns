@@ -36,6 +36,7 @@ class CPAC_Settings {
 		// handle requests gets a low priority so it will trigger when all other plugins have loaded their columns
 		add_action( 'admin_init', array( $this, 'handle_column_request' ), 1000 );
 
+		add_action( 'wp_ajax_cpac_column_display', array( $this, 'ajax_column_display' ) );
 		add_action( 'wp_ajax_cpac_column_refresh', array( $this, 'ajax_column_refresh' ) );
 		add_action( 'wp_ajax_cpac_columns_update', array( $this, 'ajax_columns_update' ) );
 
@@ -128,6 +129,25 @@ class CPAC_Settings {
 			<p><?php echo $message; ?></p>
 		</div>
 		<?php
+	}
+
+	/**
+	 * @since NEWVERSION
+	 */
+	public function ajax_column_display (){
+		$storage_model = $this->cpac->get_storage_model( 'post' );
+
+
+		$columns = $storage_model->get_columns();
+
+		foreach( $columns as $column ){
+			if( 'default' == $column->get_property( 'group' ) ){
+				$column->display();
+				break;
+			}
+		}
+
+		exit();
 	}
 
 	/**
@@ -734,13 +754,16 @@ class CPAC_Settings {
 											<a href="javascript:;" class="button-primary submit save"><?php _e( 'Save' ); ?></a>
 										</div>
 
-										<div class="form-reset">
+										<form class="form-reset" method="post">
+											<input type="hidden" name="cpac_key" value="<?php echo $storage_model->key; ?>"/>
+											<input type="hidden" name="cpac_action" value="restore_by_type"/>
+											<input type="hidden" name="cpac_layout" value="<?php echo $storage_model->layout; ?>"/>
+											<?php wp_nonce_field('restore-type', '_cpac_nonce'); ?>
+
 											<?php $onclick = $this->cpac->use_delete_confirmation() ? ' onclick="return confirm(\'' . esc_attr( addslashes( sprintf( __( "Warning! The %s columns data will be deleted. This cannot be undone. 'OK' to delete, 'Cancel' to stop", 'codepress-admin-columns' ), "'" . $storage_model->get_label_or_layout_name() . "'" ) ) ) . '\');"' : ''; ?>
-											<a href="<?php echo $storage_model->get_restore_link(); ?>" class="reset-column-type"<?php echo $onclick; ?>>
-												<?php _e( 'Restore columns', 'codepress-admin-columns' ); ?>
-											</a>
+											<input class="reset-column-type" type="submit"<?php echo $onclick; ?> value="<?php _e( 'Restore columns', 'codepress-admin-columns' ); ?>">
 											<span class="spinner"></span>
-										</div>
+										</form>
 
 										<?php do_action( 'cac/settings/form_actions', $storage_model ); ?>
 
