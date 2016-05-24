@@ -324,6 +324,7 @@ class CPAC {
 	 * Get column object
 	 *
 	 * @since 2.5.4
+	 *
 	 * @param $storage_key CPAC_Storage_Model->key
 	 * @param $layout_id CPAC_Storage_Model->layout
 	 * @param $column_name CPAC_Column->name
@@ -459,7 +460,7 @@ class CPAC {
 		if ( ! ( $storage_model = $this->get_current_storage_model() ) ) {
 			return;
 		}
-
+		$general_options = get_option( 'cpac_general_options' );
 		$css_column_width = '';
 		$edit_link = '';
 
@@ -470,6 +471,10 @@ class CPAC {
 				if ( ! empty( $options['width'] ) && is_numeric( $options['width'] ) && $options['width'] > 0 ) {
 					$unit = isset( $options['width_unit'] ) ? $options['width_unit'] : '%';
 					$css_column_width .= ".cp-{$storage_model->key} .wrap table th.column-{$name} { width: {$options['width']}{$unit} !important; }";
+
+					if ( 'px' == $unit && ( isset( $general_options['overview_tables_overflow']) && $general_options['overview_tables_overflow'] == 1 ) ) {
+						$css_column_width .= ".cp-{$storage_model->key} .wrap table th.column-{$name}:before { content:''; display: block; height: 1px; width: {$options['width']}{$unit} !important; margin-top: -1px; }";
+					}
 				}
 
 				// Load custom column scripts, used by 3rd party columns
@@ -480,7 +485,6 @@ class CPAC {
 		}
 
 		// JS: edit button
-		$general_options = get_option( 'cpac_general_options' );
 		if ( current_user_can( 'manage_admin_columns' ) && ( ! isset( $general_options['show_edit_button'] ) || '1' === $general_options['show_edit_button'] ) ) {
 			$edit_link = $storage_model->get_edit_link();
 		}
@@ -489,6 +493,69 @@ class CPAC {
 		<?php if ( $css_column_width ) : ?>
 			<style type="text/css">
 				<?php echo $css_column_width; ?>
+			</style>
+		<?php endif; ?>
+		<?php if( isset( $general_options['overview_tables_overflow'] ) && $general_options['overview_tables_overflow'] == 1  ): ?>
+			<script type="text/javascript">
+				jQuery( document ).ready( function() {
+					function checkOverflowRight( $el ){
+						var containerWidth = jQuery('.cac-table-wrap' ).width();
+						var swidth = $el.prop( 'scrollWidth' );
+						var calc = swidth - $el.scrollLeft();
+						//console.log( containerWidth  );
+						//console.log( $el.scrollLeft()  );
+						//console.log( swidth - $el.scrollLeft()  );
+
+						console.log( swidth );
+						console.log( containerWidth );
+
+						if( swidth > containerWidth && (containerWidth - calc) < 0 ){
+							$el.parent().addClass('overflowRight');
+						} else {
+							$el.parent().removeClass('overflowRight');
+						}
+					}
+
+					var $ltable = jQuery( '.wp-list-table' );
+
+
+					$ltable.wrap( '<div class="cac-table-wrap"></div>' ).data('width', $ltable.prop('scrollWidth'));
+					checkOverflowRight( $ltable );
+					$ltable.on( 'scroll', function( e) {
+						checkOverflowRight( jQuery(this) );
+
+						if( jQuery(this).scrollLeft() > 6 ){
+							jQuery(this ).parent().addClass('overflowLeft');
+						} else {
+							jQuery(this ).parent().removeClass('overflowLeft')
+						}
+					});
+				});
+			</script>
+			<style type="text/css">
+				table.fixed {
+					display: block;
+					overflow-x: auto;
+				}
+				.cac-table-wrap {
+					position: relative;
+					clear: both;
+				}
+				.cac-table-wrap.overflowRight:after,
+				.cac-table-wrap.overflowLeft:before{
+					content: '';
+					display: block;
+					width: 10px;
+					background: #000;
+					position: absolute;
+					top: 0; bottom: 0;
+				}
+				.cac-table-wrap:after {
+					right: 0;
+				}
+				.cac-table-wrap:before {
+					left: 0;
+				}
 			</style>
 		<?php endif; ?>
 		<?php if ( $edit_link ) : ?>

@@ -585,7 +585,12 @@ class CPAC_Settings {
 									<?php _e( "Show \"Edit Columns\" button on admin screens. Default is <code>on</code>.", 'codepress-admin-columns' ); ?>
 								</label>
 							</p>
-
+							<p>
+								<label for="show_edit_button">
+									<input name="cpac_general_options[overview_tables_overflow]" id="" type="checkbox" value="1" <?php checked( isset( $options['overview_tables_overflow'] ) || ( '1' == $options['overview_tables_overflow'] ) ); ?>>
+									<?php _e( "Make table overview horizontal scrollable", 'codepress-admin-columns' ); ?>
+								</label>
+							</p>
 							<?php do_action( 'cac/settings/general', $options ); ?>
 
 							<p>
