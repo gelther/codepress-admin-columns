@@ -567,7 +567,7 @@ class CPAC_Column {
 
 		$size = $this->get_image_size_formatted();
 
-		if ( $args && isset( $args['image_size'] ) ) {
+		if ( $args ) {
 			$defaults = array(
 				'image_size'   => 'cpac-custom',
 				'image_size_w' => 80,
@@ -576,7 +576,7 @@ class CPAC_Column {
 
 			$args = wp_parse_args( $args, $defaults );
 			$size = $args['image_size'];
-			if ( 'cpac-custom' == $args['image_size'] && isset( $args['image_size_w'] ) && isset( $args['image_size_h'] ) ) {
+			if ( 'cpac-custom' == $args['image_size'] ) {
 				$size = array(
 					$args['image_size_w'],
 					$args['image_size_h'],
