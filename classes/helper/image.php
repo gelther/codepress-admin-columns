@@ -113,11 +113,11 @@ class AC_Helper_Image {
 	 */
 	public function get_image_by_url( $url, $size ) {
 		if ( is_string( $size ) ) {
-			$dimensions = $this->get_image_sizes_by_name( $size );
-			if ( ! $dimensions ) {
-				return;
+			$image_size = $this->get_image_sizes_by_name( $size );
+			if ( ! $image_size ) {
+				return false;
 			}
-			$size = array( $dimensions['width'], $dimensions['height'] );
+			$size = array( $image_size['width'], $image_size['height'] );
 		}
 
 		$image_path = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $url );
@@ -148,7 +148,7 @@ class AC_Helper_Image {
 	 *
 	 * @return array Array with either Image ID or Image URL
 	 */
-	private function string_to_image_array( $mixed ) {
+	public function string_to_image_array( $mixed ) {
 		if ( empty( $mixed ) || 'false' == $mixed ) {
 			return array();
 		}
@@ -176,29 +176,14 @@ class AC_Helper_Image {
 	}
 
 	/**
-	 * @param array|int|string $images
-	 * @param array $args
+	 * @param array $images
+	 * @param string|array $size String or Array with width and height
 	 *
 	 * @return array
 	 */
-	// TODO: move to custom field column
-	public function get_thumbnails( $images, $args = array() ) {
-
-		$images = $this->string_to_image_array( $images );
-
-		$defaults = array(
-			'image_size'   => 'cpac-custom',
-			'image_size_w' => 80,
-			'image_size_h' => 80,
-		);
-		$args = wp_parse_args( $args, $defaults );
-
-		$size = $args['image_size'];
-		if ( ! $args['image_size'] || 'cpac-custom' == $args['image_size'] ) {
-			$size = array( $args['image_size_w'], $args['image_size_h'] );
-		}
-
+	public function get_thumbnails( $images, $size ) {
 		$thumbnails = array();
+
 		foreach ( $images as $value ) {
 			if ( ac_helper()->string->is_image_url( $value ) ) {
 				$thumbnails[] = $this->get_image_by_url( $value, $size );

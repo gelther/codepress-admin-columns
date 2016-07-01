@@ -205,13 +205,8 @@ class CPAC_Column_Custom_Field extends CPAC_Column implements CPAC_Column_Custom
 		switch ( $this->get_field_type() ) :
 			case "image" :
 			case "library_id" :
-
-				// TODO move get_thumbnails to custom field column
-				$value = implode( $this->get_thumbnails( $raw_string, array(
-					'image_size'   => $this->get_option( 'image_size' ),
-					'image_size_w' => $this->get_option( 'image_size_w' ),
-					'image_size_h' => $this->get_option( 'image_size_h' ),
-				) ) );
+				$images = ac_helper()->image->string_to_image_array( $raw_string );
+				$value = implode( ac_helper()->image->get_thumbnails( $images, $this->get_image_size_formatted() ) );
 				break;
 
 			case "excerpt" :
@@ -313,12 +308,12 @@ class CPAC_Column_Custom_Field extends CPAC_Column implements CPAC_Column_Custom
 			$grouped_options = array(
 				'hidden' => array(
 					'title'   => __( 'Hidden Custom Fields', 'codepress-admin-columns' ),
-					'options' => ''
+					'options' => '',
 				),
 				'public' => array(
 					'title'   => __( 'Custom Fields', 'codepress-admin-columns' ),
-					'options' => ''
-				)
+					'options' => '',
+				),
 			);
 
 			foreach ( $keys as $field ) {
@@ -348,7 +343,7 @@ class CPAC_Column_Custom_Field extends CPAC_Column implements CPAC_Column_Custom
 				'type'        => 'text',
 				'name'        => 'field',
 				'label'       => __( "Custom Field", 'codepress-admin-columns' ),
-				'description' => __( "Enter your custom field key.", 'codepress-admin-columns' )
+				'description' => __( "Enter your custom field key.", 'codepress-admin-columns' ),
 			) );
 		else :
 			$this->form_field( array(

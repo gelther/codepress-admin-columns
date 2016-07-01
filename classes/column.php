@@ -426,7 +426,7 @@ class CPAC_Column {
 	 * @since 1.3.1
 	 */
 	protected function get_shorten_url( $url = '' ) {
-		return $url ? '<a title="' . esc_attr( $url ) . '" href="' . esc_attr( $url ) . '">' . esc_html( url_shorten( $url ) ) . '</a>': false;
+		return $url ? '<a title="' . esc_attr( $url ) . '" href="' . esc_attr( $url ) . '">' . esc_html( url_shorten( $url ) ) . '</a>' : false;
 	}
 
 	/**
@@ -562,7 +562,29 @@ class CPAC_Column {
 	 * @return array HTML img elements
 	 */
 	public function get_thumbnails( $images, $args = array() ) {
-		return ac_helper()->image->get_thumbnails( $images, $args );
+		//_deprecated_function( __METHOD__, 'ACP NEWVERSION', 'ac_helper()->image->get_thumbnails' );
+		$images = ac_helper()->image->string_to_image_array( $images );
+
+		$size = $this->get_image_size_formatted();
+
+		if ( $args && isset( $args['image_size'] ) ) {
+			$defaults = array(
+				'image_size'   => 'cpac-custom',
+				'image_size_w' => 80,
+				'image_size_h' => 80,
+			);
+
+			$args = wp_parse_args( $args, $defaults );
+			$size = $args['image_size'];
+			if ( 'cpac-custom' == $args['image_size'] && isset( $args['image_size_w'] ) && isset( $args['image_size_h'] ) ) {
+				$size = array(
+					$args['image_size_w'],
+					$args['image_size_h'],
+				);
+			}
+		}
+
+		return ac_helper()->image->get_thumbnails( $images, $size );
 	}
 
 	/**
