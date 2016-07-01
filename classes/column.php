@@ -562,7 +562,7 @@ class CPAC_Column {
 	 * @return array HTML img elements
 	 */
 	public function get_thumbnails( $images, $args = array() ) {
-		return ac_helper()->image->thumbnail_block( $images, $args );
+		return ac_helper()->image->get_thumbnails( $images, $args );
 	}
 
 	/**
@@ -1000,7 +1000,11 @@ class CPAC_Column {
 	 * @return string HTML Image
 	 */
 	public function get_image_formatted( $attachment_id ) {
-		return ac_helper()->image->get_images_by_ids( $attachment_id, $this->get_image_size_formatted() );
+		return $this->get_images_formatted( $attachment_id );
+	}
+
+	public function get_images_formatted( $attachment_ids ) {
+		return ac_helper()->image->get_images_by_ids( $attachment_ids, $this->get_image_size_formatted() );
 	}
 
 	/**
@@ -1387,9 +1391,9 @@ class CPAC_Column {
 	 * @return bool
 	 */
 	protected function is_image_url( $url ) {
-		_deprecated_function( __METHOD__, 'ACP NEWVERSION', 'ac_helper()->string->is_image()' );
+		_deprecated_function( __METHOD__, 'ACP NEWVERSION', 'ac_helper()->string->is_image_url()' );
 
-		return ac_helper()->string->is_image( $url );
+		return ac_helper()->string->is_image_url( $url );
 	}
 
 	/**

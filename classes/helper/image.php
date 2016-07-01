@@ -49,6 +49,8 @@ class AC_Helper_Image {
 	 *
 	 * @return array
 	 */
+
+	// TODO
 	private function get_image_dimensions( $size ) {
 		$dimensions = array(
 			'width'  => 80,
@@ -133,7 +135,12 @@ class AC_Helper_Image {
 	 * @return string
 	 */
 	public function get_image_by_url( $url, $size ) {
-		$dimensions = $this->get_image_dimensions( $size );
+		//$dimensions = $this->get_image_dimensions( $size );
+
+
+		// TODO
+
+
 		$image_path = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $url );
 
 		if ( is_file( $image_path ) ) {
@@ -158,26 +165,47 @@ class AC_Helper_Image {
 	}
 
 	/**
+	 * @param $mixed
+	 *
+	 * @return array Array with either Image ID or Image URL
+	 */
+	private function string_to_image_array( $mixed ) {
+		if ( empty( $mixed ) || 'false' == $mixed ) {
+			return array();
+		}
+
+		$array = array();
+
+		// turn string to array
+		if ( is_string( $mixed ) || is_numeric( $mixed ) ) {
+			if ( strpos( $mixed, ',' ) !== false ) {
+				$array = array_filter( explode( ',', ac_helper()->string->strip_trim( str_replace( ' ', '', $mixed ) ) ) );
+			}
+			else {
+				$array = array( $mixed );
+			}
+		}
+
+		// Check if values are wither URL or ID
+		foreach ( $array as $k => $value ) {
+			if ( ! is_numeric( $value ) && ! ac_helper()->string->is_image_url( $value ) ) {
+				unset( $array[ $k ] );
+			}
+		}
+
+		return $array;
+	}
+
+	/**
 	 * @param array|int|string $images
 	 * @param array $args
 	 *
 	 * @return array
 	 */
 	// TODO: move to custom field column
-	public function thumbnail_block( $images, $args = array() ) {
-		if ( empty( $images ) || 'false' == $images ) {
-			return array();
-		}
+	public function get_thumbnails( $images, $args = array() ) {
 
-		// turn string to array
-		if ( is_string( $images ) || is_numeric( $images ) ) {
-			if ( strpos( $images, ',' ) !== false ) {
-				$images = array_filter( explode( ',', ac_helper()->string->strip_trim( str_replace( ' ', '', $images ) ) ) );
-			}
-			else {
-				$images = array( $images );
-			}
-		}
+		$images = $this->string_to_image_array( $images );
 
 		$defaults = array(
 			'image_size'   => 'cpac-custom',
@@ -193,7 +221,7 @@ class AC_Helper_Image {
 
 		$thumbnails = array();
 		foreach ( $images as $value ) {
-			if ( ac_helper()->string->is_image( $value ) ) {
+			if ( ac_helper()->string->is_image_url( $value ) ) {
 				$thumbnails[] = $this->get_image_by_url( $value, $size );
 			}
 			// Media Attachment
@@ -222,6 +250,10 @@ class AC_Helper_Image {
 		global $_wp_additional_image_sizes;
 
 		$sizes = false;
+
+		// TODO
+
+		//get_intermediate_image_sizes();
 
 		if ( is_scalar( $name ) && isset( $_wp_additional_image_sizes[ $name ] ) ) {
 			$sizes = $_wp_additional_image_sizes[ $name ];

@@ -24,6 +24,7 @@ class AC_Helper_User {
 	 *
 	 * @return false|string
 	 */
+	// TODO: rename to display_name
 	public function get_display_name( $user, $format = false ) {
 		if ( is_numeric( $user ) ) {
 			$user = get_userdata( $user );

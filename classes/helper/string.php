@@ -116,7 +116,7 @@ class AC_Helper_String {
 	 *
 	 * @return bool
 	 */
-	public function is_image( $url ) {
+	public function is_image_url( $url ) {
 		return is_string( $url ) ? in_array( strrchr( $url, '.' ), array( '.jpg', '.jpeg', '.gif', '.png', '.bmp' ) ) : false;
 	}
 
