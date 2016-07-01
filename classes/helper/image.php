@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Helper_Image {
 
+	protected $available_image_sizes = null;
+
 	/**
 	 * Resize image
 	 *
@@ -42,31 +44,6 @@ class AC_Helper_Image {
 		}
 
 		return $dest_file;
-	}
-
-	/**
-	 * @param string $size
-	 *
-	 * @return array
-	 */
-
-	// TODO
-	private function get_image_dimensions( $size ) {
-		$dimensions = array(
-			'width'  => 80,
-			'height' => 80,
-		);
-
-		if ( is_array( $size ) ) {
-			$dimensions['width'] = $size[0];
-			$dimensions['height'] = $size[1];
-		}
-		else if ( $sizes = $this->get_image_sizes_by_name( $size ) ) {
-			$dimensions['width'] = $sizes['width'];
-			$dimensions['height'] = $sizes['height'];
-		}
-
-		return $dimensions;
 	}
 
 	/**
@@ -135,30 +112,32 @@ class AC_Helper_Image {
 	 * @return string
 	 */
 	public function get_image_by_url( $url, $size ) {
-		//$dimensions = $this->get_image_dimensions( $size );
-
-
-		// TODO
-
+		if ( is_string( $size ) ) {
+			$dimensions = $this->get_image_sizes_by_name( $size );
+			if ( ! $dimensions ) {
+				return;
+			}
+			$size = array( $dimensions['width'], $dimensions['height'] );
+		}
 
 		$image_path = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $url );
 
 		if ( is_file( $image_path ) ) {
 			// try to resize image
-			if ( $resized = $this->resize( $image_path, $dimensions['width'], $dimensions['height'], true ) ) {
+			if ( $resized = $this->resize( $image_path, $size[0], $size[1], true ) ) {
 				$src = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $resized );
 
-				$image = $this->markup( $src, $dimensions['width'], $dimensions['height'] );
+				$image = $this->markup( $src, $size[0], $size[1] );
 			}
 			else {
 
-				$image = $this->markup( $url, $dimensions['width'], $dimensions['height'] );
+				$image = $this->markup( $url, $size[0], $size[1] );
 			}
 		}
 
 		//External image
 		else {
-			$image = $this->markup_cover( $image_path, $dimensions['width'], $dimensions['height'] );
+			$image = $this->markup_cover( $image_path, $size[0], $size[1] );
 		}
 
 		return $image;
@@ -242,21 +221,41 @@ class AC_Helper_Image {
 	}
 
 	/**
+	 *
+	 * @return array
+	 */
+	public function get_image_sizes() {
+		global $_wp_additional_image_sizes;
+		$sizes = array();
+
+		foreach ( get_intermediate_image_sizes() as $size ) {
+			if ( in_array( $size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
+				$sizes[ $size ]['width'] = get_option( "{$size}_size_w" );
+				$sizes[ $size ]['height'] = get_option( "{$size}_size_h" );
+			}
+			elseif ( isset( $_wp_additional_image_sizes[ $size ] ) ) {
+				$sizes[ $size ] = array(
+					'width'  => $_wp_additional_image_sizes[ $size ]['width'],
+					'height' => $_wp_additional_image_sizes[ $size ]['height'],
+					'crop'   => $_wp_additional_image_sizes[ $size ]['crop'],
+				);
+			}
+		}
+
+		return $sizes;
+	}
+
+	/**
 	 * @param string $name
 	 *
-	 * @return array Image sizes
+	 * @return false|array Image sizes
 	 */
 	public function get_image_sizes_by_name( $name ) {
-		global $_wp_additional_image_sizes;
-
 		$sizes = false;
+		$available_sizes = $this->get_image_sizes();
 
-		// TODO
-
-		//get_intermediate_image_sizes();
-
-		if ( is_scalar( $name ) && isset( $_wp_additional_image_sizes[ $name ] ) ) {
-			$sizes = $_wp_additional_image_sizes[ $name ];
+		if ( is_scalar( $name ) && isset( $available_sizes[ $name ] ) ) {
+			$sizes = $available_sizes[ $name ];
 		}
 
 		return $sizes;
