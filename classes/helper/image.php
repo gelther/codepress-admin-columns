@@ -237,7 +237,6 @@ class AC_Helper_Image {
 				$sizes[ $size ] = array(
 					'width'  => $_wp_additional_image_sizes[ $size ]['width'],
 					'height' => $_wp_additional_image_sizes[ $size ]['height'],
-					'crop'   => $_wp_additional_image_sizes[ $size ]['crop'],
 				);
 			}
 		}
