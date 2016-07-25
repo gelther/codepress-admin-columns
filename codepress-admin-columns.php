@@ -162,6 +162,7 @@ class CPAC {
 		$this->helper = new AC_Helper();
 
 		new AC_Notice_Review();
+		new AC_AddonsDependencies();
 	}
 
 	/**
