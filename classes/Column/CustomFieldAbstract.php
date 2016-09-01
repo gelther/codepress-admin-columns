@@ -305,14 +305,16 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 
 		// DOM can get overloaded when dropdown contains to many custom fields. Use this filter to replace the dropdown with a text input.
 		if ( apply_filters( 'cac/column/meta/use_text_input', false ) ) :
-			$this->field_settings->field( array(
-				'type'        => 'text',
-				'name'        => 'field',
-				'label'       => __( "Custom Field", 'codepress-admin-columns' ),
-				'description' => __( "Enter your custom field key.", 'codepress-admin-columns' ),
-			) );
+			$this->settings->display_field(
+				array(
+					'type'        => 'text',
+					'name'        => 'field',
+					'label'       => __( "Custom Field", 'codepress-admin-columns' ),
+					'description' => __( "Enter your custom field key.", 'codepress-admin-columns' ),
+				)
+			);
 		else :
-			$this->field_settings->field( array(
+			$this->settings->display_field( array(
 				'type'            => 'select',
 				'name'            => 'field',
 				'label'           => __( 'Custom Field', 'codepress-admin-columns' ),
@@ -337,7 +339,7 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 				break;
 			case 'image' :
 			case 'library_id' :
-				$fields = array_merge( $fields, $this->field_settings->image_args( true ) );
+				$fields = array_merge( $fields, $this->settings->image->get_args() );
 				break;
 			case 'excerpt' :
 				$fields[] = $this->field_settings->word_limit_args();
@@ -347,7 +349,7 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 				break;
 		}
 
-		$this->field_settings->fields( array(
+		$this->settings->display_fields( array(
 			'label'       => __( 'Field Type', 'codepress-admin-columns' ),
 			'description' => __( 'This will determine how the value will be displayed.', 'codepress-admin-columns' ) . '<em>' . __( 'Type', 'codepress-admin-columns' ) . ': ' . $this->get_field_type() . '</em>',
 			'fields'      => $fields,

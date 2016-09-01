@@ -488,6 +488,12 @@ class AC_ColumnFieldSettings {
 
 		<div class="unit-select">
 			<?php
+
+			$unit = $this->column->get_width_unit();
+			if ( ! $unit ) {
+				$unit = '%';
+			}
+
 			ac_helper()->formfield->radio( array(
 				'attr_id'   => $this->get_attr_id( 'width_unit' ),
 				'attr_name' => $this->get_attr_name( 'width_unit' ),
@@ -496,7 +502,7 @@ class AC_ColumnFieldSettings {
 					'%'  => '%',
 				),
 				'class'     => 'unit',
-				'default'   => $this->column->get_width_unit(),
+				'default'   => $unit,
 			) );
 			?>
 		</div>
