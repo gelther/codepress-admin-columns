@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AC_Settings_Columns_Format {
+class AC_Settings_Column_Format {
 
 	private $column;
 

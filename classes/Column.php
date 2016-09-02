@@ -87,7 +87,7 @@ abstract class CPAC_Column {
 		$this->settings = new AC_Settings_Column( $this );
 
 		$this->field_settings = new AC_Settings_Column_Field( $this );
-		$this->format = new AC_Settings_Columns_Format( $this );
+		$this->format = new AC_Settings_Column_Format( $this );
 		$this->helper = ac_helper();
 
 		$this->init();
