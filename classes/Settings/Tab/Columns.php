@@ -4,13 +4,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AC_Admin_Tab_General extends AC_Admin_TabAbstract {
+class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 
 	CONST OPTION_CURRENT = 'cpac_current_model';
-	
+
 	public function __construct() {
 		$this
-			->set_slug( 'general' )
+			->set_slug( 'columns' )
 			->set_label( __( 'Admin Columns', 'codepress-admin-columns' ) )
 			->set_default( true );
 

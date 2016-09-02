@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or die();
 
-class AC_ColumnSettings_Field extends AC_ColumnSettingsAbstract {
+class AC_Settings_Column_Field extends AC_Settings_Column {
 
 	/**
 	 * @since NEWVERSION

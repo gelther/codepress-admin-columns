@@ -1,7 +1,10 @@
 <?php
-defined( 'ABSPATH' ) or die();
 
-class AC_ColumnSettings_Character extends AC_ColumnSettings_Field {
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class AC_Settings_Column_Field_Character extends AC_Settings_Column_Field {
 
 	public function get_args() {
 		return array(

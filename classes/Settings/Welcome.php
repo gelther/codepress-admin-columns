@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AC_Admin_Welcome {
+class AC_Settings_Welcome {
 
 	public function has_upgrade_run() {
 		// Should only be set after upgrade

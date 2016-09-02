@@ -1,7 +1,10 @@
 <?php
-defined( 'ABSPATH' ) or die();
 
-abstract class AC_ColumnSettingsAbstract {
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+abstract class AC_Settings_ColumnAbstract {
 
 	protected $column;
 

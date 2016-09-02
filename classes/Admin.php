@@ -25,10 +25,10 @@ class AC_Admin {
 		add_action( 'admin_menu', array( $this, 'settings_menu' ) );
 		add_action( 'cpac_messages', array( $this, 'maybe_display_addon_statuschange_message' ) );
 
-		$tabs = new AC_Admin_Tabs();
-		$tabs->register_tab( new AC_Admin_Tab_General() );
-		$tabs->register_tab( new AC_Admin_Tab_Settings() );
-		$tabs->register_tab( new AC_Admin_Tab_Addons() );
+		$tabs = new AC_Settings_Tabs();
+		$tabs->register_tab( new AC_Settings_Tab_Columns() );
+		$tabs->register_tab( new AC_Settings_Tab_Settings() );
+		$tabs->register_tab( new AC_Settings_Tab_Addons() );
 
 		$this->tabs = $tabs;
 	}
@@ -260,7 +260,7 @@ class AC_Admin {
 	 * @since 1.0
 	 */
 	public function display() {
-		$welcome_screen = new AC_Admin_Welcome();
+		$welcome_screen = new AC_Settings_Welcome();
 
 		if ( $welcome_screen->has_upgrade_run() ) {
 			$welcome_screen->display();

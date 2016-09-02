@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AC_Admin_Tabs {
+class AC_Settings_Tabs {
 
 	/**
 	 * @var array
@@ -22,7 +22,7 @@ class AC_Admin_Tabs {
 		$this->tabs = array();
 	}
 
-	public function register_tab( AC_Admin_TabAbstract $tab ) {
+	public function register_tab( AC_Settings_TabAbstract $tab ) {
 		$this->tabs[ $tab->get_slug() ] = $tab;
 
 		if ( $tab->is_default() ) {
@@ -31,7 +31,13 @@ class AC_Admin_Tabs {
 	}
 
 	public function get_tab( $slug ) {
-		return $this->tabs[ $slug ];
+		$tab = false;
+
+		if ( isset( $this->tabs[ $slug ] ) ) {
+			$tab = $this->tabs[ $slug ];
+		}
+
+		return $tab;
 	}
 
 	public function get_current_slug() {
@@ -52,7 +58,7 @@ class AC_Admin_Tabs {
 				$active_slug = $this->get_current_slug();
 
 				foreach ( $this->tabs as $slug => $tab ) {
-					$active = $slug == $active_slug ? ' nav-tab-active': '';
+					$active = $slug == $active_slug ? ' nav-tab-active' : '';
 
 					printf(
 						'<a href="%s" class="nav-tab%s">%s</a>',
@@ -71,7 +77,9 @@ class AC_Admin_Tabs {
 
 			do_action( 'cac/settings/after_menu' );
 
-			$this->get_tab( $active_slug )->display();
+			if ( $tab = $this->get_tab( $active_slug ) ) {
+				$tab->display();
+			}
 
 			?>
 		</div><!--.wrap-->

@@ -1,15 +1,19 @@
 <?php
-defined( 'ABSPATH' ) or die();
 
-class AC_ColumnFieldSettings {
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
-	private $column;
+// old: AC_ColumnFieldSettings
+class AC_Settings_Column_Field {
+
+	protected $column;
 
 	public function __construct( CPAC_Column $column ) {
 		$this->column = $column;
 	}
 
-	private function get_option( $name ) {
+	protected function get_option( $name ) {
 		return $this->column->get_option( $name );
 	}
 

@@ -1,19 +1,21 @@
 <?php
-defined( 'ABSPATH' ) or die();
 
-class AC_ColumnSettings {
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class AC_Settings_Column {
 
 	private $column;
 
 	public $character;
+
 	public $image;
 
 	public function __construct( CPAC_Column $column ) {
-
 		$this->column = $column;
-
-		$this->character = new AC_ColumnSettings_Character( $column );
-		$this->image = new AC_ColumnSettings_Image( $column );
+		$this->character = new AC_Settings_Column_Field_Character( $column );
+		$this->image = new AC_Settings_Column_Field_Image( $column );
 	}
 
 	public function display_field( $args ) {

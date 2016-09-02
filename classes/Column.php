@@ -7,9 +7,6 @@ defined( 'ABSPATH' ) or die();
  * @since 2.0
  *
  * @param string $storage_model Storage Model Key
- *
- * @property AC_ColumnFieldFormat format
- * @property AC_ColumnFieldSettings field_settings
  */
 abstract class CPAC_Column {
 
@@ -53,7 +50,7 @@ abstract class CPAC_Column {
 	/**
 	 * Instance for adding field settings to the column
 	 *
-	 * @var AC_ColumnFieldSettings
+	 * @var AC_Settings_Column_Field
 	 */
 	private $field_settings;
 
@@ -87,10 +84,10 @@ abstract class CPAC_Column {
 
 		$this->storage_model = $storage_model;
 
-		$this->settings = new AC_ColumnSettings( $this );
+		$this->settings = new AC_Settings_Column( $this );
 
-		$this->field_settings = new AC_ColumnFieldSettings( $this );
-		$this->format = new AC_ColumnFieldFormat( $this );
+		$this->field_settings = new AC_Settings_Column_Field( $this );
+		$this->format = new AC_Settings_Columns_Format( $this );
 		$this->helper = ac_helper();
 
 		$this->init();
@@ -538,8 +535,7 @@ abstract class CPAC_Column {
 	public function get_sanitized_label() {
 		if ( $this->is_default() ) {
 			$string = $this->get_name();
-		}
-		else {
+		} else {
 			$string = $this->get_option( 'label' );
 			$string = strip_tags( $string );
 			$string = preg_replace( "/[^a-zA-Z0-9]+/", "", $string );

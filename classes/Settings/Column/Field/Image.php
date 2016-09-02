@@ -1,7 +1,10 @@
 <?php
-defined( 'ABSPATH' ) or die();
 
-class AC_ColumnSettings_Image extends AC_ColumnSettingsAbstract {
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class AC_Settings_Column_Field_Image extends AC_Settings_Column_Field {
 
 	private function get_label() {
 		return __( 'Image Size', 'codepress-admin-columns' );

@@ -1,7 +1,10 @@
 <?php
-defined( 'ABSPATH' ) or die();
 
-class AC_ColumnFieldFormat {
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class AC_Settings_Columns_Format {
 
 	private $column;
 
