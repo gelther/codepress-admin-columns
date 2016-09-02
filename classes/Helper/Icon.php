@@ -23,6 +23,7 @@ class AC_Helper_Icon {
 		return '<span class="dashicons dashicons-' . $data->icon . ' ' . esc_attr( trim( $data->class ) ) . '"' . ( $data->title ? ' title="' . esc_attr( $data->title ) . '"' : '' ) . '' . ( $data->tooltip ? 'data-tip="' . esc_attr( $data->tooltip ) . '"' : '' ) . '></span>';
 	}
 
+	// todo davidmosterd: I would say the yes icon just supplies 3 args but takes the same args as dashicon. Adding an option to dashicon will potentionally break all yes-no-etc. icons you plan on.
 	/**
 	 * @since NEWVERSION
 	 * @return string
@@ -47,6 +48,7 @@ class AC_Helper_Icon {
 		return self::dashicon( array( 'icon' => 'no', 'class' => 'red', 'title' => $title, 'tooltip' => $tooltip ) );
 	}
 
+	// todo davidmosterd: rename is_true to 'test' or 'yes_if_true'? Again 2nd parameter should be args
 	/**
 	 * @since NEWVERSION
 	 *
