@@ -70,7 +70,7 @@ abstract class AC_Column_ActionsAbstract extends CPAC_Column {
 		 * @since 2.2.9
 		 *
 		 * @param array $actions List of actions ([action name] => [action link]).
-		 * @param AC_Column_Actions $column_instance Column object.
+		 * @param AC_Column_ActionsAbstract $column_instance Column object.
 		 * @param int $id Post/User/Comment ID
 		 */
 		return apply_filters( 'cac/column/actions/action_links', $this->get_actions( $id ), $this, $id );
