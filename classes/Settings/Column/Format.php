@@ -46,11 +46,13 @@ class AC_Settings_Column_Format {
 	 *
 	 * @return string
 	 */
+	/*
 	public function character_limit( $string ) {
 		$limit = $this->column->get_option( 'character_limit' );
 
 		return is_numeric( $limit ) && 0 < $limit && strlen( $string ) > $limit ? substr( $string, 0, $limit ) . __( '&hellip;' ) : $string;
 	}
+	*/
 
 	/**
 	 * @return array|false|string

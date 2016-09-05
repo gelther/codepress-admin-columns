@@ -9,9 +9,63 @@ class AC_Settings_Column_Field {
 
 	protected $column;
 
+	/// START better API
+
+	/**
+	 * @var array
+	 */
+	private $args;
+
+	public function set_arg( $key, $value ) {
+		$this->arg[ $key ] = $value;
+
+		return $this;
+	}
+
+	public function get_arg( $key ) {
+		if ( ! isset( $this->args[ $key ] ) ) {
+			return false;
+		}
+
+		return $this->args[ $key ];
+	}
+
+	public function get_args() {
+		return $this->args;
+	}
+
+	public function set_args( array $args ) {
+		$this->args = $args;
+
+		return $this;
+	}
+
+	public function merge_args( array $args ) {
+		$this->args = wp_parse_args( $args, $this->get_args() );
+
+		return $this;
+	}
+
 	public function __construct( CPAC_Column $column ) {
 		$this->column = $column;
+
+		$this->args = array(
+			'type'           => 'text',
+			'name'           => '',
+			'label'          => '', // empty label will apply colspan 2
+			'description'    => '',
+			'toggle_trigger' => '', // triggers a toggle event on toggle_handle
+			'toggle_handle'  => '', // can be used to toggle this element
+			'refresh_column' => false, // when value is selected the column element will be refreshed with ajax
+			'hidden'         => false,
+			'for'            => false,
+			'section'        => false,
+			'help'           => '', // help message below input field
+			'more_link'      => '', // link to more, e.g. admin page for a field
+		);
 	}
+
+	/// END better API
 
 	/**
 	 * Formats value based on stored field settings
@@ -398,21 +452,7 @@ class AC_Settings_Column_Field {
 	 * @since NEWVERSION
 	 */
 	public function display( $args = array() ) {
-		$defaults = array(
-			'type'           => 'text',
-			'name'           => '',
-			'label'          => '', // empty label will apply colspan 2
-			'description'    => '',
-			'toggle_trigger' => '', // triggers a toggle event on toggle_handle
-			'toggle_handle'  => '', // can be used to toggle this element
-			'refresh_column' => false, // when value is selected the column element will be refreshed with ajax
-			'hidden'         => false,
-			'for'            => false,
-			'section'        => false,
-			'help'           => '', // help message below input field
-			'more_link'      => '', // link to more, e.g. admin page for a field
-		);
-		$args = wp_parse_args( $args, $defaults );
+		$args = wp_parse_args( $args, $this->get_args() );
 
 		$args['current'] = $this->get_option( $args['name'] );
 		$args['attr_name'] = $this->get_attr_name( $args['name'] );
