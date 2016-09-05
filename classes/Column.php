@@ -86,7 +86,7 @@ abstract class CPAC_Column {
 
 		$this->settings = new AC_Settings_Column( $this );
 
-		//$this->settings->field = new AC_Settings_Column_Field( $this );
+		$this->settings->field = new AC_Settings_Column_Field( $this );
 		//$this->format = new AC_Settings_Column_Format( $this );
 		$this->helper = ac_helper();
 
@@ -103,6 +103,8 @@ abstract class CPAC_Column {
 		if ( 'storage_model' == $key ) {
 			$call = 'get_' . $key;
 		}
+
+		// TODO remove
 		if ( in_array( $key, array( 'format', 'field_settings' ) ) ) {
 			$call = $key;
 		}
@@ -110,13 +112,14 @@ abstract class CPAC_Column {
 		return $call ? call_user_func( array( $this, $call ) ) : false;
 	}
 
+	// TODO remove
 	public function field_settings() {
 		return $this->settings->field;
 	}
 
-	public function format() {
+	/*public function format() {
 		return $this->format;
-	}
+	}*/
 
 	/**
 	 * @since 2.2
@@ -345,13 +348,13 @@ abstract class CPAC_Column {
 	 * @return string px or %
 	 */
 	public function get_width_unit() {
-		$width_unit = $this->get_option( 'width_unit' );
+		$unit = $this->get_option( 'width_unit' );
 
-		if ( ! $width_unit ) {
-			$width_unit = $this->default_options['width_unit'];
+		if ( ! $unit ) {
+			$unit = $this->column->get_property( 'width_unit' ); //$this->default_options['width_unit'];
 		}
 
-		return 'px' === $width_unit ? 'px' : '%';
+		return 'px' === $unit ? 'px' : '%';
 	}
 
 	/**

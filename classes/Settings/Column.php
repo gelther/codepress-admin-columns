@@ -20,6 +20,7 @@ class AC_Settings_Column {
 		$this->date = new AC_Settings_Column_Field_Date( $column );
 		$this->word = new AC_Settings_Column_Field_Word( $column );
 		$this->before_after = new AC_Settings_Column_Field_BeforeAfter( $column );
+		$this->width = new AC_Settings_Column_Field_Width( $column );
 
 		// General fields
 		$this->field = new AC_Settings_Column_Field( $column );

@@ -51,7 +51,6 @@ class AC_Helper_FormField {
 	 */
 	public function radio( $args ) {
 		$defaults = array(
-			'name'      => '',
 			'options'   => array(),
 			'default'   => '',
 			'current'   => false,
@@ -127,8 +126,9 @@ class AC_Helper_FormField {
 			'class' => '',
 		) );
 		?>
-		<span class="<?php echo esc_attr( $args->class ); ?>"><?php echo $args['text'] ?></span>
+		<span class="<?php echo esc_attr( $args['class'] ); ?>"><?php echo $args['text'] ?></span>
 		<?php
 
 	}
+
 }

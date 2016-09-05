@@ -355,7 +355,7 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 			'fields'      => $fields,
 		) );
 
-		$this->field_settings->before_after();
+		$this->settings->before_after->field();
 	}
 
 	/**

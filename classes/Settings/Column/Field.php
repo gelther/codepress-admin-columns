@@ -153,7 +153,7 @@ class AC_Settings_Column_Field {
 		$this->fields( $this->image_args() );
 	}*/
 
-	public function before_args() {
+	/*public function before_args() {
 		return array(
 			'type'        => 'text',
 			'name'        => 'before',
@@ -179,7 +179,7 @@ class AC_Settings_Column_Field {
 				$this->after_args(),
 			),
 		) );
-	}
+	}*/
 
 	/*public function date_args() {
 		return array(
@@ -441,7 +441,29 @@ class AC_Settings_Column_Field {
 						ac_helper()->formfield->number( $args );
 						break;
 					case 'width' :
-						$this->width_field();
+						?>
+						<div class="description" title="<?php echo esc_attr( __( 'default', 'codepress-admin-columns' ) ); ?>">
+							<input class="width" type="text" placeholder="<?php echo esc_attr( __( 'auto', 'codepress-admin-columns' ) ); ?>" name="<?php $this->attr_name( 'width' ); ?>" id="<?php $this->attr_id( 'width' ); ?>" value="<?php echo esc_attr( $this->column->get_width() ); ?>"/>
+							<span class="unit"><?php echo esc_html( $this->column->get_width_unit() ); ?></span>
+						</div>
+						<div class="width-slider"></div>
+
+						<div class="unit-select">
+							<?php
+							ac_helper()->formfield->radio( array(
+								'attr_id'   => $this->get_attr_id( 'width_unit' ),
+								'attr_name' => $this->get_attr_name( 'width_unit' ),
+								'options'   => array(
+									'px' => 'px',
+									'%'  => '%',
+								),
+								'class'     => 'unit',
+								'current'   => $this->column->get_width_unit(),
+								'default'   => '%',
+							) );
+							?>
+						</div>
+						<?php
 						break;
 				}
 

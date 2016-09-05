@@ -6,7 +6,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_Field_BeforeAfter extends AC_Settings_Column_Field {
 
-	private function get_before_args() {
+	public function field() {
+		$this->fields( array(
+			'label'  => $this->get_label(),
+			'fields' => array(
+				$this->get_before_args(),
+				$this->get_after_args(),
+			),
+		) );
+	}
+
+	public function get_before_args() {
 		return array(
 			'type'        => 'text',
 			'name'        => 'before',
@@ -15,7 +25,7 @@ class AC_Settings_Column_Field_BeforeAfter extends AC_Settings_Column_Field {
 		);
 	}
 
-	private function get_after_args() {
+	public function get_after_args() {
 		return array(
 			'type'        => 'text',
 			'name'        => 'after',
@@ -24,22 +34,8 @@ class AC_Settings_Column_Field_BeforeAfter extends AC_Settings_Column_Field {
 		);
 	}
 
-	public function get_args() {
-
-	}
-
-	public function field() {
-		$this->fields( array(
-			'label'  => __( 'Display Options', 'codepress-admin-columns' ),
-			'fields' => array(
-				$this->get_before_args(),
-				$this->get_after_args(),
-			),
-		) );
-	}
-
-	public function format( $string ) {
-
+	public function get_label() {
+		return __( 'Display Options', 'codepress-admin-columns' );
 	}
 
 }
