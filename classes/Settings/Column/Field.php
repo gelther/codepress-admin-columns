@@ -262,6 +262,7 @@ class AC_Settings_Column_Field {
 	}
 	*/
 
+	/*
 	public function user_link_to_args() {
 		return array(
 			'type'        => 'select',
@@ -281,6 +282,7 @@ class AC_Settings_Column_Field {
 	public function user_link_to() {
 		$this->field( $this->user_link_to_args() );
 	}
+	/*
 
 	/*
 	public function url() {
@@ -308,6 +310,7 @@ class AC_Settings_Column_Field {
 	}
 	*/
 
+	/*
 	public function post_link_to() {
 		$this->field( array(
 			'type'        => 'select',
@@ -323,6 +326,7 @@ class AC_Settings_Column_Field {
 			'description' => __( 'Page the posts should link to.', 'codepress-admin-columns' ),
 		) );
 	}
+	*/
 
 	/**
 	 * @since 2.4.7
