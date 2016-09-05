@@ -6,6 +6,53 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_Field_Image extends AC_Settings_Column_Field {
 
+	public function get_args() {
+		return array(
+			array(
+				'label'           => $this->get_label(),
+				'type'            => 'select',
+				'name'            => 'image_size',
+				'grouped_options' => $this->get_grouped_image_sizes(),
+			),
+			$this->get_width_args(),
+			$this->get_height_args(),
+		);
+	}
+
+	public function field() {
+		$args = $this->get_args();
+
+		unset( $args['label'] );
+
+		$this->display( array(
+			'label'  => $this->get_label(),
+			'fields' => $args
+		) );
+	}
+
+	public function format( $attachment_ids ) {
+		return ac_helper()->image->get_images_by_ids( $attachment_ids, $this->image_sizes() );
+	}
+
+	// Helpers
+	/**
+	 * @return array|false|string
+	 */
+	private function image_sizes() {
+
+		// TODO
+		$size = $this->column->get_option( 'image_size' );
+
+		if ( 'cpac-custom' == $size ) {
+			$size = array(
+				$this->column->get_option( 'image_size_w' ),
+				$this->column->get_option( 'image_size_h' ),
+			);
+		}
+
+		return $size;
+	}
+
 	private function get_label() {
 		return __( 'Image Size', 'codepress-admin-columns' );
 	}
@@ -30,34 +77,6 @@ class AC_Settings_Column_Field_Image extends AC_Settings_Column_Field {
 			'toggle_handle' => 'image_size_h',
 			'hidden'        => 'cpac-custom' !== $this->get_option( 'image_size' ),
 		);
-	}
-
-	public function get_args() {
-		return array(
-			array(
-				'label'           => $this->get_label(),
-				'type'            => 'select',
-				'name'            => 'image_size',
-				'grouped_options' => $this->get_grouped_image_sizes(),
-			),
-			$this->get_width_args(),
-			$this->get_height_args(),
-		);
-	}
-
-	public function field() {
-		$args = $this->get_args();
-
-		unset( $args['label'] );
-
-		$this->display_field( array(
-			'label'  => $this->get_label(),
-			'fields' => $args
-		) );
-	}
-
-	public function value( $string ) {
-
 	}
 
 	/**

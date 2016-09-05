@@ -13,6 +13,17 @@ class AC_Settings_Column_Field {
 		$this->column = $column;
 	}
 
+	/**
+	 * Formats value based on stored field settings
+	 *
+	 * @param array|string $value
+	 *
+	 * @return string mixed
+	 */
+	public function format( $value ) {
+		return $value;
+	}
+
 	protected function get_option( $name ) {
 		return $this->column->get_option( $name );
 	}
@@ -80,7 +91,7 @@ class AC_Settings_Column_Field {
 	 *
 	 * @return array
 	 */
-	public function image_args( $fields_only = false ) {
+	/*public function image_args( $fields_only = false ) {
 		$label = __( 'Image Size', 'codepress-admin-columns' );
 
 		$image_size_w = array(
@@ -127,11 +138,11 @@ class AC_Settings_Column_Field {
 				$image_size_h,
 			),
 		);
-	}
+	}*/
 
-	public function image() {
+	/*public function image() {
 		$this->fields( $this->image_args() );
-	}
+	}*/
 
 	public function before_args() {
 		return array(
@@ -161,7 +172,7 @@ class AC_Settings_Column_Field {
 		) );
 	}
 
-	public function date_args() {
+	/*public function date_args() {
 		return array(
 			'type'        => 'text',
 			'name'        => 'date_format',
@@ -170,13 +181,13 @@ class AC_Settings_Column_Field {
 			'description' => __( 'This will determine how the date will be displayed.', 'codepress-admin-columns' ),
 			'help'        => sprintf( __( "Leave empty for WordPress date format, change your <a href='%s'>default date format here</a>.", 'codepress-admin-columns' ), admin_url( 'options-general.php' ) . '#date_format_custom_radio' ) . " <a target='_blank' href='http://codex.wordpress.org/Formatting_Date_and_Time'>" . __( 'Documentation on date and time formatting.', 'codepress-admin-columns' ) . "</a>",
 		);
-	}
+	}*/
 
-	public function date() {
+	/*public function date() {
 		$this->field( $this->date_args() );
-	}
+	}*/
 
-	public function word_limit_args() {
+	/*public function word_limit_args() {
 		return array(
 			'type'        => 'number',
 			'name'        => 'excerpt_length',
@@ -187,9 +198,9 @@ class AC_Settings_Column_Field {
 
 	public function word_limit() {
 		$this->field( $this->word_limit_args() );
-	}
+	}*/
 
-	public function character_limit_args() {
+	/*public function character_limit_args() {
 		return array(
 			'type'        => 'number',
 			'name'        => 'character_limit',
@@ -200,7 +211,7 @@ class AC_Settings_Column_Field {
 
 	public function character_limit() {
 		$this->field( $this->character_limit_args() );
-	}
+	}*/
 
 	public function user_args() {
 		$nametypes = array(
@@ -350,7 +361,7 @@ class AC_Settings_Column_Field {
 				<td class="input nopadding">
 					<table class="widefat">
 						<?php foreach ( $fields as $field ) {
-							$this->field( $field );
+							$this->display( $field );
 						} ?>
 					</table>
 				</td>
@@ -363,7 +374,7 @@ class AC_Settings_Column_Field {
 	/**
 	 * @since NEWVERSION
 	 */
-	public function field( $args = array() ) {
+	public function display( $args = array() ) {
 		$defaults = array(
 			'type'           => 'text',
 			'name'           => '',
@@ -426,7 +437,7 @@ class AC_Settings_Column_Field {
 	 * @since 1.0
 	 * @return array Image Sizes.
 	 */
-	private function get_grouped_image_sizes() {
+	/*private function get_grouped_image_sizes() {
 		global $_wp_additional_image_sizes;
 
 		$sizes = array(
@@ -477,7 +488,7 @@ class AC_Settings_Column_Field {
 		);
 
 		return $sizes;
-	}
+	}*/
 
 	/**
 	 * @since NEWVERSION

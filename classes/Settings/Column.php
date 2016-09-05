@@ -14,23 +14,24 @@ class AC_Settings_Column {
 
 	public function __construct( CPAC_Column $column ) {
 		$this->column = $column;
+
 		$this->character = new AC_Settings_Column_Field_Character( $column );
 		$this->image = new AC_Settings_Column_Field_Image( $column );
+		$this->date = new AC_Settings_Column_Field_Date( $column );
+		$this->word = new AC_Settings_Column_Field_Word( $column );
+		$this->before_after = new AC_Settings_Column_Field_BeforeAfter( $column );
+
+		// General fields
+		$this->field = new AC_Settings_Column_Field( $column );
+		$this->fields = new AC_Settings_Column_Fields( $column );
 	}
 
 	public function display_field( $args ) {
-		$field = new AC_ColumnSettings_Field( $this->column );
-
-		return $field->display( $args );
+		$this->field->display( $args );
 	}
 
-	/**
-	 * @param array $args
-	 */
-	public function display_fields( $args = array() ) {
-		$fields = new AC_ColumnSettings_Fields( $this->column );
-
-		return $fields->display( $args );
+	public function display_fields( $args ) {
+		$this->fields->display( $args );
 	}
 
 }

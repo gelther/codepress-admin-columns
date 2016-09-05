@@ -19,7 +19,7 @@ class AC_Settings_Column_Field_Character extends AC_Settings_Column_Field {
 		$this->display( $this->get_args() );
 	}
 
-	public function value( $string ) {
+	public function format( $string ) {
 		$limit = $this->column->get_option( 'character_limit' );
 
 		return is_numeric( $limit ) && 0 < $limit && strlen( $string ) > $limit ? substr( $string, 0, $limit ) . __( '&hellip;' ) : $string;

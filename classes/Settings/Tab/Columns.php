@@ -523,9 +523,9 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 		?>
 
 		<div class="cpac-column <?php echo esc_attr( implode( ' ', array_filter( array( "cpac-box-" . $column->get_type(), $column->get_property( 'classes' ) ) ) ) ); ?>" data-type="<?php echo esc_attr( $column->get_type() ); ?>"<?php echo $column->get_property( 'is_cloneable' ) ? ' data-clone="' . esc_attr( $column->get_property( 'clone' ) ) . '"' : ''; ?> data-default="<?php echo esc_attr( $column->is_default() ); ?>">
-			<input type="hidden" class="column-name" name="<?php $column->field_settings->attr_name( 'column-name' ); ?>" value="<?php echo esc_attr( $column->get_name() ); ?>"/>
-			<input type="hidden" class="type" name="<?php $column->field_settings->attr_name( 'type' ); ?>" value="<?php echo esc_attr( $column->get_type() ); ?>"/>
-			<input type="hidden" class="clone" name="<?php $column->field_settings->attr_name( 'clone' ); ?>" value="<?php echo esc_attr( $column->get_property( 'clone' ) ); ?>"/>
+			<input type="hidden" class="column-name" name="<?php $column->settings->field->attr_name( 'column-name' ); ?>" value="<?php echo esc_attr( $column->get_name() ); ?>"/>
+			<input type="hidden" class="type" name="<?php $column->settings->field->attr_name( 'type' ); ?>" value="<?php echo esc_attr( $column->get_type() ); ?>"/>
+			<input type="hidden" class="clone" name="<?php $column->settings->field->attr_name( 'clone' ); ?>" value="<?php echo esc_attr( $column->get_property( 'clone' ) ); ?>"/>
 
 			<div class="column-meta">
 				<table class="widefat">
@@ -585,7 +585,7 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 					<tbody>
 
 					<?php
-					$column->field_settings->field( array(
+					$column->settings->display_field( array(
 						'type'            => 'select',
 						'name'            => 'type',
 						'label'           => __( 'Type', 'codepress-admin-columns' ),
@@ -594,7 +594,7 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 						'default'         => $column->get_type(),
 					) );
 
-					$column->field_settings->field( array(
+					$column->settings->display_field( array(
 						'type'        => 'text',
 						'name'        => 'label',
 						'placeholder' => $column->get_type_label(),
@@ -603,7 +603,7 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 						'hidden'      => $column->get_property( 'hide_label' ),
 					) );
 
-					$column->field_settings->field( array(
+					$column->settings->display_field( array(
 						'type'  => 'width',
 						'name'  => 'width',
 						'label' => __( 'Width', 'codepress-admin-columns' ),

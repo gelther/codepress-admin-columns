@@ -26,20 +26,20 @@ class AC_Settings_Column_Format {
 	 *
 	 * @return string
 	 */
-	public function date( $date ) {
-		return ac_helper()->date->date( $date, $this->column->get_option( 'date_format' ) );
-	}
+	//public function date( $date ) {
+		//return ac_helper()->date->date( $date, $this->column->get_option( 'date_format' ) );
+	//}
 
 	/**
 	 * @param string $words
 	 *
 	 * @return string
 	 */
-	public function word_limit( $words ) {
+	/*public function word_limit( $words ) {
 		$limit = $this->column->get_option( 'excerpt_length' );
 
 		return $limit ? wp_trim_words( $words, $limit ) : $words;
-	}
+	}*/
 
 	/**
 	 * @param string $string
@@ -55,7 +55,7 @@ class AC_Settings_Column_Format {
 	/**
 	 * @return array|false|string
 	 */
-	public function image_sizes() {
+	/*public function image_sizes() {
 		$size = $this->column->get_option( 'image_size' );
 
 		if ( 'cpac-custom' == $size ) {
@@ -66,15 +66,15 @@ class AC_Settings_Column_Format {
 		}
 
 		return $size;
-	}
+	}*/
 
 	/**
 	 * @param int[] $attachment_ids
 	 *
 	 * @return string
 	 */
-	public function images( $attachment_ids ) {
+	/*public function images( $attachment_ids ) {
 		return ac_helper()->image->get_images_by_ids( $attachment_ids, $this->image_sizes() );
-	}
+	}*/
 
 }

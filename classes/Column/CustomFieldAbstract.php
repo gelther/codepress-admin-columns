@@ -20,10 +20,10 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 		$this->properties['classes'] = 'cpac-box-metafield';
 		$this->properties['group'] = __( 'Custom Field', 'codepress-admin-columns' );
 
-		$this->default_options['image_size'] = 'cpac-custom';
-		$this->default_options['image_size_w'] = 80;
-		$this->default_options['image_size_h'] = 80;
-		$this->default_options['excerpt_length'] = 15;
+		//$this->default_options['image_size'] = 'cpac-custom';
+		//$this->default_options['image_size_w'] = 80;
+		//$this->default_options['image_size_h'] = 80;
+		//$this->default_options['excerpt_length'] = 15;
 	}
 
 	public function get_field_key() {
@@ -335,14 +335,14 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 
 		switch ( $this->get_field_type() ) {
 			case 'date' :
-				$fields[] = $this->field_settings->date_args();
+				$fields[] = $this->settings->date->get_args();
 				break;
 			case 'image' :
 			case 'library_id' :
 				$fields = array_merge( $fields, $this->settings->image->get_args() );
 				break;
 			case 'excerpt' :
-				$fields[] = $this->field_settings->word_limit_args();
+				$fields[] = $this->settings->word->get_args();
 				break;
 			case 'link' :
 				$fields[] = $this->field_settings->url_args();
