@@ -17,9 +17,9 @@ class AC_Settings_Column_Format {
 	 *
 	 * @return false|string
 	 */
-	public function user( $user ) {
-		return ac_helper()->user->get_display_name( $user, $this->column->get_option( 'display_author_as' ) );
-	}
+	//public function user( $user ) {
+		//return ac_helper()->user->get_display_name( $user, $this->column->get_option( 'display_author_as' ) );
+	//}
 
 	/**
 	 * @param string $date

@@ -87,6 +87,15 @@ class AC_Settings_Column_Field {
 	}
 
 	/**
+	 * todo: make a proper comment header and decide if display and field are redundant: e.g. call parent::display with args
+	 *
+	 * @since NEWVERSION
+	 */
+	public function field() {
+		$this->display( $this->get_args() );
+	}
+
+	/**
 	 * @param bool $fields_only Returns fields without the main label
 	 *
 	 * @return array
@@ -213,6 +222,7 @@ class AC_Settings_Column_Field {
 		$this->field( $this->character_limit_args() );
 	}*/
 
+	/*
 	public function user_args() {
 		$nametypes = array(
 			'display_name'    => __( 'Display Name', 'codepress-admin-columns' ),
@@ -239,7 +249,9 @@ class AC_Settings_Column_Field {
 	public function user() {
 		$this->field( $this->user_args() );
 	}
+	*/
 
+	/*
 	public function url_args() {
 		return array(
 			'type'        => 'text',
@@ -248,6 +260,7 @@ class AC_Settings_Column_Field {
 			'description' => __( 'Leave blank to display the url', 'codepress-admin-columns' ),
 		);
 	}
+	*/
 
 	public function user_link_to_args() {
 		return array(
@@ -269,10 +282,13 @@ class AC_Settings_Column_Field {
 		$this->field( $this->user_link_to_args() );
 	}
 
+	/*
 	public function url() {
 		$this->field( $this->url_args() );
 	}
+	*/
 
+	/*
 	public function post_args() {
 		return array(
 			'type'        => 'select',
@@ -290,6 +306,7 @@ class AC_Settings_Column_Field {
 	public function post() {
 		$this->field( $this->post_args() );
 	}
+	*/
 
 	public function post_link_to() {
 		$this->field( array(
