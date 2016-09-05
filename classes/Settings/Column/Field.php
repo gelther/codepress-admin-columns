@@ -331,6 +331,7 @@ class AC_Settings_Column_Field {
 	/**
 	 * @since 2.4.7
 	 */
+	/*
 	function placeholder( $args = array() ) {
 		$defaults = array(
 			'label' => '',
@@ -364,6 +365,7 @@ class AC_Settings_Column_Field {
 		</div>
 		<?php
 	}
+	/*
 
 	/**
 	 * @param array $args
