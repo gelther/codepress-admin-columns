@@ -14,7 +14,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 	/**
 	 * @var array
 	 */
-	private $args;
+	private $attributes;
 
 	/**
 	 * @var string
@@ -49,6 +49,10 @@ abstract class AC_Settings_Column_FieldAbstract {
 	public function __construct( CPAC_Column $column ) {
 		$this->column = $column;
 
+		$this->set_type( 'text' );
+
+		$this->attributes = new AC_Settings_Column_FieldAttributes();
+
 		$this->set_args( array(
 			'type'           => 'text',
 			//'name'           => '',
@@ -66,14 +70,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 	}
 
 	/**
-	 * Setup the field properties
-	 *
-	 */
-	protected function init() {
-		$this->set_type( 'text' );
-	}
-
-	/**
 	 * This method is called to display the actual field
 	 */
 	abstract function display_field();
@@ -87,36 +83,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 	 */
 	public function format( $value ) {
 		return $value;
-	}
-
-	public function set_arg( $key, $value ) {
-		$this->arg[ $key ] = $value;
-
-		return $this;
-	}
-
-	public function get_arg( $key ) {
-		if ( ! isset( $this->args[ $key ] ) ) {
-			return false;
-		}
-
-		return $this->args[ $key ];
-	}
-
-	public function get_args() {
-		return $this->args;
-	}
-
-	public function set_args( array $args ) {
-		$this->args = $args;
-
-		return $this;
-	}
-
-	public function merge_args( array $args ) {
-		$this->args = wp_parse_args( $args, $this->get_args() );
-
-		return $this;
 	}
 
 	protected function get_option( $name ) {

@@ -1090,3 +1090,6 @@ abstract class CPAC_Column {
 	}
 
 }
+
+$field = new AC_Settings_Column_Field();
+$field->set_name( 'name' )->set_type( 'hidden' )->display();

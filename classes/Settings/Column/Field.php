@@ -4,8 +4,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// old: AC_ColumnFieldSettings
 class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
+
+	public function set_name( $name ) {
+		return parent::set_name( $name );
+	}
+
+	public function display_field() {
+		$args = $this->to_formfield();
+
+		switch( $this->get_type() ) {
+			case 'select' :
+				ac_helper()->formfield->select( $args );
+				break;
+			case 'radio' :
+				ac_helper()->formfield->radio( $args );
+				break;
+			case 'text' :
+				ac_helper()->formfield->text( $args );
+				break;
+			case 'message' :
+				ac_helper()->formfield->message( $args );
+				break;
+			case 'number' :
+				ac_helper()->formfield->number( $args );
+				break;
+		}
+	}
 
 	/**
 	 * @param string $field_name
