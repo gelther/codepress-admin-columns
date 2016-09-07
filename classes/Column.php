@@ -73,7 +73,7 @@ abstract class CPAC_Column {
 	 *
 	 * @var AC_Settings_Column
 	 */
-	public $settings;
+	private $settings;
 
 	/**
 	 * @since 2.0
@@ -89,12 +89,16 @@ abstract class CPAC_Column {
 		// todo: load active fields here? Is there a context? And is it relevant? listtable / settings?
 		// todo: recent idea: in add_settings, all fields for settings are stored. Options retrieve via field key their options.
 
-		$this->settings->field = new AC_Settings_Column_Field( $this );
+		//$this->settings->field = new AC_Settings_Column_Field( $this );
 		//$this->format = new AC_Settings_Column_Format( $this );
 		$this->helper = ac_helper();
 
 		$this->init();
 		$this->after_setup();
+	}
+
+	public function settings() {
+		return $this->settings;
 	}
 
 	/**
@@ -108,17 +112,17 @@ abstract class CPAC_Column {
 		}
 
 		// TODO remove
-		if ( in_array( $key, array( 'format', 'field_settings' ) ) ) {
-			$call = $key;
-		}
+		//if ( in_array( $key, array( 'format', 'field_settings' ) ) ) {
+		//	$call = $key;
+		//}
 
 		return $call ? call_user_func( array( $this, $call ) ) : false;
 	}
 
 	// TODO remove
-	public function field_settings() {
-		return $this->settings->field;
-	}
+	//public function field_settings() {
+	//	return $this->settings->field;
+	//}
 
 	/*public function format() {
 		return $this->format;
@@ -426,6 +430,9 @@ abstract class CPAC_Column {
 	// todo: maybe rename or add get_settings()->get_field here
 	// todo: settings()->display()
 	public function get_option( $name ) {
+
+
+
 		$options = $this->get_options();
 
 		return isset( $options[ $name ] ) ? $options[ $name ] : false;
@@ -600,7 +607,7 @@ abstract class CPAC_Column {
 	}
 
 	public function display_indicator( $name, $label ) { ?>
-		<span class="indicator-<?php echo esc_attr( $name ); ?> <?php echo esc_attr( $this->get_option( $name ) ); ?>" data-indicator-id="<?php $this->settings->field->attr_id( $name ); ?>" title="<?php echo esc_attr( $label ); ?>"></span>
+		<span class="indicator-<?php echo esc_attr( $name ); ?> <?php echo esc_attr( $this->settings->get_field( $name ) ); ?>" data-indicator-id="<?php echo $this->settings->get_attr_id( $name ); ?>" title="<?php echo esc_attr( $label ); ?>"></span>
 		<?php
 	}
 
@@ -611,9 +618,9 @@ abstract class CPAC_Column {
 	 * @param string $field_name
 	 */
 	public function attr_name( $field_name ) {
-		_deprecated_function( __METHOD__, 'AC NEWVERSION', '$this->settings->field->attr_name()' );
+		_deprecated_function( __METHOD__, 'AC NEWVERSION', '$this->settings->get_attr_name()' );
 
-		$this->settings->field->attr_name( $field_name );
+		echo $this->settings->get_attr_name( $field_name );
 	}
 
 	/**
@@ -622,9 +629,9 @@ abstract class CPAC_Column {
 	 * @return string Attribute name
 	 */
 	public function get_attr_name( $field_name ) {
-		_deprecated_function( __METHOD__, 'AC NEWVERSION', '$this->settings->field->get_attr_name()' );
+		_deprecated_function( __METHOD__, 'AC NEWVERSION', '$this->settings->get_attr_name()' );
 
-		return $this->settings->field->get_attr_name( $field_name );
+		return $this->settings->get_attr_name( $field_name );
 	}
 
 	/**
@@ -633,15 +640,15 @@ abstract class CPAC_Column {
 	 * @return string Attribute Name
 	 */
 	public function get_attr_id( $field_name ) {
-		_deprecated_function( __METHOD__, 'AC NEWVERSION', '$this->settings->field->get_attr_id()' );
+		_deprecated_function( __METHOD__, 'AC NEWVERSION', '$this->settings->get_attr_id()' );
 
-		return $this->settings->field->get_attr_id( $field_name );
+		return $this->settings->get_attr_id( $field_name );
 	}
 
 	public function attr_id( $field_name ) {
-		_deprecated_function( __METHOD__, 'AC NEWVERSION', '$this->settings->field->attr_id()' );
+		_deprecated_function( __METHOD__, 'AC NEWVERSION', '$this->settings->get_attr_id()' );
 
-		$this->settings->field->attr_id( $field_name );
+		echo $this->settings->get_attr_id( $field_name );
 	}
 
 	/**

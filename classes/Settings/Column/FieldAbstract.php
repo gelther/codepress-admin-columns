@@ -248,26 +248,26 @@ abstract class AC_Settings_Column_FieldAbstract {
 	 *
 	 * @return string
 	 */
-	public function get_attr_name( $name = null ) {
+	/*public function get_attr_name( $name = null ) {
 		if ( null == $name ) {
 			$name = $this->get_name();
 		}
 
 		return $this->column->get_storage_model_key() . '[' . $this->column->get_name() . '][' . $name . ']';
-	}
+	}*/
 
 	/**
 	 * @param string $id
 	 *
 	 * @return string
 	 */
-	public function get_attr_id( $id = null ) {
+	/*public function get_attr_id( $id = null ) {
 		if ( null == $id ) {
 			$id = $this->get_name();
 		}
 
 		return implode( '-', array( 'cpac', $this->column->get_storage_model_key(), $this->column->get_name(), $id ) );
-	}
+	}*/
 
 	/**
 	 * @since NEWVERSION
