@@ -334,7 +334,76 @@ class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 	}
 	*/
 
+	/*
+		$field = (object) $args;
+		?>
+		<tr class="<?php echo esc_attr( $field->type ); ?> column-<?php echo esc_attr( $field->name ); ?><?php echo esc_attr( $field->hidden ? ' hide' : '' ); ?><?php echo esc_attr( $field->section ? ' section' : '' ); ?>"<?php echo $field->toggle_handle ? ' data-handle="' . esc_attr( $this->get_attr_id( $field->toggle_handle ) ) . '"' : ''; ?><?php echo $field->refresh_column ? ' data-refresh="1"' : ''; ?>>
 
+			<?php
+			$this->label( array(
+				'label'       => $field->label,
+				'description' => $field->description,
+				'for'         => ( $field->for ? $field->for : $field->name ),
+				'more_link'   => $field->more_link,
+			) );
+			?>
+
+			<td class="input"<?php echo( $field->toggle_trigger ? ' data-trigger="' . esc_attr( $this->get_attr_id( $field->toggle_trigger ) ) . '"' : '' ); ?><?php echo empty( $field->label ) ? ' colspan="2"' : ''; ?>>
+				<?php
+				switch ( $field->type ) {
+					case 'select' :
+						ac_helper()->formfield->select( $args );
+						break;
+					case 'radio' :
+						ac_helper()->formfield->radio( $args );
+						break;
+					case 'text' :
+						ac_helper()->formfield->text( $args );
+						break;
+					case 'message' :
+						ac_helper()->formfield->message( $args );
+						break;
+					case 'number' :
+						ac_helper()->formfield->number( $args );
+						break;
+					case 'width' :
+						?>
+						<div class="description" title="<?php echo esc_attr( __( 'default', 'codepress-admin-columns' ) ); ?>">
+							<input class="width" type="text" placeholder="<?php echo esc_attr( __( 'auto', 'codepress-admin-columns' ) ); ?>" name="<?php $this->attr_name( 'width' ); ?>" id="<?php $this->attr_id( 'width' ); ?>" value="<?php echo esc_attr( $this->column->get_width() ); ?>"/>
+							<span class="unit"><?php echo esc_html( $this->column->get_width_unit() ); ?></span>
+						</div>
+						<div class="width-slider"></div>
+
+						<div class="unit-select">
+							<?php
+							ac_helper()->formfield->radio( array(
+								'attr_id'   => $this->get_attr_id( 'width_unit' ),
+								'attr_name' => $this->get_attr_name( 'width_unit' ),
+								'options'   => array(
+									'px' => 'px',
+									'%'  => '%',
+								),
+								'class'     => 'unit',
+								'current'   => $this->column->get_width_unit(),
+								'default'   => '%',
+							) );
+							?>
+						</div>
+						<?php
+						break;
+				}
+
+				if ( $field->help ) : ?>
+					<p class="help-msg">
+						<?php echo $field->help; ?>
+					</p>
+				<?php endif; ?>
+
+			</td>
+		</tr>
+		<?php
+	}
+>>>>>>> origin/#590-refactor-column-settings
 
 	/**
 	 * @since 1.0
@@ -396,8 +465,12 @@ class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 	/**
 	 * @since NEWVERSION
 	 */
+
 	/*
 	private function width_field() {
+
+	/*private function width_field() {
+
 		?>
 		<div class="description" title="<?php echo esc_attr( __( 'default', 'codepress-admin-columns' ) ); ?>">
 			<input class="width" type="text" placeholder="<?php echo esc_attr( __( 'auto', 'codepress-admin-columns' ) ); ?>" name="<?php $this->attr_name( 'width' ); ?>" id="<?php $this->attr_id( 'width' ); ?>" value="<?php echo esc_attr( $this->column->get_width() ); ?>"/>
@@ -426,7 +499,9 @@ class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 			?>
 		</div>
 		<?php
+
 	}
 	*/
+
 
 }

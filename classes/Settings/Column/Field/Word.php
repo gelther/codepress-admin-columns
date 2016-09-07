@@ -20,7 +20,7 @@ class AC_Settings_Column_Field_Word extends AC_Settings_Column_FieldAbstract {
 	public function display_field() {
 		$args = $this->to_formfield();
 
-		ac()->helper->formfield->number( $args );
+		AC()->helper->formfield->number( $args );
 	}
 
 	public function format( $string ) {

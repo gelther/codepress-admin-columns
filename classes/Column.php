@@ -340,6 +340,7 @@ abstract class CPAC_Column {
 	 * @since NEWVERSION
 	 * @return int Width
 	 */
+	// todo: move to settings
 	public function get_width() {
 		$width = absint( $this->get_option( 'width' ) );
 
@@ -352,6 +353,7 @@ abstract class CPAC_Column {
 	 * @since NEWVERSION
 	 * @return array
 	 */
+	// todo: move to settings
 	public function get_width_units() {
 		return array(
 			'%'  => __( '%', 'codepress-admin-columns' ),
@@ -363,6 +365,7 @@ abstract class CPAC_Column {
 	 * @since NEWVERSION
 	 * @return string px or %
 	 */
+	// todo: move to settings
 	public function get_width_unit() {
 		$unit = $this->get_option( 'width_unit' );
 
@@ -420,6 +423,8 @@ abstract class CPAC_Column {
 	 * @since 2.3.4
 	 * @return string|false Single column option
 	 */
+	// todo: maybe rename or add get_settings()->get_field here
+	// todo: settings()->display()
 	public function get_option( $name ) {
 		$options = $this->get_options();
 

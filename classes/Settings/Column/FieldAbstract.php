@@ -148,7 +148,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 	 *
 	 * @return AC_Settings_Column_FieldAbstract
 	 */
-	public function set_name( $name ) {
+	protected function set_name( $name ) {
 		$this->name = $name;
 
 		return $this;
