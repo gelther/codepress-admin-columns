@@ -4,6 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
+// TODO: remove
 abstract class AC_Settings_ColumnAbstract {
 
 	protected $column;

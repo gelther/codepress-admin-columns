@@ -82,6 +82,9 @@ abstract class CPAC_Column {
 
 		$this->helper = ac_helper();
 
+		// Register fields
+		$this->settings()->register_field( 'width' );
+
 		$this->init();
 		$this->after_setup();
 	}

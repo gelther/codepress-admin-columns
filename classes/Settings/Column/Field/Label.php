@@ -6,8 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_Field_Label extends AC_Settings_Column_FieldAbstract {
 
-	public function display_field() {
-
+	public function get_args() {
+		return array();
 	}
 
 	public function get_label() {

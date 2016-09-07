@@ -17,12 +17,10 @@ class AC_Settings_Column_Field_Date extends AC_Settings_Column_FieldAbstract {
 		);
 	}
 
-	public function field() {
-		$this->display( $this->get_args() );
-	}
-
 	public function format( $date ) {
-		return ac_helper()->date->date( $date, $this->column->get_option( 'date_format' ) );
+		$date_format = $this->get_value();
+
+		return $date_format ? ac_helper()->date->date( $date, $this->get_value() ) : false;
 	}
 
 }

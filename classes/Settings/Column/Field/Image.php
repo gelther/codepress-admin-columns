@@ -11,6 +11,7 @@ class AC_Settings_Column_Field_Image extends AC_Settings_Column_FieldAbstract {
 	}
 
 	public function get_args() {
+		return array();
 		return array(
 			array(
 				'label'           => $this->get_label(),

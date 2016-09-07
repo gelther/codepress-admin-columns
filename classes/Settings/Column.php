@@ -115,11 +115,41 @@ class AC_Settings_Column {
 		//return $options ? array_merge( $this->default_options, $options ) : $this->default_options;
 	}
 
-	public function register_field( $type, $args = array() ) {
-		if ( $field = $this->get_field( $type ) ) {
+	public function register_field( $name, $args = array() ) {
 
+		// TODO: maybe initialize all fields and use their name
+		switch ( $name ) {
+
+			case 'excerpt_length' :
+				$field = new AC_Settings_Column_Field_Word();
+				break;
+
+			case 'post_property_display' :
+				$field = new AC_Settings_Column_Field_Post();
+				break;
+
+			case 'post_link_to' :
+				$field = new AC_Settings_Column_Field_PostLink();
+				break;
+
+			case 'date_format' :
+				$field = new AC_Settings_Column_Field_Date();
+				break;
+
+			case 'link_label' :
+				$field = new AC_Settings_Column_Field_Url();
+				break;
+
+			case 'width' :
+				$field = new AC_Settings_Column_Field_Width();
+				break;
+
+			default :
+				$field = false;
+		}
+
+		if ( $field ) {
 			$field->merge_args( $args );
-
 			$this->add_field( $field );
 		}
 	}

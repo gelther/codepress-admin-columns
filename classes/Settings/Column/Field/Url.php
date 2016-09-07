@@ -15,8 +15,18 @@ class AC_Settings_Column_Field_Url extends AC_Settings_Column_FieldAbstract {
 		);
 	}
 
-	public function field() {
-		$this->display( $this->get_args() );
+	public function format( $url ) {
+		if ( ! filter_var( $url, FILTER_VALIDATE_URL ) || ! preg_match( '/[^\w.-]/', $url ) ) {
+			return false;
+		}
+
+		$label = $this->get_value();
+
+		if ( ! $label ) {
+			$label = $url;
+		}
+
+		return '<a href="' . esc_url( $url ) . '">' . $label . '</a>';
 	}
 
 }

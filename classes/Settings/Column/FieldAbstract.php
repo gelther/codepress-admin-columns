@@ -32,6 +32,11 @@ abstract class AC_Settings_Column_FieldAbstract {
 			'more_link'      => '', // link to more, e.g. admin page for a field
 		);
 
+		$this->merge_args( $this->get_args() );
+	}
+
+	public function get_args() {
+		return array();
 	}
 
 	/**
@@ -120,12 +125,14 @@ abstract class AC_Settings_Column_FieldAbstract {
 	 * @return string|array
 	 */
 	public function get_value() {
-		return $this->settings->get_value( $this->get_arg( 'name' ) );
+		$value = $this->settings->get_value( $this->get_arg( 'name' ) );
+
+		return false !== $value ? $value : $this->get_arg( 'default' );
 	}
 
 	public function get_attribute( $key, $name = null ) {
-		if ( null == $name ) {
-			$name = $this->get_name();
+		if ( null === $name ) {
+			//$name = $this->get_name();
 		}
 
 		$column = $this->settings->get_column();
@@ -146,21 +153,21 @@ abstract class AC_Settings_Column_FieldAbstract {
 	public function display() {
 		$field = $this->to_object();
 
-		$class = sprintf( '%s column-%s', $this->type, $this->name );
+		$class = sprintf( '%s column-%s', $this->get_arg( 'type' ), $this->get_arg( 'name' ) );
 
-		if ( $field->hidden ) {
+		if ( $this->get_arg( 'hidden' ) ) {
 			$class .= ' hide';
 		}
 
-		if ( $field->section ) {
+		if ( $this->get_arg( 'section' ) ) {
 			$class .= ' section';
 		}
 
-		$data_handle = $field->toggle_handle ? $this->get_attribute( 'id', $field->toggle_handle ) : '';
-		$data_refresh = $field->refresh_column ? 1 : 0;
+		$data_handle = $this->get_arg( 'toggle_handle' ) ? $this->get_attribute( 'id', $this->get_arg( 'toggle_handle' ) ) : '';
+		$data_refresh = $this->get_arg( 'refresh_column' ) ? 1 : 0;
 
 		?>
-		<tr class="<?php echo esc( $class ); ?>" data-handle="<?php echo esc_attr( $data_handle ); ?>" data-refresh="<?php echo esc_attr( $data_refresh ); ?>">
+		<tr class="<?php echo esc_attr( $class ); ?>" data-handle="<?php echo esc_attr( $data_handle ); ?>" data-refresh="<?php echo esc_attr( $data_refresh ); ?>">
 			<?php $this->display_label( $field ); ?>
 
 			<?php

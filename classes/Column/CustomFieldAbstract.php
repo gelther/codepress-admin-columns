@@ -26,7 +26,12 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 		//$this->default_options['excerpt_length'] = 15;
 
 		// Register settings field
-		$this->settings()->add_field( new AC_Settings_Column_Field_Image() );
+		// TODO
+		$this->settings()->register_field( 'image' );
+		$this->settings()->register_field( 'link_label' );
+		$this->settings()->register_field( 'date_format' );
+		$this->settings()->register_field( 'excerpt_length' );
+		//$this->settings()->add_field( new AC_Settings_Column_Field_Image() );
 	}
 
 	public function get_field_key() {
@@ -156,9 +161,10 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 	/**
 	 * @since 2.5.6
 	 */
-	public function get_date_by_string( $date_string ) {
+	// TODO
+	/*public function get_date_by_string( $date_string ) {
 		return $this->format->date( $date_string );
-	}
+	}*/
 
 	/**
 	 * @see CPAC_Column::get_value()
@@ -180,21 +186,15 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 				break;
 
 			case "excerpt" :
-				$value = ac_helper()->string->trim_words( $raw_value, $this->get_option( 'excerpt_length' ) );
+				$value = $this->settings()->get_field( 'excerpt_length' )->format( $raw_value );
 				break;
 
 			case "date" :
-				$value = $this->get_date_by_string( $raw_value );
+				$value = $this->settings()->get_field( 'date_format' )->format( $raw_value );
 				break;
 
 			case "link" :
-				if ( filter_var( $raw_value, FILTER_VALIDATE_URL ) || preg_match( '/[^\w.-]/', $raw_value ) ) {
-					$label = $this->get_option( 'link_label' );
-					if ( ! $label ) {
-						$label = $raw_value;
-					}
-					$value = '<a href="' . $raw_value . '">' . $label . '</a>';
-				}
+				$value = $this->settings()->get_field( 'link_label' )->format( $raw_value );
 				break;
 
 			case "title_by_id" :
