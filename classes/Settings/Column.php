@@ -29,12 +29,22 @@ class AC_Settings_Column {
 		$this->load_data();
 	}
 
+	/**
+	 * @param AC_Settings_Column_FieldAbstract $field
+	 *
+	 * @return AC_Settings_Column
+	 */
 	public function add_field( AC_Settings_Column_FieldAbstract $field ) {
 		$this->fields[ $field->get_name() ] = $field;
 
 		return $this;
 	}
 
+	/**
+	 * @param string $name
+	 *
+	 * @return AC_Settings_Column_FieldAbstract|false
+	 */
 	public function get_field( $name ) {
 		if ( ! isset( $field[ $name ] ) ) {
 			return false;
@@ -43,6 +53,9 @@ class AC_Settings_Column {
 		return $this->fields[ $name ];
 	}
 
+	/**
+	 * @return AC_Settings_Column_FieldAbstract[]
+	 */
 	public function get_fields() {
 		return $this->fields;
 	}
@@ -65,16 +78,27 @@ class AC_Settings_Column {
 		return implode( '-', array( 'cpac', $this->column->get_storage_model_key(), $this->column->get_name(), $id ) );
 	}
 
+	/**
+	 * Output HTML
+	 */
 	public function display() {
 		foreach ( $this->fields as $field ) {
 			$field->display();
 		}
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_data() {
 		return $this->data;
 	}
 
+	/**
+	 * @param $name
+	 *
+	 * @return array|string|false
+	 */
 	public function get_value( $name ) {
 		return isset( $this->data[ $name ] ) ? $this->data[ $name ] : false;
 	}
@@ -86,6 +110,9 @@ class AC_Settings_Column {
 		$this->data = $data;
 	}
 
+	/**
+	 * Set column settings data
+	 */
 	public function load_data() {
 		$options = $this->column->get_storage_model()->get_stored_columns();
 		if ( isset( $options[ $this->column->get_name() ] ) ) {
@@ -110,9 +137,9 @@ class AC_Settings_Column {
 		$args = (object) $args;
 		$type = isset( $args->type ) ? $args->type : false;
 		$field = false;
-		
+
 		if ( empty( $args->name ) ) {
-			return false;
+			return;
 		}
 
 		// predefined class
@@ -130,7 +157,7 @@ class AC_Settings_Column {
 
 		$field->set_settings( $this );
 
-		foreach( $args as $key => $value ) {
+		foreach ( $args as $key => $value ) {
 			$field->set_arg( $key, $value );
 		}
 
