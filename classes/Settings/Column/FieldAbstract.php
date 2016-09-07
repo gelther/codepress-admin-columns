@@ -40,7 +40,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 	public function display_field() {
 		$args = $this->to_formfield();
 
-		switch ( $this->get_type() ) {
+		switch ( $this->get_arg( 'type' ) ) {
 			case 'select' :
 				ac_helper()->formfield->select( $args );
 				break;
@@ -71,7 +71,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 		return $this;
 	}
 
-	protected function get_arg( $key ) {
+	public function get_arg( $key ) {
 		if ( ! isset( $this->args[ $key ] ) ) {
 			return false;
 		}
@@ -90,7 +90,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 	 *
 	 * @param array $args
 	 */
-	protected function merge_args( array $args ) {
+	public function merge_args( array $args ) {
 		$this->args = wp_parse_args( $args, $this->args );
 	}
 
@@ -106,12 +106,21 @@ abstract class AC_Settings_Column_FieldAbstract {
 	}
 
 	/**
+	 * @param string|int $default
+	 *
+	 * @return AC_Settings_Column_FieldAbstract
+	 */
+	public function set_default( $default ) {
+		return $this->set_arg( 'default', $default );
+	}
+
+	/**
 	 * Return the stored value
 	 *
 	 * @return string|array
 	 */
 	public function get_value() {
-		return $this->settings->get_value( $this->get_name() );
+		return $this->settings->get_value( $this->get_arg( 'name' ) );
 	}
 
 	public function get_attribute( $key, $name = null ) {

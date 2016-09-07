@@ -72,7 +72,7 @@ abstract class CPAC_Column {
 	/**
 	 * @since 2.0
 	 *
-	 * @param object $storage_model CPAC_Storage_Model
+	 * @param string $storage_model
 	 */
 	public function __construct( $storage_model ) {
 
@@ -86,6 +86,9 @@ abstract class CPAC_Column {
 		$this->after_setup();
 	}
 
+	/**
+	 * @return AC_Settings_Column
+	 */
 	public function settings() {
 		return $this->settings;
 	}
@@ -240,6 +243,7 @@ abstract class CPAC_Column {
 	 * @since 2.0
 	 */
 	public function display_settings() {
+		$this->settings()->display();
 	}
 
 	/**

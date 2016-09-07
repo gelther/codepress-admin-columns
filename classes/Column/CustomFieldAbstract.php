@@ -24,6 +24,9 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 		//$this->default_options['image_size_w'] = 80;
 		//$this->default_options['image_size_h'] = 80;
 		//$this->default_options['excerpt_length'] = 15;
+
+		// Register settings field
+		$this->settings()->add_field( new AC_Settings_Column_Field_Image() );
 	}
 
 	public function get_field_key() {
@@ -171,7 +174,9 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 			case "image" :
 			case "library_id" :
 				$images = ac_helper()->string->comma_separated_to_array( $raw_string );
-				$value = implode( ac_helper()->image->get_images( $images, $this->format->image_sizes() ) );
+				$thumbnails = ac_helper()->image->get_images( $images, $this->format->image_sizes() );
+
+				$value = implode( $thumbnails );
 				break;
 
 			case "excerpt" :

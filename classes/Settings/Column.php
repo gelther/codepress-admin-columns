@@ -43,7 +43,7 @@ class AC_Settings_Column {
 	public function add_field( AC_Settings_Column_FieldAbstract $field ) {
 		$field->set_settings( $this );
 
-		$this->fields[ $field->get_name() ] = $field;
+		$this->fields[ $field->get_arg( 'name' ) ] = $field;
 
 		return $this;
 	}
@@ -54,7 +54,7 @@ class AC_Settings_Column {
 	 * @return AC_Settings_Column_FieldAbstract|false
 	 */
 	public function get_field( $name ) {
-		if ( ! isset( $field[ $name ] ) ) {
+		if ( ! isset( $this->fields[ $name ] ) ) {
 			return false;
 		}
 
@@ -113,6 +113,15 @@ class AC_Settings_Column {
 		//}
 
 		//return $options ? array_merge( $this->default_options, $options ) : $this->default_options;
+	}
+
+	public function register_field( $type, $args = array() ) {
+		if ( $field = $this->get_field( $type ) ) {
+
+			$field->merge_args( $args );
+
+			$this->add_field( $field );
+		}
 	}
 
 }

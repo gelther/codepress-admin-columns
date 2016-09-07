@@ -7,9 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AC_Settings_Column_Field_Image extends AC_Settings_Column_FieldAbstract {
 
 	public function display_field() {
-		
+
 	}
-	
+
 	public function get_args() {
 		return array(
 			array(
@@ -30,7 +30,7 @@ class AC_Settings_Column_Field_Image extends AC_Settings_Column_FieldAbstract {
 
 		$this->display( array(
 			'label'  => $this->get_label(),
-			'fields' => $args
+			'fields' => $args,
 		) );
 	}
 
@@ -61,7 +61,7 @@ class AC_Settings_Column_Field_Image extends AC_Settings_Column_FieldAbstract {
 		return __( 'Image Size', 'codepress-admin-columns' );
 	}
 
-	private function get_width_args(  ) {
+	private function get_width_args() {
 		return array(
 			'type'          => 'text',
 			'name'          => 'image_size_w',
@@ -72,7 +72,7 @@ class AC_Settings_Column_Field_Image extends AC_Settings_Column_FieldAbstract {
 		);
 	}
 
-	private function get_height_args(  ) {
+	private function get_height_args() {
 		return array(
 			'type'          => 'text',
 			'name'          => 'image_size_h',

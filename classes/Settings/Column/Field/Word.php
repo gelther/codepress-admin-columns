@@ -18,7 +18,11 @@ class AC_Settings_Column_Field_Word extends AC_Settings_Column_FieldAbstract {
 	}
 
 	public function format( $string ) {
-		$limit = $this->column->get_option( $this->get_name() );
+		$limit = $this->get_value();
+
+		if ( ! $limit ) {
+			$limit = $this->get_arg( 'default' );
+		}
 
 		return $limit ? wp_trim_words( $string, $limit ) : $string;
 	}
