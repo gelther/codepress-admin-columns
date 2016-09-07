@@ -16,6 +16,11 @@ abstract class AC_Settings_Column_FieldAbstract {
 	 */
 	private $args;
 
+	/**
+	 * @return array
+	 */
+	abstract public function get_args();
+
 	public function __construct() {
 		$this->args = array(
 			'type'           => 'text',
@@ -33,10 +38,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 		);
 
 		$this->merge_args( $this->get_args() );
-	}
-
-	public function get_args() {
-		return array();
 	}
 
 	/**
@@ -132,19 +133,10 @@ abstract class AC_Settings_Column_FieldAbstract {
 
 	public function get_attribute( $key, $name = null ) {
 		if ( null === $name ) {
-			//$name = $this->get_name();
+			$name = $this->get_arg( 'name' );
 		}
 
-		$column = $this->settings->get_column();
-
-		switch ( $key ) {
-			case 'id':
-				return sprintf( 'cpac-%s-%s', $column->get_name(), $name );
-			case 'name':
-				return sprintf( '%s[%s]', $column->get_name(), $name );
-		}
-
-		return false;
+		return $this->settings->get_attribute( $key, $name  );
 	}
 
 	/**

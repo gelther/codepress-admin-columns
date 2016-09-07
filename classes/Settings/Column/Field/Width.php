@@ -6,6 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_Field_Width extends AC_Settings_Column_FieldAbstract {
 
+	public function get_args() {
+		return array( 'name' => 'width' );
+	}
+
 	public function get_width() {
 		$width = $this->settings->get_value( 'width' );
 

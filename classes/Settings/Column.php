@@ -35,6 +35,21 @@ class AC_Settings_Column {
 		return $this->column;
 	}
 
+	public function get_attribute( $key, $name ) {
+		switch ( $key ) {
+			case 'id':
+				$attribute = sprintf( 'cpac-%s-%s', $this->column->get_name(), $name );
+				break;
+			case 'name':
+				$attribute = sprintf( '%s[%s]', $this->column->get_name(), $name );
+				break;
+			default :
+				$attribute = false;
+		}
+
+		return $attribute;
+	}
+
 	/**
 	 * @param AC_Settings_Column_FieldAbstract $field
 	 *

@@ -6,6 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 
+	public function get_args() {
+		return array();
+	}
+
 	/**
 	 * Factory method to create a field based on parameters
 	 *

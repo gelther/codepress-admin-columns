@@ -24,6 +24,7 @@ class AC_Column_Comment_Post extends CPAC_Column {
 
 		//$link = false;
 
+		// TODO cleanup
 		// Get page to link to
 		/*switch ( $this->get_option( 'post_link_to' ) ) {
 			case 'edit_post' :
@@ -67,9 +68,9 @@ class AC_Column_Comment_Post extends CPAC_Column {
 		return $comment ? $comment->comment_post_ID : false;
 	}
 
-	public function display_settings() {
+	/*public function display_settings() {
 		$this->field_settings->post();
 		$this->field_settings->post_link_to();
-	}
+	}*/
 
 }

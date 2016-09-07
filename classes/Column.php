@@ -83,7 +83,7 @@ abstract class CPAC_Column {
 		$this->helper = ac_helper();
 
 		// Register fields
-		$this->settings()->register_field( 'width' );
+		$this->settings->register_field( 'width' );
 
 		$this->init();
 		$this->after_setup();
@@ -577,7 +577,7 @@ abstract class CPAC_Column {
 	}
 
 	public function display_indicator( $name, $label ) { ?>
-		<span class="indicator-<?php echo esc_attr( $name ); ?> <?php echo esc_attr( $this->settings->get_field( $name ) ); ?>" data-indicator-id="<?php echo $this->settings->get_attr_id( $name ); ?>" title="<?php echo esc_attr( $label ); ?>"></span>
+		<span class="indicator-<?php echo esc_attr( $name ); ?> <?php echo esc_attr( $this->settings->get_field( $name ) ); ?>" data-indicator-id="<?php echo $this->settings->get_attribute( 'id', $name ); ?>" title="<?php echo esc_attr( $label ); ?>"></span>
 		<?php
 	}
 

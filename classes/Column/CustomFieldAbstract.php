@@ -306,7 +306,7 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 	 * @see CPAC_Column::display_settings()
 	 * @since 1.0
 	 */
-	public function display_settings() {
+	public function __display_settings() {
 
 		// DOM can get overloaded when dropdown contains to many custom fields. Use this filter to replace the dropdown with a text input.
 		if ( apply_filters( 'cac/column/meta/use_text_input', false ) ) :
