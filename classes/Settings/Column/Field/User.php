@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AC_Settings_Column_Field_User extends AC_Settings_Column_Field {
+class AC_Settings_Column_Field_User extends AC_Settings_Column_FieldAbstract {
 
 	public function get_args() {
 		$nametypes = array(

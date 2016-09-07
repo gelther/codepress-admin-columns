@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or die();
 
-class AC_Settings_Column_Fields extends AC_Settings_Column_Field {
+class AC_Settings_Column_Fields extends AC_Settings_Column_FieldAbstract {
 
 	public function display( $args = array() ) {
 		$defaults = array(

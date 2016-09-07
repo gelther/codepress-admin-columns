@@ -86,6 +86,9 @@ abstract class CPAC_Column {
 
 		$this->settings = new AC_Settings_Column( $this );
 
+		// todo: load active fields here? Is there a context? And is it relevant? listtable / settings?
+		// todo: recent idea: in add_settings, all fields for settings are stored. Options retrieve via field key their options.
+
 		$this->settings->field = new AC_Settings_Column_Field( $this );
 		//$this->format = new AC_Settings_Column_Format( $this );
 		$this->helper = ac_helper();
@@ -344,6 +347,19 @@ abstract class CPAC_Column {
 	}
 
 	/**
+	 * Get valid width unit
+	 *
+	 * @since NEWVERSION
+	 * @return array
+	 */
+	public function get_width_units() {
+		return array(
+			'%'  => __( '%', 'codepress-admin-columns' ),
+			'px' => __( 'px', 'codepress-admin-columns' ),
+		);
+	}
+
+	/**
 	 * @since NEWVERSION
 	 * @return string px or %
 	 */
@@ -351,9 +367,10 @@ abstract class CPAC_Column {
 		$unit = $this->get_option( 'width_unit' );
 
 		if ( ! $unit ) {
-			$unit = $this->column->get_property( 'width_unit' ); //$this->default_options['width_unit'];
+			$unit = $this->column->get_property( 'width_unit' ); // $this->default_options['width_unit'];
 		}
 
+		// todo: remove px and % from here
 		return 'px' === $unit ? 'px' : '%';
 	}
 

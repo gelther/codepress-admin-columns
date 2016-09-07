@@ -4,35 +4,46 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// todo: add a field interface maybe? display, add_field, get_field, get_fields?
 class AC_Settings_Column {
 
+	/**
+	 * @var CPAC_Column
+	 */
 	private $column;
 
-	public $character;
-
-	public $image;
+	/**
+	 * @var array
+	 */
+	private $fields;
 
 	public function __construct( CPAC_Column $column ) {
 		$this->column = $column;
-
-		$this->character = new AC_Settings_Column_Field_Character( $column );
-		$this->image = new AC_Settings_Column_Field_Image( $column );
-		$this->date = new AC_Settings_Column_Field_Date( $column );
-		$this->word = new AC_Settings_Column_Field_Word( $column );
-		$this->before_after = new AC_Settings_Column_Field_BeforeAfter( $column );
-		$this->width = new AC_Settings_Column_Field_Width( $column );
-
-		// General fields
-		$this->field = new AC_Settings_Column_Field( $column );
-		$this->fields = new AC_Settings_Column_Fields( $column );
+		$this->fields = array();
 	}
 
-	public function display_field( $args ) {
-		$this->field->display( $args );
+	public function add_field( AC_Settings_Column_FieldAbstract $field ) {
+		$this->fields[ $field->get_name() ] = $field;
+
+		return $this;
 	}
 
-	public function display_fields( $args ) {
-		$this->fields->display( $args );
+	public function get_field( $name ) {
+		if ( ! isset( $field[ $name ] ) ) {
+			return false;
+		}
+
+		return $this->fields[ $name ];
+	}
+
+	public function get_fields() {
+		return $this->fields;
+	}
+
+	public function display() {
+		foreach ( $this->fields as $field ) {
+			$field->display();
+		}
 	}
 
 }
