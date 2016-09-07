@@ -4,7 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// todo: add a field interface maybe? display, add_field, get_field, get_fields?
 class AC_Settings_Column {
 
 	/**
@@ -36,6 +35,11 @@ class AC_Settings_Column {
 		return $this->column;
 	}
 
+	/**
+	 * @param AC_Settings_Column_FieldAbstract $field
+	 *
+	 * @return AC_Settings_Column
+	 */
 	public function add_field( AC_Settings_Column_FieldAbstract $field ) {
 		$field->set_settings( $this );
 
@@ -45,22 +49,10 @@ class AC_Settings_Column {
 	}
 
 	/**
-	 * Utility method to create a vanilla field
+	 * @param string $name
 	 *
-	 * @param array $args
+	 * @return AC_Settings_Column_FieldAbstract|false
 	 */
-	public function create_field( $args = array() ) {
-		$field = new AC_Settings_Column_Field();
-
-		// todo: check here if arguments are valid
-
-		foreach ( $args as $key => $value ) {
-			$field->set_arg( $key, $value );
-		}
-
-		$this->add_field( $field );
-	}
-
 	public function get_field( $name ) {
 		if ( ! isset( $field[ $name ] ) ) {
 			return false;
@@ -69,6 +61,9 @@ class AC_Settings_Column {
 		return $this->fields[ $name ];
 	}
 
+	/**
+	 * @return AC_Settings_Column_FieldAbstract[]
+	 */
 	public function get_fields() {
 		return $this->fields;
 	}
@@ -79,10 +74,18 @@ class AC_Settings_Column {
 		}
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_data() {
 		return $this->data;
 	}
 
+	/**
+	 * @param $name
+	 *
+	 * @return array|string|false
+	 */
 	public function get_value( $name ) {
 		return isset( $this->data[ $name ] ) ? $this->data[ $name ] : false;
 	}
@@ -94,6 +97,9 @@ class AC_Settings_Column {
 		$this->data = $data;
 	}
 
+	/**
+	 * Set column settings data
+	 */
 	public function load_data() {
 		$options = $this->column->get_storage_model()->get_stored_columns();
 		if ( isset( $options[ $this->column->get_name() ] ) ) {

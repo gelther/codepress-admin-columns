@@ -6,6 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_Field_Width extends AC_Settings_Column_FieldAbstract {
 
+	public function display_field() {
+
+	}
+
 	/**
 	 * @var string
 	 */
@@ -16,14 +20,14 @@ class AC_Settings_Column_Field_Width extends AC_Settings_Column_FieldAbstract {
 	 */
 	private $width;
 
-	public function __construct( CPAC_Column $column ) {
-		parent::__construct( $column );
+	public function __construct() {
+		parent::__construct();
 
 		$this
 			->set_unit( current( $this->get_options() ) )
 			->set_name( 'width' )
-			->set_label(  )
-			->set_description(  );
+			->set_label()
+			->set_description();
 	}
 
 	public function get_options() {
