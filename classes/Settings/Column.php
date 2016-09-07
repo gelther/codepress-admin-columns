@@ -133,6 +133,7 @@ class AC_Settings_Column {
 	public function register_field( $name, $args = array() ) {
 
 		// TODO: maybe initialize all fields and use their name
+		// todo: introduce a key arg that will be same like name if ommited
 		switch ( $name ) {
 
 			case 'excerpt_length' :
