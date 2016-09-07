@@ -6,21 +6,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_Field_Word extends AC_Settings_Column_FieldAbstract {
 
-	public function __construct( CPAC_Column $column ) {
-		parent::__construct( $column );
+	public function __construct() {
+		parent::__construct();
 
-		$this
-			->set_type( 'number ') // todo: only for css class??
-			->set_name( 'excerpt_length' )
-			->set_label( __( 'Word Limit', 'codepress-admin-columns' ) )
-			->set_description( __( 'Maximum number of words', 'codepress-admin-columns' ) . '<em>' . __( 'Leave empty for no limit', 'codepress-admin-columns' ) . '</em>' );
-	}
-
-	// todo: type vs this display, it is equally good only this is more readable
-	public function display_field() {
-		$args = $this->to_formfield();
-
-		AC()->helper->formfield->number( $args );
+		$this->merge_args( array(
+			'type'        => 'number',
+			'name'        => 'excerpt_length',
+			'label'       => __( 'Word Limit', 'codepress-admin-columns' ),
+			'description' => __( 'Maximum number of words', 'codepress-admin-columns' ) . '<em>' . __( 'Leave empty for no limit', 'codepress-admin-columns' ) . '</em>',
+		) );
 	}
 
 	public function format( $string ) {

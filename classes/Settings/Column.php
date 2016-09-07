@@ -29,10 +29,36 @@ class AC_Settings_Column {
 		$this->load_data();
 	}
 
+	/**
+	 * @return CPAC_Column
+	 */
+	public function get_column() {
+		return $this->column;
+	}
+
 	public function add_field( AC_Settings_Column_FieldAbstract $field ) {
+		$field->set_settings( $this );
+
 		$this->fields[ $field->get_name() ] = $field;
 
 		return $this;
+	}
+
+	/**
+	 * Utility method to create a vanilla field
+	 *
+	 * @param array $args
+	 */
+	public function create_field( $args = array() ) {
+		$field = new AC_Settings_Column_Field();
+
+		// todo: check here if arguments are valid
+
+		foreach ( $args as $key => $value ) {
+			$field->set_arg( $key, $value );
+		}
+
+		$this->add_field( $field );
 	}
 
 	public function get_field( $name ) {
@@ -45,24 +71,6 @@ class AC_Settings_Column {
 
 	public function get_fields() {
 		return $this->fields;
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return string
-	 */
-	public function get_attr_name( $name ) {
-		return $this->column->get_name() . '[' . $name . ']';
-	}
-
-	/**
-	 * @param string $id
-	 *
-	 * @return string
-	 */
-	public function get_attr_id( $id ) {
-		return implode( '-', array( 'cpac', $this->column->get_storage_model_key(), $this->column->get_name(), $id ) );
 	}
 
 	public function display() {
@@ -99,42 +107,6 @@ class AC_Settings_Column {
 		//}
 
 		//return $options ? array_merge( $this->default_options, $options ) : $this->default_options;
-	}
-
-	/**
-	 * Factory method for creating fields on the fly
-	 *
-	 * @param array $args
-	 */
-	public function create_field( $args = array() ) {
-		$args = (object) $args;
-		$type = isset( $args->type ) ? $args->type : false;
-		$field = false;
-		
-		if ( empty( $args->name ) ) {
-			return false;
-		}
-
-		// predefined class
-		if ( $type ) {
-			$class = 'AC_Settings_Column_Field_' . implode( array_map( 'ucfirst', explode( '_', $type ) ) );
-
-			if ( class_exists( $class, true ) ) {
-				$field = new $class;
-			}
-		}
-
-		if ( ! $field ) {
-			$field = new AC_Settings_Column_Field();
-		}
-
-		$field->set_settings( $this );
-
-		foreach( $args as $key => $value ) {
-			$field->set_arg( $key, $value );
-		}
-
-		$this->add_field( $field );
 	}
 
 }
