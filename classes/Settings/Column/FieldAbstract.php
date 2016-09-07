@@ -88,11 +88,13 @@ abstract class AC_Settings_Column_FieldAbstract {
 	}
 
 	protected function get_option( $name ) {
+
+		$this->settings->get_value( $name );
 		return $this->column->get_option( $name );
 	}
 
 	public function __call( $name, $arguments ) {
-		
+
 	}
 
 	/**

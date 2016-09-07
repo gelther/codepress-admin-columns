@@ -53,7 +53,7 @@ class AC_Settings_Column {
 	 * @return string
 	 */
 	public function get_attr_name( $name ) {
-		return $this->column->get_storage_model_key() . '[' . $this->column->get_name() . '][' . $name . ']';
+		return $this->column->get_name() . '[' . $name . ']';
 	}
 
 	/**
@@ -75,12 +75,22 @@ class AC_Settings_Column {
 		return $this->data;
 	}
 
+	public function get_value( $name ) {
+		return isset( $this->data[ $name ] ) ? $this->data[ $name ] : false;
+	}
+
+	/**
+	 * @param array $data Column Settings
+	 */
+	public function set_data( $data ) {
+		$this->data = $data;
+	}
+
 	public function load_data() {
 		$options = $this->column->get_storage_model()->get_stored_columns();
 		if ( isset( $options[ $this->column->get_name() ] ) ) {
 			$this->data = $options[ $this->column->get_name() ];
 		}
-
 
 		// TODO: make sure export still works with URL's
 		// replace urls, so export will not have to deal with them
@@ -100,7 +110,7 @@ class AC_Settings_Column {
 		$args = (object) $args;
 		$type = isset( $args->type ) ? $args->type : false;
 		$field = false;
-
+		
 		if ( empty( $args->name ) ) {
 			return false;
 		}

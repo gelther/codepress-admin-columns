@@ -36,12 +36,6 @@ abstract class CPAC_Column {
 	public $default_options;
 
 	/**
-	 * @since NEWVERSION
-	 * @var array|null
-	 */
-	private $stored_options = array();
-
-	/**
 	 * @since 2.0
 	 * @var array $properties describes the fixed properties for the CPAC_Column object.
 	 */
@@ -86,11 +80,6 @@ abstract class CPAC_Column {
 
 		$this->settings = new AC_Settings_Column( $this );
 
-		// todo: load active fields here? Is there a context? And is it relevant? listtable / settings?
-		// todo: recent idea: in add_settings, all fields for settings are stored. Options retrieve via field key their options.
-
-		//$this->settings->field = new AC_Settings_Column_Field( $this );
-		//$this->format = new AC_Settings_Column_Format( $this );
 		$this->helper = ac_helper();
 
 		$this->init();
@@ -345,11 +334,11 @@ abstract class CPAC_Column {
 	 * @return int Width
 	 */
 	// todo: move to settings
-	public function get_width() {
+	/*public function get_width() {
 		$width = absint( $this->get_option( 'width' ) );
 
 		return $width > 0 ? $width : false;
-	}
+	}*/
 
 	/**
 	 * Get valid width unit
@@ -358,19 +347,19 @@ abstract class CPAC_Column {
 	 * @return array
 	 */
 	// todo: move to settings
-	public function get_width_units() {
+	/*public function get_width_units() {
 		return array(
 			'%'  => __( '%', 'codepress-admin-columns' ),
 			'px' => __( 'px', 'codepress-admin-columns' ),
 		);
-	}
+	}*/
 
 	/**
 	 * @since NEWVERSION
 	 * @return string px or %
 	 */
 	// todo: move to settings
-	public function get_width_unit() {
+	/*public function get_width_unit() {
 		$unit = $this->get_option( 'width_unit' );
 
 		if ( ! $unit ) {
@@ -379,7 +368,7 @@ abstract class CPAC_Column {
 
 		// todo: remove px and % from here
 		return 'px' === $unit ? 'px' : '%';
-	}
+	}*/
 
 	/**
 	 * Get the stored column options
@@ -387,29 +376,6 @@ abstract class CPAC_Column {
 	 * @since 2.3.4
 	 * @return array Column options set by user
 	 */
-
-	// TODO move to AC_Settings_Column
-	public function get_options() {
-		$options = $this->stored_options;
-
-		if ( ! $options ) {
-			$stored = $this->get_storage_model()->get_stored_columns();
-			if ( isset( $stored[ $this->get_name() ] ) ) {
-				$options = $stored[ $this->get_name() ];
-			}
-		}
-
-		// replace urls, so export will not have to deal with them
-		if ( isset( $options['label'] ) ) {
-			$options['label'] = stripslashes( str_replace( '[cpac_site_url]', site_url(), $options['label'] ) );
-		}
-
-		return $options ? array_merge( $this->default_options, $options ) : $this->default_options;
-	}
-
-	public function set_stored_options( $options ) {
-		$this->stored_options = $options;
-	}
 
 	/**
 	 * Get the column properties
@@ -430,10 +396,7 @@ abstract class CPAC_Column {
 	// todo: maybe rename or add get_settings()->get_field here
 	// todo: settings()->display()
 	public function get_option( $name ) {
-
-
-
-		$options = $this->get_options();
+		$options = $this->settings->get_data();
 
 		return isset( $options[ $name ] ) ? $options[ $name ] : false;
 	}
@@ -613,6 +576,12 @@ abstract class CPAC_Column {
 
 
 	// Deprecated methods
+
+	public function get_options() {
+		_deprecated_function( __METHOD__, 'AC NEWVERSION', '$this->settings()->get_data()' );
+
+		return $this->settings->get_data();
+	}
 
 	/**
 	 * @param string $field_name

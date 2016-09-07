@@ -117,7 +117,7 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 		}
 
 		// Add stored options; Used by columns that switch field types.
-		$column->set_stored_options( $columndata );
+		$column->settings()->set_data( $columndata );
 
 		// Only trigger for newly added columns.
 		// TODO: make separate ajax call for "Add column".
@@ -150,7 +150,7 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 
 		parse_str( $_POST['data'], $formdata );
 
-		if ( ! isset( $formdata[ $storage_model->key ] ) ) {
+		if ( ! $formdata ) {
 			wp_send_json_error( array(
 					'type'    => 'error',
 					'message' => __( 'You need at least one column', 'codepress-admin-columns' ),
@@ -158,7 +158,7 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 			);
 		}
 
-		$stored = $storage_model->store( $formdata[ $storage_model->key ] );
+		$stored = $storage_model->store( $formdata );
 
 		if ( is_wp_error( $stored ) ) {
 			wp_send_json_error( array(
