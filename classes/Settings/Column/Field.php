@@ -461,7 +461,16 @@ class AC_Settings_Column_Field {
 		$field = (object) $args;
 		?>
 		<tr class="<?php echo esc_attr( $field->type ); ?> column-<?php echo esc_attr( $field->name ); ?><?php echo esc_attr( $field->hidden ? ' hide' : '' ); ?><?php echo esc_attr( $field->section ? ' section' : '' ); ?>"<?php echo $field->toggle_handle ? ' data-handle="' . esc_attr( $this->get_attr_id( $field->toggle_handle ) ) . '"' : ''; ?><?php echo $field->refresh_column ? ' data-refresh="1"' : ''; ?>>
-			<?php $this->label( array( 'label' => $field->label, 'description' => $field->description, 'for' => ( $field->for ? $field->for : $field->name ), 'more_link' => $field->more_link ) ); ?>
+
+			<?php
+			$this->label( array(
+				'label'       => $field->label,
+				'description' => $field->description,
+				'for'         => ( $field->for ? $field->for : $field->name ),
+				'more_link'   => $field->more_link,
+			) );
+			?>
+
 			<td class="input"<?php echo( $field->toggle_trigger ? ' data-trigger="' . esc_attr( $this->get_attr_id( $field->toggle_trigger ) ) . '"' : '' ); ?><?php echo empty( $field->label ) ? ' colspan="2"' : ''; ?>>
 				<?php
 				switch ( $field->type ) {
@@ -578,7 +587,7 @@ class AC_Settings_Column_Field {
 	/**
 	 * @since NEWVERSION
 	 */
-	private function width_field() {
+	/*private function width_field() {
 		?>
 		<div class="description" title="<?php echo esc_attr( __( 'default', 'codepress-admin-columns' ) ); ?>">
 			<input class="width" type="text" placeholder="<?php echo esc_attr( __( 'auto', 'codepress-admin-columns' ) ); ?>" name="<?php $this->attr_name( 'width' ); ?>" id="<?php $this->attr_id( 'width' ); ?>" value="<?php echo esc_attr( $this->column->get_width() ); ?>"/>
@@ -607,6 +616,6 @@ class AC_Settings_Column_Field {
 			?>
 		</div>
 		<?php
-	}
+	}*/
 
 }
