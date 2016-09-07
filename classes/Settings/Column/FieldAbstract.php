@@ -12,67 +12,69 @@ abstract class AC_Settings_Column_FieldAbstract {
 	protected $column;
 
 	/**
+	 * @var AC_Settings_Column
+	 */
+	protected $settings;
+
+	/**
 	 * @var array
 	 */
 	private $attributes;
 
 	/**
-	 * @var string
+	 * @var array
 	 */
-	private $name;
+	private $args;
 
-	/**
-	 * @var string
-	 */
-	private $type;
-
-	/**
-	 * @var string
-	 */
-	private $label;
-
-	/**
-	 * @var string
-	 */
-	private $description;
-
-	/**
-	 * @var string
-	 */
-	private $help;
-
-	/**
-	 * @var string
-	 */
-	private $more_link;
-
-	public function __construct( CPAC_Column $column ) {
-		$this->column = $column;
-
-		$this->set_type( 'text' );
-
+	public function __construct() {
 		$this->attributes = new AC_Settings_Column_FieldAttributes();
 
-		$this->set_args( array(
+		$this->args = array(
 			'type'           => 'text',
-			//'name'           => '',
-			//'label'          => '', // empty label will apply colspan 2
-			//'description'    => '',
+			'name'           => '',
+			'label'          => '', // empty label will apply colspan 2
+			'description'    => '',
 			'toggle_trigger' => '', // triggers a toggle event on toggle_handle
 			'toggle_handle'  => '', // can be used to toggle this element
 			'refresh_column' => false, // when value is selected the column element will be refreshed with ajax
 			'hidden'         => false,
-			//'for'            => false,
+			'for'            => false,
 			'section'        => false,
-			//'help'           => '', // help message below input field
-			//'more_link'      => '', // link to more, e.g. admin page for a field
-		) );
+			'help'           => '', // help message below input field
+			'more_link'      => '', // link to more, e.g. admin page for a field
+		);
 	}
 
 	/**
 	 * This method is called to display the actual field
 	 */
 	abstract function display_field();
+
+	/**
+	 * @param AC_Settings_Column $settings
+	 *
+	 * @since NEWVERSION
+	 * @return $this
+	 */
+	public function set_settings( AC_Settings_Column $settings ) {
+		$this->settings = $settings;
+
+		return $this;
+	}
+
+	public function set_arg( $key, $value ) {
+		$this->args[ $key ] = $value;
+
+		return $this;
+	}
+
+	protected function get_arg( $key ) {
+		if ( ! isset( $this->args[ $key ] ) ) {
+			return false;
+		}
+
+		return $this->args[ $key ];
+	}
 
 	/**
 	 * Formats value based on stored field settings
@@ -89,158 +91,50 @@ abstract class AC_Settings_Column_FieldAbstract {
 		return $this->column->get_option( $name );
 	}
 
-	/**
-	 * Display an attribute
-	 *
-	 * @param $type
-	 */
-	public function attr( $type ) {
-		$method = 'get_attr_' . $type;
-
-		if ( method_exists( array( $this, $method ) ) ) {
-			esc_attr( $this->$method );
-		}
+	public function __call( $name, $arguments ) {
+		
 	}
 
 	/**
 	 * @return string
 	 */
 	public function get_name() {
-		return $this->name;
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return AC_Settings_Column_FieldAbstract
-	 */
-	protected function set_name( $name ) {
-		$this->name = $name;
-
-		return $this;
+		return $this->get_arg( 'name' );
 	}
 
 	/**
 	 * @return string
 	 */
 	public function get_type() {
-		return $this->type;
-	}
-
-	/**
-	 * @param string $type
-	 *
-	 * @return AC_Settings_Column_FieldAbstract
-	 */
-	public function set_type( $type ) {
-		$this->type = $type;
-
-		return $this;
+		return $this->get_arg( 'type' );
 	}
 
 	/**
 	 * @return string
 	 */
 	public function get_label() {
-		return $this->label;
-	}
-
-	/**
-	 * @param string $label
-	 *
-	 * @return AC_Settings_Column_FieldAbstract
-	 */
-	public function set_label( $label ) {
-		$this->label = stripslashes( $label );
-
-		return $this;
-	}
-
-	/**
-	 * @since NEWVERSION
-	 *
-	 * @param array $args
-	 */
-	public function display_label() {
-		if ( ! $this->get_label() ) {
-			return;
-		}
-
-		$class = 'label';
-
-		if ( $this->get_description() ) {
-			$class .= ' description';
-		}
-
-		?>
-		<td class="<?php echo esc_attr( $class ); ?>">
-			<label for="<?php esc_attr( $this->get_attr_id() ); ?>">
-				<span class="label"><?php echo $this->get_label(); ?></span>
-				<?php if ( $this->get_more_link() ) : ?>
-					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more' ); ?>" href="<?php echo esc_url( $this->get_more_link() ); ?>">
-						<span class="dashicons dashicons-external"></span>
-					</a>
-				<?php endif; ?>
-				<?php if ( $this->get_description() ) : ?>
-					<p class="description"><?php echo $this->get_description(); ?></p>
-				<?php endif; ?>
-			</label>
-		</td>
-		<?php
+		return stripslashes( $this->get_arg( 'label' ) );
 	}
 
 	/**
 	 * @return string
 	 */
 	public function get_description() {
-		return $this->description;
-	}
-
-	/**
-	 * @param string $description
-	 *
-	 * @return AC_Settings_Column_FieldAbstract
-	 */
-	public function set_description( $description ) {
-		$this->description = $description;
-
-		return $this;
+		return $this->get_arg( 'description' );
 	}
 
 	/**
 	 * @return string
 	 */
 	public function get_help() {
-		return $this->help;
-	}
-
-	/**
-	 * @param string $help
-	 *
-	 * @return AC_Settings_Column_FieldAbstract
-	 */
-	public function set_help( $help ) {
-		$this->help = $help;
-
-		return $this;
+		return $this->get_arg( 'help' );
 	}
 
 	/**
 	 * @return string
 	 */
 	public function get_more_link() {
-		return $this->more_link;
-	}
-
-	/**
-	 * @param string $more_link
-	 *
-	 * @return AC_Settings_Column_FieldAbstract
-	 */
-	public function set_more_link( $more_link ) {
-		$this->more_link = $more_link;
-
-		return $this;
+		return $this->get_arg( 'get_more_link' );
 	}
 
 	/**
@@ -322,13 +216,46 @@ abstract class AC_Settings_Column_FieldAbstract {
 	}
 
 	/**
+	 * @since NEWVERSION
+	 *
+	 * @param array $args
+	 */
+	public function display_label() {
+		if ( ! $this->get_label() ) {
+			return;
+		}
+
+		$class = 'label';
+
+		if ( $this->get_description() ) {
+			$class .= ' description';
+		}
+
+		?>
+		<td class="<?php echo esc_attr( $class ); ?>">
+			<label for="<?php esc_attr( $this->get_attr_id() ); ?>">
+				<span class="label"><?php echo $this->get_label(); ?></span>
+				<?php if ( $this->get_more_link() ) : ?>
+					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more' ); ?>" href="<?php echo esc_url( $this->get_more_link() ); ?>">
+						<span class="dashicons dashicons-external"></span>
+					</a>
+				<?php endif; ?>
+				<?php if ( $this->get_description() ) : ?>
+					<p class="description"><?php echo $this->get_description(); ?></p>
+				<?php endif; ?>
+			</label>
+		</td>
+		<?php
+	}
+
+	/**
 	 * Converts object to array that is suitable for using with formfields
 	 *
 	 */
 	public function to_formfield() {
 		return array(
 			'attr_name' => $this->get_attr_name(),
-			'attr_id' => $this->get_attr_id(),
+			'attr_id'   => $this->get_attr_id(),
 		);
 	}
 

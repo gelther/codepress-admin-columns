@@ -91,12 +91,38 @@ class AC_Settings_Column {
 		//return $options ? array_merge( $this->default_options, $options ) : $this->default_options;
 	}
 
+	/**
+	 * Factory method for creating fields on the fly
+	 *
+	 * @param array $args
+	 */
 	public function create_field( $args = array() ) {
-		$field = new AC_Settings_Column_Field();
+		$args = (object) $args;
+		$type = isset( $args->type ) ? $args->type : false;
+		$field = false;
+
+		if ( empty( $args->name ) ) {
+			return false;
+		}
+
+		// predefined class
+		if ( $type ) {
+			$class = 'AC_Settings_Column_Field_' . implode( array_map( 'ucfirst', explode( '_', $type ) ) );
+
+			if ( class_exists( $class, true ) ) {
+				$field = new $class;
+			}
+		}
+
+		if ( ! $field ) {
+			$field = new AC_Settings_Column_Field();
+		}
+
 		$field->set_settings( $this );
 
-
-
+		foreach( $args as $key => $value ) {
+			$field->set_arg( $key, $value );
+		}
 
 		$this->add_field( $field );
 	}
