@@ -77,9 +77,6 @@ class AC_Settings_Column {
 		return $this;
 	}
 
-
-
-
 	/**
 	 * @param string $name
 	 *
@@ -98,6 +95,14 @@ class AC_Settings_Column {
 	 */
 	public function get_fields() {
 		return $this->fields;
+	}
+
+	// todo: API implementations
+	public function fields() {
+		// setup fields here?
+
+		// foreach all registered fields where return an object that can be called like fields()->word_limit etc.
+
 	}
 
 	public function display() {

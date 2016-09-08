@@ -23,6 +23,21 @@ class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 		) );
 	}
 
+	/**
+	 * Return the stored value
+	 *
+	 * @return string|array
+	 */
+	public function get_value() {
+		$value = $this->settings->get_value( $this->get_arg( 'name' ) );
+
+		if ( false === $value ) {
+			$value = $this->get_arg( 'default' );
+		}
+
+		return $value;
+	}
+
 	public function display_field() {
 		$args = $this->to_formfield();
 

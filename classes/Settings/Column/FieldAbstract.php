@@ -20,13 +20,9 @@ abstract class AC_Settings_Column_FieldAbstract {
 		$this->args = array(
 			'label'       => '', // empty label will apply colspan 2
 			'description' => '',
+			'for'         => '',
 		);
 	}
-
-	/**
-	 * Display the field
-	 */
-	public abstract function display_field();
 
 	/**
 	 * @param AC_Settings_Column $settings
@@ -83,21 +79,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 		return $this->set_arg( 'default', $default );
 	}
 
-	/**
-	 * Return the stored value
-	 *
-	 * @return string|array
-	 */
-	public function get_value() {
-		$value = $this->settings->get_value( $this->get_arg( 'name' ) );
-
-		if ( false === $value ) {
-			$value = $this->get_arg( 'default' );
-		}
-
-		return $value;
-	}
-
 	public function get_attribute( $key, $value = null ) {
 		if ( null === $value ) {
 			$value = $this->get_arg( 'name' );
@@ -133,6 +114,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 		$data_refresh = $this->get_arg( 'refresh_column' ) ? 1 : 0;
 
 		?>
+
 		<tr class="<?php echo esc_attr( $class ); ?>" data-handle="<?php echo esc_attr( $data_handle ); ?>" data-refresh="<?php echo esc_attr( $data_refresh ); ?>">
 			<?php $this->display_label(); ?>
 
@@ -153,6 +135,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 				<?php endif; ?>
 			</td>
 		</tr>
+
 		<?php
 	}
 
@@ -167,10 +150,14 @@ abstract class AC_Settings_Column_FieldAbstract {
 			$class .= ' description';
 		}
 
+		if ( empty( $this->get_arg( 'for' ) ) ) {
+			$this->set_arg( 'for', $this->get_arg( 'name' ) );
+		}
+
 		?>
 
 		<td class="<?php echo esc_attr( $class ); ?>">
-			<label for="<?php esc_attr( $this->get_attribute( 'id' ) ); ?>">
+			<label for="<?php esc_attr( $this->get_attribute( 'id', $this->get_arg( 'for' ) ) ); ?>">
 				<span class="label"><?php echo stripslashes( $this->get_arg( 'label' ) ); ?></span>
 				<?php if ( $this->get_arg( 'more_link' ) ) : ?>
 					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more' ); ?>" href="<?php echo esc_url( $this->get_arg( 'more_link' ) ); ?>">

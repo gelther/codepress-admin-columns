@@ -19,7 +19,7 @@ class AC_Settings_Column_FieldSet extends AC_Settings_Column_FieldAbstract {
 	 * @return AC_Settings_Column
 	 */
 	public function add_field( AC_Settings_Column_FieldAbstract $field ) {
-		$field->set_settings( $this );
+		$field->set_settings( $this->settings );
 
 		$this->fields[ $field->get_arg( 'name' ) ] = $field;
 
@@ -47,17 +47,23 @@ class AC_Settings_Column_FieldSet extends AC_Settings_Column_FieldAbstract {
 	}
 
 	public function display() {
-		?>
+		$fields = $this->get_fields();
+		$field = current( $field );
 
+		if ( ! $this->get_arg( 'for' ) && $field instanceof AC_Settings_Column_Field ) {
+			$this->set_arg( 'for', $field->get_arg( 'name' ) );
+		}
+
+		?>
 		<tr class="section">
 			<?php $this->display_label(); ?>
-			
+
 			<td class="input nopadding">
 				<table class="widefat">
 					<?php
 
-					foreach ( $this->get_fields() as $field ) {
-						$field->display_field();
+					foreach ( $fields as $field ) {
+						$field->display();
 					}
 
 					?>
