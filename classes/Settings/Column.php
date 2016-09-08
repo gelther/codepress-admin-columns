@@ -38,7 +38,7 @@ class AC_Settings_Column {
 	/**
 	 * API function to access fields
 	 *
-	 * @return object
+	 * @return AC_Settings_Column_FieldGroup
 	 */
 	public function fields() {
 		return $this->fields;

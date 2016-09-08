@@ -58,7 +58,7 @@ class AC_Settings_Column_FieldGroup extends AC_Settings_Column_FieldAbstract {
 	}
 
 	public function display() {
-		$fields = $this->get_fields();
+		$fields = $this->get_all();
 		$field = current( $field );
 
 		if ( ! $this->get_arg( 'for' ) && $field instanceof AC_Settings_Column_Field ) {
