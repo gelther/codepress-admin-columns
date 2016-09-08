@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_Field_Word extends AC_Settings_Column_FieldAbstract {
 
+	// todo: I think this is very dirty. Setup
 	public function get_args() {
 		return array(
 			'type'        => 'number',

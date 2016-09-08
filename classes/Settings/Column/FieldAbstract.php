@@ -85,6 +85,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 		return $this->args[ $key ];
 	}
 
+	// todo: if you make this public, then we should start using getters and setters...
 	public function set_arg( $key, $value ) {
 		$this->args[ $key ] = $value;
 
@@ -143,8 +144,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 	 * @since NEWVERSION
 	 */
 	public function display() {
-		$field = $this->to_object();
-
 		$class = sprintf( '%s column-%s', $this->get_arg( 'type' ), $this->get_arg( 'name' ) );
 
 		if ( $this->get_arg( 'hidden' ) ) {
@@ -160,21 +159,21 @@ abstract class AC_Settings_Column_FieldAbstract {
 
 		?>
 		<tr class="<?php echo esc_attr( $class ); ?>" data-handle="<?php echo esc_attr( $data_handle ); ?>" data-refresh="<?php echo esc_attr( $data_refresh ); ?>">
-			<?php $this->display_label( $field ); ?>
+			<?php $this->display_label(); ?>
 
 			<?php
 
-			$data_trigger = $field->toggle_trigger ? $this->get_attribute( 'id', $field->toggle_trigger ) : '';
-			$colspan = trim( $field->label ) ? 1 : 2;
+			$data_trigger = $this->get_arg( 'toggle_trigger' ) ? $this->get_attribute( 'id', $this->get_arg( 'toggle_trigger' ) ) : '';
+			$colspan = trim( $this->get_arg( 'label' ) ) ? 1 : 2;
 
 			?>
 
 			<td class="input" data-trigger="<?php echo $data_trigger; ?>" colspan="<?php echo $colspan; ?>">
 				<?php $this->display_field(); ?>
 
-				<?php if ( $field->help ) : ?>
+				<?php if ( $this->get_arg( 'help' ) ) : ?>
 					<p class="help-msg">
-						<?php echo $field->help; ?>
+						<?php echo $this->get_arg( 'help' ); ?>
 					</p>
 				<?php endif; ?>
 			</td>
@@ -185,30 +184,29 @@ abstract class AC_Settings_Column_FieldAbstract {
 	/**
 	 * @since NEWVERSION
 	 *
-	 * @param array $args
 	 */
-	public function display_label( $field ) {
-		if ( ! $field->label ) {
+	protected function display_label() {
+		if ( ! $this->get_arg( 'label' ) ) {
 			return;
 		}
 
 		$class = 'label';
 
-		if ( $field->description ) {
+		if ( $this->get_arg( 'description' ) ) {
 			$class .= ' description';
 		}
 
 		?>
 		<td class="<?php echo esc_attr( $class ); ?>">
 			<label for="<?php esc_attr( $this->get_attribute( 'id' ) ); ?>">
-				<span class="label"><?php echo stripslashes( $field->label ); ?></span>
-				<?php if ( $field->more_link ) : ?>
-					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more' ); ?>" href="<?php echo esc_url( $field->more_link ); ?>">
+				<span class="label"><?php echo stripslashes( $this->get_arg( 'label' ) ); ?></span>
+				<?php if ( $this->get_arg( 'more_link' ) ) : ?>
+					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more' ); ?>" href="<?php echo esc_url( $this->get_arg( 'more_link' ) ); ?>">
 						<span class="dashicons dashicons-external"></span>
 					</a>
 				<?php endif; ?>
-				<?php if ( $field->description ) : ?>
-					<p class="description"><?php echo $field->description; ?></p>
+				<?php if ( $this->get_arg( 'description' ) ) : ?>
+					<p class="description"><?php echo $this->get_arg( 'description' ); ?></p>
 				<?php endif; ?>
 			</label>
 		</td>
