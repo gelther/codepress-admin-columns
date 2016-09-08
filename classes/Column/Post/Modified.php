@@ -14,7 +14,8 @@ class AC_Column_Post_Modified extends CPAC_Column {
 
 		//$this->default_options['date_format'] = '';
 
-		$this->settings()->register_field( 'date_format' );
+		// todo: remove
+		//$this->settings()->register_field( 'date_format' );
 	}
 
 	public function get_value( $post_id ) {

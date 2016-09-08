@@ -12,7 +12,7 @@ class AC_Settings_Column {
 	private $column;
 
 	/**
-	 * @var array
+	 * @var AC_Settings_Column_FieldGroup
 	 */
 	private $fields;
 
@@ -23,7 +23,7 @@ class AC_Settings_Column {
 
 	public function __construct( CPAC_Column $column ) {
 		$this->column = $column;
-		$this->fields = array();
+		$this->fields = ( new AC_Settings_Column_FieldGroup() )->set_settings( $this );
 
 		$this->load_data();
 	}
@@ -35,78 +35,17 @@ class AC_Settings_Column {
 		return $this->column;
 	}
 
-	// todo: remove asap
-	public function get_attribute( $key, $name ) {
-		switch ( $key ) {
-			case 'id':
-				$attribute = sprintf( 'cpac-%s-%s', $this->column->get_name(), $name );
-				break;
-			case 'name':
-				$attribute = sprintf( '%s[%s]', $this->column->get_name(), $name );
-				break;
-			default :
-				$attribute = false;
-		}
-
-		return $attribute;
-	}
-
 	/**
-	 * @param AC_Settings_Column_FieldAbstract $field
+	 * API function to access fields
 	 *
-	 * @return AC_Settings_Column
+	 * @return object
 	 */
-	public function add_field( AC_Settings_Column_FieldAbstract $field ) {
-		$field->set_settings( $this );
-
-		$this->fields[ $field->get_arg( 'name' ) ] = $field;
-
-		return $this;
-	}
-
-	/**
-	 * @param AC_Settings_Column_FieldAbstract $field
-	 *
-	 * @return AC_Settings_Column
-	 */
-	public function add_field_group( AC_Settings_Column_FieldGroup $fields ) {
-
-
-
-
-		return $this;
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return AC_Settings_Column_FieldAbstract|false
-	 */
-	public function get_field( $name ) {
-		if ( ! isset( $this->fields[ $name ] ) ) {
-			return false;
-		}
-
-		return $this->fields[ $name ];
-	}
-
-	/**
-	 * @return AC_Settings_Column_FieldAbstract[]
-	 */
-	public function get_fields() {
-		return $this->fields;
-	}
-
-	// todo: API implementations
 	public function fields() {
-		// setup fields here?
-
-		// foreach all registered fields where return an object that can be called like fields()->word_limit etc.
-
+		return $this->fields();
 	}
 
 	public function display() {
-		foreach ( $this->fields as $field ) {
+		foreach ( $this->fields->get_all() as $field ) {
 			$field->display();
 		}
 	}
@@ -119,15 +58,6 @@ class AC_Settings_Column {
 	}
 
 	/**
-	 * @param $name
-	 *
-	 * @return array|string|false
-	 */
-	public function get_value( $name ) {
-		return isset( $this->data[ $name ] ) ? $this->data[ $name ] : false;
-	}
-
-	/**
 	 * @param array $data Column Settings
 	 */
 	public function set_data( $data ) {
@@ -137,8 +67,9 @@ class AC_Settings_Column {
 	/**
 	 * Set column settings data
 	 */
-	public function load_data() {
+	private function load_data() {
 		$options = $this->column->get_storage_model()->get_stored_columns();
+
 		if ( isset( $options[ $this->column->get_name() ] ) ) {
 			$this->data = $options[ $this->column->get_name() ];
 		}
@@ -152,7 +83,16 @@ class AC_Settings_Column {
 		//return $options ? array_merge( $this->default_options, $options ) : $this->default_options;
 	}
 
-	public function register_field( $name, $args = array() ) {
+	/**
+	 * @param $name
+	 *
+	 * @return array|string|false
+	 */
+	public function get_value( $name ) {
+		return isset( $this->data[ $name ] ) ? $this->data[ $name ] : false;
+	}
+
+	private function register_field( $name, $args = array() ) {
 
 		// TODO: maybe initialize all fields and use their name
 		// todo: introduce a key arg that will be same like name if ommited

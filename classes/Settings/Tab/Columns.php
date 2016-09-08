@@ -524,6 +524,12 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 
 		<div class="cpac-column <?php echo esc_attr( implode( ' ', array_filter( array( "cpac-box-" . $column->get_type(), $column->get_property( 'classes' ) ) ) ) ); ?>" data-type="<?php echo esc_attr( $column->get_type() ); ?>"<?php echo $column->get_property( 'is_cloneable' ) ? ' data-clone="' . esc_attr( $column->get_property( 'clone' ) ) . '"' : ''; ?> data-default="<?php echo esc_attr( $column->is_default() ); ?>">
 
+			<?php
+				//$column->settings()->add_field;
+
+
+			?>
+
 			<input type="hidden" class="column-name" name="<?php echo $column->settings()->get_attribute( 'name', 'column-name' ); ?>" value="<?php echo esc_attr( $column->get_name() ); ?>"/>
 			<input type="hidden" class="type" name="<?php echo $column->settings()->get_attribute( 'name', 'type' ); ?>" value="<?php echo esc_attr( $column->get_type() ); ?>"/>
 			<input type="hidden" class="clone" name="<?php echo $column->settings()->get_attribute( 'name', 'clone' ); ?>" value="<?php echo esc_attr( $column->get_property( 'clone' ) ); ?>"/>

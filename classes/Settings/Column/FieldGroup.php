@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AC_Settings_Column_FieldSet extends AC_Settings_Column_FieldAbstract {
+class AC_Settings_Column_FieldGroup extends AC_Settings_Column_FieldAbstract {
 
 	protected $settings;
 
@@ -18,7 +18,7 @@ class AC_Settings_Column_FieldSet extends AC_Settings_Column_FieldAbstract {
 	 *
 	 * @return AC_Settings_Column
 	 */
-	public function add_field( AC_Settings_Column_FieldAbstract $field ) {
+	public function add( AC_Settings_Column_FieldAbstract $field ) {
 		$field->set_settings( $this->settings );
 
 		$this->fields[ $field->get_arg( 'name' ) ] = $field;
@@ -31,7 +31,7 @@ class AC_Settings_Column_FieldSet extends AC_Settings_Column_FieldAbstract {
 	 *
 	 * @return AC_Settings_Column_FieldAbstract|false
 	 */
-	public function get_field( $name ) {
+	public function get( $name ) {
 		if ( ! isset( $this->fields[ $name ] ) ) {
 			return false;
 		}
@@ -42,7 +42,7 @@ class AC_Settings_Column_FieldSet extends AC_Settings_Column_FieldAbstract {
 	/**
 	 * @return AC_Settings_Column_FieldAbstract[]
 	 */
-	public function get_fields() {
+	public function get_all() {
 		return $this->fields;
 	}
 

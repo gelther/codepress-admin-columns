@@ -25,12 +25,23 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 		//$this->default_options['image_size_h'] = 80;
 		//$this->default_options['excerpt_length'] = 15;
 
+
+		$fields = $this->settings()->fields();
+
+		$fields
+			->add( $fields->word_limit() )
+			->add( $fields->create( array(
+				'label' => 'bla',
+				'name' => 'zookinig',
+			) ) )
+			->add( $fields->before_after() );
+
 		// Register settings field
-		// TODO
-		$this->settings()->register_field( 'image' );
-		$this->settings()->register_field( 'link_label' );
-		$this->settings()->register_field( 'date_format' );
-		$this->settings()->register_field( 'excerpt_length' );
+		// TODO remove
+		//$this->settings()->register_field( 'image' );
+		//$this->settings()->register_field( 'link_label' );
+		//$this->settings()->register_field( 'date_format' );
+		//$this->settings()->register_field( 'excerpt_length' );
 		//$this->settings()->add_field( new AC_Settings_Column_Field_Image() );
 	}
 
