@@ -16,7 +16,7 @@ class AC_Settings_Column_FieldGroup extends AC_Settings_Column_FieldAbstract {
 	/**
 	 * @param AC_Settings_Column_FieldAbstract $field
 	 *
-	 * @return AC_Settings_Column
+	 * @return AC_Settings_Column_FieldGroup
 	 */
 	public function add( AC_Settings_Column_FieldAbstract $field ) {
 		$field->set_settings( $this->settings );
