@@ -16,54 +16,17 @@ abstract class AC_Settings_Column_FieldAbstract {
 	 */
 	private $args;
 
-	/**
-	 * @return array
-	 */
-	abstract public function get_args();
-
-	public function __construct() {
+	public function __construct( array $args = array() ) {
 		$this->args = array(
-			'type'           => 'text',
-			'name'           => '',
-			'label'          => '', // empty label will apply colspan 2
-			'description'    => '',
-			'toggle_trigger' => '', // triggers a toggle event on toggle_handle
-			'toggle_handle'  => '', // can be used to toggle this element
-			'refresh_column' => false, // when value is selected the column element will be refreshed with ajax
-			'hidden'         => false,
-			'for'            => false,
-			'section'        => false,
-			'help'           => '', // help message below input field
-			'more_link'      => '', // link to more, e.g. admin page for a field
+			'label'       => '', // empty label will apply colspan 2
+			'description' => '',
 		);
-
-		$this->merge_args( $this->get_args() );
 	}
 
 	/**
-	 * This method is called to display the field
+	 * Display the field
 	 */
-	public function display_field() {
-		$args = $this->to_formfield();
-
-		switch ( $this->get_arg( 'type' ) ) {
-			case 'select' :
-				ac_helper()->formfield->select( $args );
-				break;
-			case 'radio' :
-				ac_helper()->formfield->radio( $args );
-				break;
-			case 'text' :
-				ac_helper()->formfield->text( $args );
-				break;
-			case 'message' :
-				ac_helper()->formfield->message( $args );
-				break;
-			case 'number' :
-				ac_helper()->formfield->number( $args );
-				break;
-		}
-	}
+	public abstract function display_field();
 
 	/**
 	 * @param AC_Settings_Column $settings
@@ -85,8 +48,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 		return $this->args[ $key ];
 	}
 
-	// todo: if you make this public, then we should start using getters and setters...
-	public function set_arg( $key, $value ) {
+	protected function set_arg( $key, $value ) {
 		$this->args[ $key ] = $value;
 
 		return $this;
@@ -129,15 +91,28 @@ abstract class AC_Settings_Column_FieldAbstract {
 	public function get_value() {
 		$value = $this->settings->get_value( $this->get_arg( 'name' ) );
 
-		return false !== $value ? $value : $this->get_arg( 'default' );
-	}
-
-	public function get_attribute( $key, $name = null ) {
-		if ( null === $name ) {
-			$name = $this->get_arg( 'name' );
+		if ( false === $value ) {
+			$value = $this->get_arg( 'default' );
 		}
 
-		return $this->settings->get_attribute( $key, $name  );
+		return $value;
+	}
+
+	public function get_attribute( $key, $value = null ) {
+		if ( null === $value ) {
+			$value = $this->get_arg( 'name' );
+		}
+
+		$column = $this->settings->get_column();
+
+		switch ( $key ) {
+			case 'id':
+				return sprintf( 'cpac-%s-%s', $column->get_name(), $value );
+			case 'name':
+				return sprintf( '%s[%s]', $column->get_name(), $value );
+		}
+
+		return false;
 	}
 
 	/**
@@ -181,10 +156,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 		<?php
 	}
 
-	/**
-	 * @since NEWVERSION
-	 *
-	 */
 	protected function display_label() {
 		if ( ! $this->get_arg( 'label' ) ) {
 			return;
@@ -197,6 +168,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 		}
 
 		?>
+
 		<td class="<?php echo esc_attr( $class ); ?>">
 			<label for="<?php esc_attr( $this->get_attribute( 'id' ) ); ?>">
 				<span class="label"><?php echo stripslashes( $this->get_arg( 'label' ) ); ?></span>
@@ -210,6 +182,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 				<?php endif; ?>
 			</label>
 		</td>
+
 		<?php
 	}
 

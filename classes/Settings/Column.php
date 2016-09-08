@@ -35,6 +35,7 @@ class AC_Settings_Column {
 		return $this->column;
 	}
 
+	// todo: remove asap
 	public function get_attribute( $key, $name ) {
 		switch ( $key ) {
 			case 'id':
@@ -62,6 +63,22 @@ class AC_Settings_Column {
 
 		return $this;
 	}
+
+	/**
+	 * @param AC_Settings_Column_FieldAbstract $field
+	 *
+	 * @return AC_Settings_Column
+	 */
+	public function add_field_group( AC_Settings_Column_FieldGroup $fields ) {
+
+
+
+
+		return $this;
+	}
+
+
+
 
 	/**
 	 * @param string $name
