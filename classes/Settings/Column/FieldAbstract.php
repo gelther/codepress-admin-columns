@@ -25,38 +25,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 	}
 
 	/**
-	 * Create a field based on arguments
-	 *
-	 * @param array $args
-	 *
-	 * @return false|AC_Settings_Column_Field
-	 */
-	public static function create( array $args ) {
-		$field = new AC_Settings_Column_Field( $args );
-
-		return $field;
-	}
-
-	/**
-	 * Create a field based on the classname
-	 *
-	 * @param string name
-	 * @param array $args
-	 *
-	 * @return false|AC_Settings_Column_FieldAbstract
-	 */
-	public static function create_by_name( $name, array $args = array() ) {
-		$class = 'AC_Settings_Column_Field_' . implode( array_map( 'ucfirst', explode( '_', $name ) ) );
-		$field = false;
-
-		if ( class_exists( $class, true ) ) {
-			$field = new $class( $args );
-		}
-
-		return $field;
-	}
-
-	/**
 	 * @param AC_Settings_Column $settings
 	 *
 	 * @since NEWVERSION

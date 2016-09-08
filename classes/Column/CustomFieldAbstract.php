@@ -29,12 +29,16 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 		$fields = $this->settings()->fields();
 
 		$fields
-			->add( $fields->word_limit() )
 			->add( $fields->create( array(
 				'label' => 'bla',
 				'name' => 'zookinig',
 			) ) )
-			->add( $fields->before_after() );
+			->add( array(
+				'label' => 'bla',
+				'name' => 'zookinig',
+			) )
+			->add( new AC_Settings_Column_Field_BeforeAfter() )
+			->add( 'word_limit' ),
 
 		// Register settings field
 		// TODO remove

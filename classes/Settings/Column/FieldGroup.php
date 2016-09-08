@@ -27,6 +27,17 @@ class AC_Settings_Column_FieldGroup extends AC_Settings_Column_FieldAbstract {
 	}
 
 	/**
+	 * Access fields quickly
+	 *
+	 * @param $name
+	 *
+	 * @return AC_Settings_Column_FieldAbstract|false
+	 */
+	public function __get( $name ) {
+		return $this->get( $name );
+	}
+
+	/**
 	 * @param string $name
 	 *
 	 * @return AC_Settings_Column_FieldAbstract|false

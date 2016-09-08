@@ -41,7 +41,11 @@ class AC_Settings_Column {
 	 * @return object
 	 */
 	public function fields() {
-		return $this->fields();
+		return $this->fields;
+	}
+
+	public function field_factory() {
+		return new AC_Settings_Column_FieldFactory();
 	}
 
 	public function display() {
