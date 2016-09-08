@@ -28,6 +28,13 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 
 		$fields = $this->settings()->fields();
 
+		$group = new AC_Settings_Column_FieldGroup( array(
+			'label' => 'bla',
+			'description' => 'bla',
+		) );
+
+		$group->add( new AC_Settings_Column_Field_BeforeAfter( ) );
+
 		$fields
 			->add( $fields->create( array(
 				'label' => 'bla',
@@ -38,7 +45,8 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 				'name' => 'zookinig',
 			) )
 			->add( new AC_Settings_Column_Field_BeforeAfter() )
-			->add( 'word_limit' ),
+			->add( 'word_limit' )
+			->add( $group );
 
 		// Register settings field
 		// TODO remove
