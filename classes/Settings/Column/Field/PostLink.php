@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AC_Settings_Column_Field_PostLink extends AC_Settings_Column_FieldAbstract {
+class AC_Settings_Column_Field_PostLink extends AC_Settings_Column_Field {
 
 	public function get_args() {
 		return array(
