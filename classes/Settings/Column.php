@@ -23,9 +23,21 @@ class AC_Settings_Column {
 
 	public function __construct( CPAC_Column $column ) {
 		$this->column = $column;
-		$this->fields = ( new AC_Settings_Column_FieldGroup() )->set_settings( $this );
 
+		$this->set_fields();
 		$this->load_data();
+	}
+
+	/**
+	 * @return $this
+	 */
+	protected function set_fields() {
+		$fields = new AC_Settings_Column_FieldGroup();
+		$fields->set_settings( $this );
+
+		$this->fields = $fields;
+
+		return $this;
 	}
 
 	/**
@@ -40,12 +52,9 @@ class AC_Settings_Column {
 	 *
 	 * @return AC_Settings_Column_FieldGroup
 	 */
+	// todo: maybe return the actual fields instead of the container object and use get_fields to return the fields object?
 	public function fields() {
 		return $this->fields;
-	}
-
-	public function field_factory() {
-		return new AC_Settings_Column_FieldFactory();
 	}
 
 	public function display() {
@@ -96,44 +105,59 @@ class AC_Settings_Column {
 		return isset( $this->data[ $name ] ) ? $this->data[ $name ] : false;
 	}
 
-	private function register_field( $name, $args = array() ) {
+	/**
+	 * Access fields quickly
+	 *
+	 * @param $field
+	 *
+	 * @return AC_Settings_Column_FieldAbstract|false
+	 */
+	public function __get( $field ) {
+		return $this->fields()->$field;
+	}
 
-		// TODO: maybe initialize all fields and use their name
-		// todo: introduce a key arg that will be same like name if ommited
-		switch ( $name ) {
+	/**
+	 * Add a new group to the fields, return the group for adding fields
+	 *
+	 * @param array $args
+	 *
+	 * @return AC_Settings_Column_FieldGroup
+	 */
+	public function add_group( array $args = array() ) {
+		$group = new AC_Settings_Column_FieldGroup( $args );
 
-			case 'excerpt_length' :
-				$field = new AC_Settings_Column_Field_Word();
+		$this->fields()->add( $group );
+
+		return $group;
+	}
+
+	/**
+	 * Implements overloading to add a field.
+	 *
+	 * Signatures: (string) $field, $args || (array) $field || AC_Settings_Column_FieldAbstract $field, $args
+	 *
+	 * @return AC_Settings_Column
+	 */
+	public function add_field( $field, array $args = array() ) {
+
+		switch ( gettype( $field ) ) {
+			case 'array':
+				$field = new AC_Settings_Column_Field( $field );
+
 				break;
+			case 'string':
+				$class = 'AC_Settings_Column_Field_' . implode( array_map( 'ucfirst', explode( '_', $field ) ) );
 
-			case 'post_property_display' :
-				$field = new AC_Settings_Column_Field_Post();
-				break;
-
-			case 'post_link_to' :
-				$field = new AC_Settings_Column_Field_PostLink();
-				break;
-
-			case 'date_format' :
-				$field = new AC_Settings_Column_Field_Date();
-				break;
-
-			case 'link_label' :
-				$field = new AC_Settings_Column_Field_Url();
-				break;
-
-			case 'width' :
-				$field = new AC_Settings_Column_Field_Width();
-				break;
-
-			default :
-				$field = false;
+				if ( class_exists( $class, true ) ) {
+					$field = new $class( $args );
+				}
 		}
 
-		if ( $field ) {
-			$field->merge_args( $args );
-			$this->add_field( $field );
+		if ( $field instanceof AC_Settings_Column_FieldAbstract ) {
+			$this->fields()->add( $field );
 		}
+
+		return $this;
 	}
 
 }
