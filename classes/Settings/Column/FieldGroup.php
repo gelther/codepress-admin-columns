@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_FieldGroup extends AC_Settings_Column_FieldAbstract {
 
-	protected $settings;
+	//protected $settings;
 
 	/**
 	 * @var AC_Settings_Column_FieldAbstract[]
@@ -19,7 +19,7 @@ class AC_Settings_Column_FieldGroup extends AC_Settings_Column_FieldAbstract {
 	 * @return AC_Settings_Column_FieldGroup
 	 */
 	public function add( AC_Settings_Column_FieldAbstract $field ) {
-		$field->set_settings( $this->settings );
+		//$field->set_settings( $this->settings );
 
 		$this->fields[ $field->get_arg( 'name' ) ] = $field;
 

@@ -7,9 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 
 	public function __construct( array $args = array() ) {
-		parent::__construct( $args );
-
-		$this->merge_args( array(
+		parent::__construct( array(
 			'type'           => 'text',
 			'name'           => '',
 			'toggle_trigger' => '', // triggers a toggle event on toggle_handle
@@ -21,6 +19,8 @@ class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 			'help'           => '', // help message below input field
 			'more_link'      => '', // link to more, e.g. admin page for a field
 		) );
+
+		$this->merge_args( $args );
 	}
 
 	/**
@@ -32,7 +32,7 @@ class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 		$value = $this->settings->get_value( $this->get_arg( 'name' ) );
 
 		if ( false === $value ) {
-			$value = $this->get_arg( 'default' );
+			$value = $this->get_arg( 'default_value' );
 		}
 
 		return $value;
@@ -55,6 +55,9 @@ class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 			case 'text' :
 				ac_helper()->formfield->text( $args );
 				break;
+			case 'hidden' :
+				ac_helper()->formfield->text( $args );
+				break;
 			case 'message' :
 				ac_helper()->formfield->message( $args );
 				break;
@@ -63,6 +66,5 @@ class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 				break;
 		}
 	}
-
 
 }

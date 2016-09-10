@@ -25,17 +25,20 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 		//$this->default_options['image_size_h'] = 80;
 		//$this->default_options['excerpt_length'] = 15;
 
+		//$fields = $this->settings()->fields();
 
-		$fields = $this->settings()->fields();
+		//$f = new AC_Settings_Column_Field_BeforeAfter( );
+
+		//$group = new AC_Settings_Column_FieldGroup( $f );
 
 		$group = new AC_Settings_Column_FieldGroup( array(
-			'label' => 'bla',
+			'label'       => 'bla',
 			'description' => 'bla',
 		) );
 
-		$group->add( new AC_Settings_Column_Field_BeforeAfter( ) );
+		$group->add( new AC_Settings_Column_Field_BeforeAfter() );
 
-		$fields
+		/*$fields
 			->add( $fields->create( array(
 				'label' => 'bla',
 				'name' => 'zookinig',
@@ -46,7 +49,7 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 			) )
 			->add( new AC_Settings_Column_Field_BeforeAfter() )
 			->add( 'word_limit' )
-			->add( $group );
+			->add( $group );*/
 
 		// Register settings field
 		// TODO remove
@@ -358,7 +361,7 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 				'name'           => 'field_type',
 				'options'        => $this->get_field_labels(),
 				'refresh_column' => true,
-			)
+			),
 		);
 
 		switch ( $this->get_field_type() ) {

@@ -6,8 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_Field_Width extends AC_Settings_Column_Field {
 
-	public function get_args() {
-		return array( 'name' => 'width' );
+	public function __construct( array $args = array() ) {
+		parent::__construct( array(
+			'name' => 'width',
+		) );
+
+		$this->merge_args( $args );
 	}
 
 	public function get_width() {
@@ -17,7 +21,7 @@ class AC_Settings_Column_Field_Width extends AC_Settings_Column_Field {
 	}
 
 	public function get_width_unit() {
-		$unit = $this->settings->get_value( 'width' );
+		$unit = $this->settings->get_value( 'width_unit' );
 
 		return 'px' === $unit ? 'px' : '%';
 	}
@@ -33,14 +37,14 @@ class AC_Settings_Column_Field_Width extends AC_Settings_Column_Field {
 		<div class="unit-select">
 			<?php
 			ac_helper()->formfield->radio( array(
-				'attr_id'   => $this->get_attribute( 'id', 'width_unit' ),
-				'attr_name' => $this->get_attribute( 'name', 'width_unit' ),
-				'options'   => array(
+				'attr_id'       => $this->get_attribute( 'id', 'width_unit' ),
+				'attr_name'     => $this->get_attribute( 'name', 'width_unit' ),
+				'options'       => array(
 					'px' => 'px',
 					'%'  => '%',
 				),
-				'class'     => 'unit',
-				'default'   => $this->get_width_unit(),
+				'class'         => 'unit',
+				'default_value' => $this->get_width_unit(),
 			) );
 			?>
 		</div>

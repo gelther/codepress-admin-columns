@@ -227,7 +227,8 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 			}
 
 			$this->set_user_model_preference( $storage_model->key );
-		} else {
+		}
+		else {
 
 			// User preference
 			if ( $exists = $this->get_user_model_preference() ) {
@@ -525,14 +526,29 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 		<div class="cpac-column <?php echo esc_attr( implode( ' ', array_filter( array( "cpac-box-" . $column->get_type(), $column->get_property( 'classes' ) ) ) ) ); ?>" data-type="<?php echo esc_attr( $column->get_type() ); ?>"<?php echo $column->get_property( 'is_cloneable' ) ? ' data-clone="' . esc_attr( $column->get_property( 'clone' ) ) . '"' : ''; ?> data-default="<?php echo esc_attr( $column->is_default() ); ?>">
 
 			<?php
-				//$column->settings()->add_field;
-
-
+			//$column->settings()->add_field( new AC_Settings_Column_Field_Hidden( array( 'name' => 'column-name', 'value' => $column->get_name() ) ) );
+			//$column->settings()->add_field( new AC_Settings_Column_Field_Hidden( array( 'name' => 'type', 'value' => $column->get_type() ) ) );
+			//$column->settings()->add_field( new AC_Settings_Column_Field_Hidden( array( 'name' => 'clone', 'value' => $column->get_property( 'clone' ) ) ) );
+			//$column->settings()->add_field( new AC_Settings_Column_Field_Width() );
 			?>
 
+			<?php
+			/*
 			<input type="hidden" class="column-name" name="<?php echo $column->settings()->get_attribute( 'name', 'column-name' ); ?>" value="<?php echo esc_attr( $column->get_name() ); ?>"/>
 			<input type="hidden" class="type" name="<?php echo $column->settings()->get_attribute( 'name', 'type' ); ?>" value="<?php echo esc_attr( $column->get_type() ); ?>"/>
 			<input type="hidden" class="clone" name="<?php echo $column->settings()->get_attribute( 'name', 'clone' ); ?>" value="<?php echo esc_attr( $column->get_property( 'clone' ) ); ?>"/>
+ *          */
+
+			//echo '<pre>'; print_r( $column->settings() ); echo '</pre>'; exit;
+			
+			//$s = $column->settings();
+			//$s = $s->width;
+			//echo '<pre>'; print_r( $s->width ); echo '</pre>'; exit;
+			//echo '<pre>'; print_r( $s->get_value( 'width' ) ); echo '</pre>'; exit;
+			//echo '<pre>'; print_r( $s->width->get_width() ); echo '</pre>'; exit;
+			//echo '<pre>'; print_r( $s->fields() ); echo '</pre>'; exit;
+
+			?>
 
 			<div class="column-meta">
 				<table class="widefat">
@@ -546,7 +562,9 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 								<div class="meta">
 
 									<span title="<?php echo esc_attr( __( 'width', 'codepress-admin-columns' ) ); ?>" class="width" data-indicator-id="">
-										<?php echo $column->settings()->get_field( 'width' )->get_width() ? esc_html( $column->get_width() . $column->get_width_unit() ) : ''; ?>
+										<?php //echo $column->settings()->get_field( 'width' )->get_width() ? esc_html( $column->get_width() . $column->get_width_unit() ) : ''; ?>
+										<?php echo esc_html( $column->settings()->width->get_width() ); ?>
+										<?php echo esc_html( $column->settings()->width->get_width_unit() ); ?>
 									</span>
 
 									<?php

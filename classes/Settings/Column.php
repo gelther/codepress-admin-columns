@@ -125,6 +125,7 @@ class AC_Settings_Column {
 	 */
 	public function add_group( array $args = array() ) {
 		$group = new AC_Settings_Column_FieldGroup( $args );
+		$group->set_settings( $this );
 
 		$this->fields()->add( $group );
 

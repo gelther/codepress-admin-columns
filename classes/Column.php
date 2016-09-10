@@ -82,12 +82,14 @@ abstract class CPAC_Column {
 
 		$this->helper = ac_helper();
 
-		// Register fields
-		// todo: remove
-		//$this->settings->register_field( 'width' );
-
 		$this->init();
 		$this->after_setup();
+
+		// Register fields
+		$this->settings->add_field( new AC_Settings_Column_Field_Hidden( array( 'name' => 'column-name', 'value' => $this->get_name() ) ) );
+		$this->settings->add_field( new AC_Settings_Column_Field_Hidden( array( 'name' => 'type', 'value' => $this->get_type() ) ) );
+		$this->settings->add_field( new AC_Settings_Column_Field_Hidden( array( 'name' => 'clone', 'value' => $this->get_property( 'clone' ) ) ) );
+		$this->settings->add_field( new AC_Settings_Column_Field_Width() );
 	}
 
 	/**

@@ -22,6 +22,8 @@ abstract class AC_Settings_Column_FieldAbstract {
 			'description' => '',
 			'for'         => '',
 		);
+
+		$this->merge_args( $args );
 	}
 
 	/**
@@ -76,7 +78,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 	 * @return AC_Settings_Column_FieldAbstract
 	 */
 	public function set_default( $default ) {
-		return $this->set_arg( 'default', $default );
+		return $this->set_arg( 'default_value', $default );
 	}
 
 	public function get_attribute( $key, $value = null ) {
@@ -150,7 +152,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 			$class .= ' description';
 		}
 
-		if ( empty( $this->get_arg( 'for' ) ) ) {
+		if ( ! $this->get_arg( 'for' ) ) {
 			$this->set_arg( 'for', $this->get_arg( 'name' ) );
 		}
 
@@ -181,7 +183,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 		return wp_parse_args( $this->args, array(
 			'attr_name' => $this->get_attribute( 'name' ),
 			'attr_id'   => $this->get_attribute( 'id' ),
-			'current'   => $this->get_value(),
+			'value'     => $this->get_value(),
 		) );
 	}
 

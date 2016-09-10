@@ -4,7 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 // TODO: remove
 abstract class AC_Settings_ColumnAbstract {
 
@@ -37,7 +36,7 @@ abstract class AC_Settings_ColumnAbstract {
 		);
 		$args = wp_parse_args( $args, $defaults );
 
-		$args['current'] = $this->get_option( $args['name'] );
+		$args['value'] = $this->get_option( $args['name'] );
 		$args['attr_name'] = $this->get_attr_name( $args['name'] );
 		$args['attr_id'] = $this->get_attr_id( $args['name'] );
 
