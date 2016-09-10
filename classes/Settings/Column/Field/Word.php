@@ -6,7 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_Field_Word extends AC_Settings_Column_Field {
 
-
 	public function __construct() {
 		$args = array(
 			'type'        => 'number',
