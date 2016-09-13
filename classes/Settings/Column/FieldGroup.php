@@ -6,8 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_FieldGroup extends AC_Settings_Column_FieldAbstract {
 
-	//protected $settings;
-
 	/**
 	 * @var AC_Settings_Column_FieldAbstract[]
 	 */
@@ -18,10 +16,8 @@ class AC_Settings_Column_FieldGroup extends AC_Settings_Column_FieldAbstract {
 	 *
 	 * @return AC_Settings_Column_FieldGroup
 	 */
-	public function add( AC_Settings_Column_FieldAbstract $field ) {
-		//$field->set_settings( $this->settings );
-
-		$this->fields[ $field->get_arg( 'name' ) ] = $field;
+	public function add( AC_Settings_Column_Field $field ) {
+		$this->fields[ $field->get_name() ] = $field;
 
 		return $this;
 	}
@@ -61,8 +57,8 @@ class AC_Settings_Column_FieldGroup extends AC_Settings_Column_FieldAbstract {
 		$fields = $this->get_all();
 		$field = current( $field );
 
-		if ( ! $this->get_arg( 'for' ) && $field instanceof AC_Settings_Column_Field ) {
-			$this->set_arg( 'for', $field->get_arg( 'name' ) );
+		if ( ! $this->get_for() && $field instanceof AC_Settings_Column_Field ) {
+			$this->set_for( $field->get_name() );
 		}
 
 		?>

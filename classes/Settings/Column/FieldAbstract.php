@@ -12,18 +12,68 @@ abstract class AC_Settings_Column_FieldAbstract {
 	protected $settings;
 
 	/**
-	 * @var array
+	 * @var string
 	 */
-	private $args;
+	protected $name;
 
-	public function __construct( array $args = array() ) {
-		$this->args = array(
-			'label'       => '', // empty label will apply colspan 2
-			'description' => '',
-			'for'         => '',
-		);
+	/**
+	 * @var string
+	 */
+	protected $description;
 
-		$this->merge_args( $args );
+	/**
+	 * @var string;
+	 */
+	protected $label;
+
+	/**
+	 * @var string
+	 */
+	protected $for;
+
+	/**
+	 * A link to more, e.g. admin page for a field
+	 *
+	 * @var string
+	 */
+	protected $more_link;
+
+	/**
+	 * AC_Settings_Column_FieldAbstract constructor.
+	 *
+	 * @param $name
+	 */
+	public function __construct( $name, array $defaults = array() ) {
+		$this->name = $name;
+		$this->defaults = $defaults;
+	}
+
+	public function set_default( $value, $key = null ) {
+		if ( null === $key ) {
+			$key = $this->get_name();
+		}
+
+		$this->defaults[ $key ] = $value;
+	}
+
+	public function set_defaults( array $defaults ) {
+		$this->defaults = $defaults;
+	}
+
+	public function get_value() {
+
+	}
+
+	public function display_field() {
+
+	}
+
+	public function display_group() {
+
+	}
+
+	public function display_label() {
+
 	}
 
 	/**
@@ -38,29 +88,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 		return $this;
 	}
 
-	public function get_arg( $key ) {
-		if ( ! isset( $this->args[ $key ] ) ) {
-			return false;
-		}
-
-		return $this->args[ $key ];
-	}
-
-	protected function set_arg( $key, $value ) {
-		$this->args[ $key ] = $value;
-
-		return $this;
-	}
-
-	/**
-	 * Merge a set of arg with the current args
-	 *
-	 * @param array $args
-	 */
-	public function merge_args( array $args ) {
-		$this->args = wp_parse_args( $args, $this->args );
-	}
-
 	/**
 	 * Formats value based on stored field settings
 	 *
@@ -72,20 +99,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 		return $value;
 	}
 
-	/**
-	 * @param string|int $default
-	 *
-	 * @return AC_Settings_Column_FieldAbstract
-	 */
-	public function set_default( $default ) {
-		return $this->set_arg( 'default_value', $default );
-	}
-
-	public function get_attribute( $key, $value = null ) {
-		if ( null === $value ) {
-			$value = $this->get_arg( 'name' );
-		}
-
+	public function get_attribute( $key, $value ) {
 		$column = $this->settings->get_column();
 
 		switch ( $key ) {
@@ -99,75 +113,126 @@ abstract class AC_Settings_Column_FieldAbstract {
 	}
 
 	/**
-	 * @since NEWVERSION
+	 * @return string
 	 */
-	public function display() {
-		$class = sprintf( '%s column-%s', $this->get_arg( 'type' ), $this->get_arg( 'name' ) );
-
-		if ( $this->get_arg( 'hidden' ) ) {
-			$class .= ' hide';
-		}
-
-		if ( $this->get_arg( 'section' ) ) {
-			$class .= ' section';
-		}
-
-		$data_handle = $this->get_arg( 'toggle_handle' ) ? $this->get_attribute( 'id', $this->get_arg( 'toggle_handle' ) ) : '';
-		$data_refresh = $this->get_arg( 'refresh_column' ) ? 1 : 0;
-
-		?>
-
-		<tr class="<?php echo esc_attr( $class ); ?>" data-handle="<?php echo esc_attr( $data_handle ); ?>" data-refresh="<?php echo esc_attr( $data_refresh ); ?>">
-			<?php $this->display_label(); ?>
-
-			<?php
-
-			$data_trigger = $this->get_arg( 'toggle_trigger' ) ? $this->get_attribute( 'id', $this->get_arg( 'toggle_trigger' ) ) : '';
-			$colspan = trim( $this->get_arg( 'label' ) ) ? 1 : 2;
-
-			?>
-
-			<td class="input" data-trigger="<?php echo $data_trigger; ?>" colspan="<?php echo $colspan; ?>">
-				<?php $this->display_field(); ?>
-
-				<?php if ( $this->get_arg( 'help' ) ) : ?>
-					<p class="help-msg">
-						<?php echo $this->get_arg( 'help' ); ?>
-					</p>
-				<?php endif; ?>
-			</td>
-		</tr>
-
-		<?php
+	public function get_name() {
+		return $this->name;
 	}
 
+	/**
+	 * @param $name
+	 *
+	 * @return AC_Settings_Column_FieldAbstract
+	 */
+	public function set_name( $name ) {
+		$this->name = $name;
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_description() {
+		return trim( $this->description );
+	}
+
+	/**
+	 * @param string $description
+	 *
+	 * @return AC_Settings_Column_FieldAbstract
+	 */
+	public function set_description( $description ) {
+		$this->description = $description;
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_label() {
+		return trim( stripslashes( $this->label ) );
+	}
+
+	/**
+	 * @param string $label
+	 *
+	 * @return AC_Settings_Column_FieldAbstract
+	 */
+	public function set_label( $label ) {
+		$this->label = $label;
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_for() {
+		return trim( $this->for );
+	}
+
+	/**
+	 * @param string $for
+	 *
+	 * @return AC_Settings_Column_FieldAbstract
+	 */
+	public function set_for( $for ) {
+		$this->for = $for;
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_more_link() {
+		return $this->more_link;
+	}
+
+	/**
+	 * @param string $more_link
+	 *
+	 * @return AC_Settings_Column_FieldAbstract
+	 */
+	public function set_more_link( $more_link ) {
+		$this->more_link = $more_link;
+
+		return $this;
+	}
+
+
 	protected function display_label() {
-		if ( ! $this->get_arg( 'label' ) ) {
+		if ( ! $this->get_label() ) {
 			return;
 		}
 
+		$description = $this->get_description();
+		$more_link = $this->get_more_link();
+
 		$class = 'label';
 
-		if ( $this->get_arg( 'description' ) ) {
+		if ( $description ) {
 			$class .= ' description';
 		}
 
-		if ( ! $this->get_arg( 'for' ) ) {
-			$this->set_arg( 'for', $this->get_arg( 'name' ) );
+		if ( ! $this->get_for() ) {
+			$this->set_for( $this->get_name() );
 		}
 
 		?>
 
 		<td class="<?php echo esc_attr( $class ); ?>">
-			<label for="<?php esc_attr( $this->get_attribute( 'id', $this->get_arg( 'for' ) ) ); ?>">
-				<span class="label"><?php echo stripslashes( $this->get_arg( 'label' ) ); ?></span>
-				<?php if ( $this->get_arg( 'more_link' ) ) : ?>
-					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more' ); ?>" href="<?php echo esc_url( $this->get_arg( 'more_link' ) ); ?>">
+			<label for="<?php esc_attr( $this->get_attribute( 'id', $this->get_for() ) ); ?>">
+				<span class="label"><?php echo $this->get_label(); ?></span>
+				<?php if ( $more_link ) : ?>
+					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more' ); ?>" href="<?php echo esc_url( $more_link ); ?>">
 						<span class="dashicons dashicons-external"></span>
 					</a>
 				<?php endif; ?>
-				<?php if ( $this->get_arg( 'description' ) ) : ?>
-					<p class="description"><?php echo $this->get_arg( 'description' ); ?></p>
+				<?php if ( $description ) : ?>
+					<p class="description"><?php echo $description; ?></p>
 				<?php endif; ?>
 			</label>
 		</td>

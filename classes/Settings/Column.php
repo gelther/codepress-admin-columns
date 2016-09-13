@@ -135,30 +135,47 @@ class AC_Settings_Column {
 	/**
 	 * Implements overloading to add a field.
 	 *
-	 * Signatures: (string) $field, $args || (array) $field || AC_Settings_Column_FieldAbstract $field, $args
+	 * Signatures: (string) $field, (array) $args || (array) $args || AC_Settings_Column_Field $field, (array) $args
 	 *
-	 * @return AC_Settings_Column
+	 * @return false|AC_Settings_Column_Field
 	 */
-	public function add_field( $field, array $args = array() ) {
+	public function add_field() {
+		$field = func_get_arg( 0 );
+		$args = func_get_arg( 1 );
 
-		switch ( gettype( $field ) ) {
-			case 'array':
-				$field = new AC_Settings_Column_Field( $field );
+		if ( ! $field || is_array( $field ) ) {
+			$args = $field;
+			$field = new AC_Settings_Column_Field();
+		}
 
-				break;
-			case 'string':
-				$class = 'AC_Settings_Column_Field_' . implode( array_map( 'ucfirst', explode( '_', $field ) ) );
+		if ( is_string( $field ) ) {
+			$class = 'AC_Settings_Column_Field_' . implode( array_map( 'ucfirst', explode( '_', $field ) ) );
 
-				if ( class_exists( $class, true ) ) {
-					$field = new $class( $args );
+			if ( ! class_exists( $class, true ) ) {
+				$field = new $class();
+			}
+		}
+
+		if ( $field instanceof AC_Settings_Column_Field ) {
+			// invoke setters
+			if ( is_array( $args ) ) {
+				foreach ( $args as $key => $value ) {
+					$method = 'set_' . $key;
+
+					if ( method_exists( $field, $method ) ) {
+						$field->$method( $value );
+					}
 				}
-		}
+			}
 
-		if ( $field instanceof AC_Settings_Column_FieldAbstract ) {
+			$field->set_settings( $this );
+
 			$this->fields()->add( $field );
+
+			return $field;
 		}
 
-		return $this;
+		return false;
 	}
 
 }

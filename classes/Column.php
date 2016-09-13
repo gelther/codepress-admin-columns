@@ -340,47 +340,6 @@ abstract class CPAC_Column {
 	}
 
 	/**
-	 * @since NEWVERSION
-	 * @return int Width
-	 */
-	// todo: move to settings
-	/*public function get_width() {
-		$width = absint( $this->get_option( 'width' ) );
-
-		return $width > 0 ? $width : false;
-	}*/
-
-	/**
-	 * Get valid width unit
-	 *
-	 * @since NEWVERSION
-	 * @return array
-	 */
-	// todo: move to settings
-	/*public function get_width_units() {
-		return array(
-			'%'  => __( '%', 'codepress-admin-columns' ),
-			'px' => __( 'px', 'codepress-admin-columns' ),
-		);
-	}*/
-
-	/**
-	 * @since NEWVERSION
-	 * @return string px or %
-	 */
-	// todo: move to settings
-	/*public function get_width_unit() {
-		$unit = $this->get_option( 'width_unit' );
-
-		if ( ! $unit ) {
-			$unit = $this->column->get_property( 'width_unit' ); // $this->default_options['width_unit'];
-		}
-
-		// todo: remove px and % from here
-		return 'px' === $unit ? 'px' : '%';
-	}*/
-
-	/**
 	 * Get the stored column options
 	 *
 	 * @since 2.3.4

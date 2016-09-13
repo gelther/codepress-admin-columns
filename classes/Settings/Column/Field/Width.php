@@ -4,50 +4,45 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AC_Settings_Column_Field_Width extends AC_Settings_Column_Field {
+class AC_Settings_Column_Field_Width extends AC_Settings_Column_FieldGroup {
 
-	public function __construct( array $args = array() ) {
-		parent::__construct( array(
-			'name' => 'width',
-		) );
+	public function __construct() {
+		$width = new AC_Settings_Column_Field();
+		$width->set_name( 'width' );
 
-		$this->merge_args( $args );
+		$this->add( $width );
+		$this->add( new AC_Settings_Column_Field_Width_Unit() );
+
+		$this->for = $width->get_name();
+		$this->label = __( 'Width', 'codepress-admin-columns' );
 	}
 
-	public function get_width() {
-		$width = $this->settings->get_value( 'width' );
+	public function display() {
+		$width = $this->get( 'width' );
+		$unit = $this->get( 'unit' );
 
-		return $width > 0 ? $width : false;
-	}
-
-	public function get_width_unit() {
-		$unit = $this->settings->get_value( 'width_unit' );
-
-		return 'px' === $unit ? 'px' : '%';
-	}
-
-	public function display_field() {
 		?>
-		<div class="description" title="<?php esc_attr_e( 'default', 'codepress-admin-columns' ); ?>">
-			<input class="width" type="text" placeholder="<?php esc_attr_e( 'auto', 'codepress-admin-columns' ); ?>" name="<?php esc_attr( $this->get_attribute( 'name', 'width' ) ); ?>" id="<?php echo esc_attr( $this->get_attribute( 'id', 'width' ) ); ?>" value="<?php echo esc_attr( $this->get_width() ); ?>">
-			<span class="unit"><?php echo esc_html( $this->get_width_unit() ); ?></span>
-		</div>
-		<div class="width-slider"></div>
+		<tr class="section">
+			<?php $this->display_label(); ?>
 
-		<div class="unit-select">
-			<?php
-			ac_helper()->formfield->radio( array(
-				'attr_id'       => $this->get_attribute( 'id', 'width_unit' ),
-				'attr_name'     => $this->get_attribute( 'name', 'width_unit' ),
-				'options'       => array(
-					'px' => 'px',
-					'%'  => '%',
-				),
-				'class'         => 'unit',
-				'default_value' => $this->get_width_unit(),
-			) );
-			?>
-		</div>
+			<td class="input nopadding">
+
+				----
+
+				<div class="description" title="<?php esc_attr_e( 'default', 'codepress-admin-columns' ); ?>">
+					<input class="width" type="text" placeholder="<?php esc_attr_e( 'auto', 'codepress-admin-columns' ); ?>" name="<?php esc_attr( $this->get_attribute( 'name', $width->get_name() ) ); ?>" id="<?php echo esc_attr( $this->get_attribute( 'id', $width->get_name() ) ); ?>" value="<?php echo esc_attr( $width->get_value() ); ?>">
+					<span class="unit"><?php echo esc_html( $unit->get_value() ); ?></span>
+				</div>
+				<div class="width-slider"></div>
+
+				<div class="unit-select">
+					<?php $unit->display_field(); ?>
+				</div>
+
+				----
+			</td>
+		</tr>
+
 		<?php
 	}
 
