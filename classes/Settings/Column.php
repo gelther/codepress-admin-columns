@@ -47,6 +47,17 @@ class AC_Settings_Column {
 		return $this->column;
 	}
 
+	public function add( $field ) {
+		foreach( $field->settings() as $setting ) {
+
+		}
+
+
+		$this->fields[ $field->get_name() ] = $field;
+
+		return $this;
+	}
+
 	/**
 	 * API function to access fields
 	 *

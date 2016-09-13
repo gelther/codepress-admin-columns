@@ -38,6 +38,13 @@ class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 	protected $hidden;
 
 	/**
+	 * Help message below input field
+	 *
+	 * @var string
+	 */
+	protected $help;
+
+	/**
 	 * @var bool
 	 */
 	protected $section;
@@ -247,6 +254,8 @@ class AC_Settings_Column_Field extends AC_Settings_Column_FieldAbstract {
 				break;
 		}
 	}
+
+
 
 	/**
 	 * @since NEWVERSION

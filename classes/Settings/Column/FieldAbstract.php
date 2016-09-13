@@ -7,9 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 abstract class AC_Settings_Column_FieldAbstract {
 
 	/**
-	 * @var AC_Settings_Column
+	 * @var AC_Settings_Column_Section
 	 */
-	protected $settings;
+	protected $section;
 
 	/**
 	 * @var string
@@ -39,6 +39,44 @@ abstract class AC_Settings_Column_FieldAbstract {
 	protected $more_link;
 
 	/**
+	 * @var string
+	 */
+	protected $type;
+
+	/**
+	 * Triggers a toggle event on toggle_handle
+	 *
+	 * @var string
+	 */
+	protected $toggle_trigger;
+
+	/**
+	 * Can be used to toggle this element
+	 *
+	 * @var string
+	 */
+	protected $toggle_handle;
+
+	/**
+	 * When value is selected the column element will be refreshed with ajax
+	 *
+	 * @var boolean
+	 */
+	protected $refresh_column;
+
+	/**
+	 * @var bool
+	 */
+	protected $hidden;
+
+	/**
+	 * Help message below input field
+	 *
+	 * @var string
+	 */
+	protected $help;
+
+	/**
 	 * AC_Settings_Column_FieldAbstract constructor.
 	 *
 	 * @param $name
@@ -58,55 +96,30 @@ abstract class AC_Settings_Column_FieldAbstract {
 
 	public function set_defaults( array $defaults ) {
 		$this->defaults = $defaults;
-	}
-
-	public function get_value() {
-
-	}
-
-	public function display_field() {
-
-	}
-
-	public function display_group() {
-
-	}
-
-	public function display_label() {
-
-	}
-
-	/**
-	 * @param AC_Settings_Column $settings
-	 *
-	 * @since NEWVERSION
-	 * @return $this
-	 */
-	public function set_settings( AC_Settings_Column $settings ) {
-		$this->settings = $settings;
 
 		return $this;
 	}
 
-	/**
-	 * Formats value based on stored field settings
-	 *
-	 * @param array|string $value
-	 *
-	 * @return string mixed
-	 */
-	public function format( $value ) {
-		return $value;
+	public function set_section( AC_Settings_Column_Section $section ) {
+		$this->section = $section;
+
+		return $this;
+	}
+
+	protected function get_settings() {
+		return $this->section->get_settings();
+	}
+
+	protected function get_column() {
+		return $this->get_settings()->get_column();
 	}
 
 	public function get_attribute( $key, $value ) {
-		$column = $this->settings->get_column();
-
 		switch ( $key ) {
 			case 'id':
-				return sprintf( 'cpac-%s-%s', $column->get_name(), $value );
+				return sprintf( 'cpac-%s-%s', $this->get_column()->get_name(), $value );
 			case 'name':
-				return sprintf( '%s[%s]', $column->get_name(), $value );
+				return sprintf( '%s[%s]', $this->get_column()->get_name(), $value );
 		}
 
 		return false;
@@ -131,13 +144,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function get_description() {
-		return trim( $this->description );
-	}
-
-	/**
 	 * @param string $description
 	 *
 	 * @return AC_Settings_Column_FieldAbstract
@@ -146,13 +152,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 		$this->description = $description;
 
 		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function get_label() {
-		return trim( stripslashes( $this->label ) );
 	}
 
 	/**
@@ -167,31 +166,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function get_for() {
-		return trim( $this->for );
-	}
-
-	/**
-	 * @param string $for
-	 *
-	 * @return AC_Settings_Column_FieldAbstract
-	 */
-	public function set_for( $for ) {
-		$this->for = $for;
-
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function get_more_link() {
-		return $this->more_link;
-	}
-
-	/**
 	 * @param string $more_link
 	 *
 	 * @return AC_Settings_Column_FieldAbstract
@@ -202,40 +176,96 @@ abstract class AC_Settings_Column_FieldAbstract {
 		return $this;
 	}
 
+	/**
+	 * @param boolean $hidden
+	 *
+	 * @return AC_Settings_Column_Field
+	 */
+	public function set_hidden( $hidden ) {
+		$this->hidden = $hidden;
 
-	protected function display_label() {
-		if ( ! $this->get_label() ) {
-			return;
+		return $this;
+	}
+
+	/**
+	 * @param string $refresh_column
+	 *
+	 * @return AC_Settings_Column_Field
+	 */
+	public function set_refresh_column( $refresh_column ) {
+		$this->refresh_column = $refresh_column ? 'true' : 'false';
+
+		return $this;
+	}
+
+	/**
+	 * @param string $type
+	 *
+	 * return AC_Settings_Column_Field;
+	 */
+	public function set_type( $type ) {
+		$this->type = $type;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $toggle_handle
+	 *
+	 * @return AC_Settings_Column_Field
+	 */
+	public function set_toggle_handle( $toggle_handle ) {
+		$this->toggle_handle = $toggle_handle;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $help
+	 *
+	 * @return AC_Settings_Column_Field
+	 */
+	public function set_help( $help ) {
+		$this->help = $help;
+
+		return $this;
+	}
+
+	public function display() {
+		$class = sprintf( 'widefat %s column-%s', $this->get_type(), $this->get_name() );
+
+		if ( $this->hidden ) {
+			$class .= ' hide';
 		}
 
-		$description = $this->get_description();
-		$more_link = $this->get_more_link();
-
-		$class = 'label';
-
-		if ( $description ) {
-			$class .= ' description';
-		}
-
-		if ( ! $this->get_for() ) {
-			$this->set_for( $this->get_name() );
-		}
+		$data_trigger = $this->toggle_trigger ? $this->get_attribute( 'id', $this->toggle_trigger ) : '';
+		$data_handle = $this->toggle_handle ? $this->get_attribute( 'id', $this->toggle_handle ) : '';
 
 		?>
 
-		<td class="<?php echo esc_attr( $class ); ?>">
-			<label for="<?php esc_attr( $this->get_attribute( 'id', $this->get_for() ) ); ?>">
-				<span class="label"><?php echo $this->get_label(); ?></span>
-				<?php if ( $more_link ) : ?>
-					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more' ); ?>" href="<?php echo esc_url( $more_link ); ?>">
-						<span class="dashicons dashicons-external"></span>
-					</a>
-				<?php endif; ?>
-				<?php if ( $description ) : ?>
-					<p class="description"><?php echo $description; ?></p>
-				<?php endif; ?>
-			</label>
-		</td>
+		<table class="<?php echo esc_attr( $class ); ?>" data-trigger="<?php echo esc_attr( $data_trigger ); ?>" data-handle="<?php echo esc_attr( $data_handle ); ?>" data-refresh="<?php echo esc_attr( $this->refresh_column ); ?>">
+			<tr>
+				<?php
+
+				if ( $this->label ) {
+					$this->section->display_label( $this->label, $this->description, $this->get_name(), $this->more_link );
+				}
+
+				$colspan = $this->get_label() ? 1 : 2;
+
+				?>
+
+				<td class="input" colspan="<?php echo esc_attr( $colspan ); ?>">
+					<?php $this->display_field(); ?>
+
+					<?php if ( $this->help ) : ?>
+						<p class="help-msg">
+							<?php echo $this->help; ?>
+						</p>
+					<?php endif; ?>
+				</td>
+			</tr>
+		</table>
 
 		<?php
 	}
@@ -246,19 +276,10 @@ abstract class AC_Settings_Column_FieldAbstract {
 	 */
 	public function to_formfield() {
 		return wp_parse_args( $this->args, array(
-			'attr_name' => $this->get_attribute( 'name' ),
-			'attr_id'   => $this->get_attribute( 'id' ),
+			'attr_name' => $this->get_attribute( 'name', $this->name ),
+			'attr_id'   => $this->get_attribute( 'id', $this->name ),
 			'value'     => $this->get_value(),
 		) );
-	}
-
-	/**
-	 * Convert field to object
-	 *
-	 * @return object
-	 */
-	public function to_object() {
-		return (object) $this->args;
 	}
 
 }
