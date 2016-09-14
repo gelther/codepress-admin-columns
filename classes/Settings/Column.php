@@ -12,9 +12,9 @@ class AC_Settings_Column {
 	private $column;
 
 	/**
-	 * @var AC_Settings_Column_FieldGroup
+	 * @var AC_Settings_Column_Section[]
 	 */
-	private $fields;
+	private $sections;
 
 	/**
 	 * @var array
@@ -23,21 +23,9 @@ class AC_Settings_Column {
 
 	public function __construct( CPAC_Column $column ) {
 		$this->column = $column;
+		$this->sections = array();
 
-		$this->set_fields();
 		$this->load_data();
-	}
-
-	/**
-	 * @return $this
-	 */
-	protected function set_fields() {
-		$fields = new AC_Settings_Column_FieldGroup();
-		$fields->set_settings( $this );
-
-		$this->fields = $fields;
-
-		return $this;
 	}
 
 	/**
@@ -47,29 +35,36 @@ class AC_Settings_Column {
 		return $this->column;
 	}
 
-	public function add( $field ) {
-		foreach ( $field->settings() as $setting ) {
-
-		}
-
-		$this->fields[ $field->get_name() ] = $field;
-
-		return $this;
+	/**
+	 * Access sections quickly
+	 *
+	 * @param $section
+	 *
+	 * @return AC_Settings_Column_FieldAbstract|false
+	 */
+	public function __get( $section ) {
+		return $this->sections[ $section ];
 	}
 
 	/**
-	 * API function to access fields
+	 * Add a new section, returns the section to add fields
+	 *
+	 * @param array $args
 	 *
 	 * @return AC_Settings_Column_FieldGroup
 	 */
-	// todo: maybe return the actual fields instead of the container object and use get_fields to return the fields object?
-	public function fields() {
-		return $this->fields;
+	public function add_section( $label, $name ) {
+		$section = new AC_Settings_Column_Section( $label, $name );
+		$section->set_settings( $this );
+
+		$this->sections[] = $section;
+
+		return $section;
 	}
 
 	public function display() {
-		foreach ( $this->fields->get_all() as $field ) {
-			$field->display();
+		foreach ( $this->sections as $section ) {
+			$section->display();
 		}
 	}
 
@@ -113,33 +108,6 @@ class AC_Settings_Column {
 	 */
 	public function get_value( $name ) {
 		return isset( $this->data[ $name ] ) ? $this->data[ $name ] : false;
-	}
-
-	/**
-	 * Access sections quickly
-	 *
-	 * @param $section
-	 *
-	 * @return AC_Settings_Column_FieldAbstract|false
-	 */
-	public function __get( $section ) {
-		return $this->sections[ $section ];
-	}
-
-	/**
-	 * Add a new section, returns the section to add fields
-	 *
-	 * @param array $args
-	 *
-	 * @return AC_Settings_Column_FieldGroup
-	 */
-	public function add_section( $label, $name ) {
-		$section = new AC_Settings_Column_Section( $label, $name );
-		$section->set_settings( $this );
-
-		$this->sections[] = $section;
-
-		return $section;
 	}
 
 }
