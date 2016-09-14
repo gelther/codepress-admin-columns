@@ -230,6 +230,8 @@ class AC_Settings_Column_Field {
 	}
 
 	public function display() {
+		// todo: maybe start working with exceptions here when no section is present?
+
 		$class = sprintf( 'widefat %s column-%s', $this->get_type(), $this->get_name() );
 
 		if ( $this->hidden ) {

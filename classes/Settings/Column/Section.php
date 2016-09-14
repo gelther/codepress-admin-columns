@@ -50,6 +50,17 @@ class AC_Settings_Column_Section {
 	}
 
 	/**
+	 * @param AC_Settings_Column $settings
+	 *
+	 * @return $this
+	 */
+	public function set_settings( AC_Settings_Column $settings ) {
+		$this->settings = $settings;
+
+		return $this;
+	}
+
+	/**
 	 * @param string $description
 	 *
 	 * @return AC_Settings_Column_Section
@@ -89,10 +100,6 @@ class AC_Settings_Column_Section {
 	 */
 	public function add_field( AC_Settings_Column_Field $field ) {
 		$field->set_section( $this );
-		$field->set_settings( $this->settings );
-		$field->set_column( $this->settings->get_column );
-
-		// todo: maybe start working with exceptions here? doing it wrong!
 
 		$this->fields[ $field->get_name() ] = $field;
 
@@ -153,6 +160,8 @@ class AC_Settings_Column_Section {
 	}
 
 	public function display() {
+		// todo: maybe start working with exceptions here when no section is present?
+
 		if ( ! $this->for && $this->get_first_field() ) {
 			$this->for = $this->get_first_field()->get_name();
 		}
