@@ -19,6 +19,11 @@ class AC_Settings_Column_Field {
 	/**
 	 * @var string
 	 */
+	protected $default;
+
+	/**
+	 * @var string
+	 */
 	protected $description;
 
 	/**
@@ -70,13 +75,18 @@ class AC_Settings_Column_Field {
 	protected $hidden;
 
 	/**
-	 * AC_Settings_Column_FieldAbstract constructor.
-	 *
-	 * @param $name
+	 * @var string
 	 */
-	public function __construct( $name, array $defaults = array() ) {
+	protected $more_link;
+
+	/**
+	 *
+	 * @param string $name
+	 * @param null $default
+	 */
+	public function __construct( $name, $default = null ) {
 		$this->name = $name;
-		$this->defaults = $defaults;
+		$this->default = $default;
 		$this->type = 'text';
 		$this->hidden = false;
 		$this->refresh_column = false;
@@ -88,37 +98,31 @@ class AC_Settings_Column_Field {
 		return $this;
 	}
 
+	/**
+	 * @return AC_Settings_Column
+	 */
 	protected function get_settings() {
 		return $this->section->get_settings();
 	}
-
-	protected function get_column() {
-		return $this->get_settings()->get_column();
-	}
-
-	public function get_attribute( $key, $value ) {
-		switch ( $key ) {
-			case 'id':
-				return sprintf( 'cpac-%s-%s', $this->get_column()->get_name(), $value );
-			case 'name':
-				return sprintf( '%s[%s]', $this->get_column()->get_name(), $value );
+	
+	/**
+	 * Wrapper for AC_Settings_Column::format_attr
+	 *
+	 * @param string $attribute
+	 * @param null|string $name
+	 *
+	 * @return bool|string
+	 */
+	public function format_attr( $attribute, $name = null ) {
+		if ( null === $name ) {
+			$name = $this->name;
 		}
 
-		return false;
+		return $this->get_settings()->format_attr( $attribute, $name );
 	}
 
-	public function set_default( $value, $key = null ) {
-		if ( null === $key ) {
-			$key = $this->get_name();
-		}
-
-		$this->defaults[ $key ] = $value;
-	}
-
-	public function set_defaults( array $defaults ) {
-		$this->defaults = $defaults;
-
-		return $this;
+	public function set_default( $value ) {
+		$this->default = $value;
 	}
 
 	/**
@@ -130,7 +134,7 @@ class AC_Settings_Column_Field {
 		$value = $this->get_settings()->get_value( $this->get_name() );
 
 		if ( false === $value ) {
-			$value = $this->defaults;
+			$value = $this->default;
 		}
 
 		return $value;
@@ -141,6 +145,13 @@ class AC_Settings_Column_Field {
 	 */
 	public function get_name() {
 		return $this->name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_description() {
+		return $this->description;
 	}
 
 	/**
@@ -155,6 +166,13 @@ class AC_Settings_Column_Field {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function get_label() {
+		return $this->label;
+	}
+
+	/**
 	 * @param string $label
 	 *
 	 * @return AC_Settings_Column_FieldAbstract
@@ -163,6 +181,13 @@ class AC_Settings_Column_Field {
 		$this->label = $label;
 
 		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_more_link() {
+		return $this->more_link;
 	}
 
 	/**
@@ -245,14 +270,14 @@ class AC_Settings_Column_Field {
 	public function display() {
 		// todo: maybe start working with exceptions here when no section is present?
 
-		$class = sprintf( 'widefat %s column-%s', $this->get_type(), $this->get_name() );
+		$class = sprintf( 'widefat %s column-%s', $this->type, $this->name );
 
 		if ( $this->hidden ) {
 			$class .= ' hide';
 		}
 
-		$data_trigger = $this->toggle_trigger ? $this->get_attribute( 'id', $this->toggle_trigger ) : '';
-		$data_handle = $this->toggle_handle ? $this->get_attribute( 'id', $this->toggle_handle ) : '';
+		$data_trigger = $this->toggle_trigger ? $this->format_attr( 'id', $this->toggle_trigger ) : '';
+		$data_handle = $this->toggle_handle ? $this->format_attr( 'id', $this->toggle_handle ) : '';
 
 		?>
 
@@ -299,8 +324,13 @@ class AC_Settings_Column_Field {
 		?>
 
 		<td class="<?php echo esc_attr( $class ); ?>">
-			<label for="<?php esc_attr( $this->get_attribute( 'id', $this->name ) ); ?>">
+			<label for="<?php esc_attr( $this->format_attr( 'id' ) ); ?>">
 				<span class="label"><?php echo $this->label; ?></span>
+				<?php if ( $this->more_link ) : ?>
+					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more', 'codepress-admin-columns' ); ?>" href="<?php echo esc_url( $this->more_link ); ?>">
+						<span class="dashicons dashicons-external"></span>
+					</a>
+				<?php endif; ?>
 				<?php if ( $this->description ) : ?>
 					<p class="description"><?php echo $this->description; ?></p>
 				<?php endif; ?>
@@ -316,8 +346,8 @@ class AC_Settings_Column_Field {
 	 */
 	public function to_formfield() {
 		$args = array(
-			'attr_name' => $this->get_attribute( 'name', $this->name ),
-			'attr_id'   => $this->get_attribute( 'id', $this->name ),
+			'attr_name' => $this->format_attr( 'name' ),
+			'attr_id'   => $this->format_attr( 'id' ),
 			'value'     => $this->get_value(),
 		);
 
@@ -325,7 +355,7 @@ class AC_Settings_Column_Field {
 			case 'select' :
 			case 'radio' :
 				$args['value'] = $this->get_value();
-				$args['default_value'] = reset( $this->defaults );
+				$args['default_value'] = $this->default;
 				$args['options'] = $this->options;
 
 				break;

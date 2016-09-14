@@ -9,32 +9,32 @@ class AC_Settings_Column_Section {
 	/**
 	 * @var AC_Settings_Column
 	 */
-	private $settings;
+	protected $settings;
 
 	/**
 	 * @var AC_Settings_Column_Field[]
 	 */
-	private $fields;
+	protected $fields;
 
 	/**
 	 * @var string
 	 */
-	private $name;
+	protected $name;
 
 	/**
 	 * @var for
 	 */
-	private $for;
+	protected $for;
 
 	/**
 	 * @var string
 	 */
-	private $label;
+	protected $label;
 
 	/**
 	 * @var string
 	 */
-	private $description;
+	protected $description;
 
 	/**
 	 * A link to more, e.g. admin page for a field
@@ -43,10 +43,17 @@ class AC_Settings_Column_Section {
 	 */
 	protected $more_link;
 
-	public function __construct( $label, $name ) {
+	public function __construct( $label = null ) {
 		$this->label = $label;
-		$this->name = $name;
 		$this->fields = array();
+	}
+
+	/**
+	 *
+	 * @return AC_Settings_Column
+	 */
+	public function get_settings() {
+		return $this->settings;
 	}
 
 	/**
@@ -111,10 +118,30 @@ class AC_Settings_Column_Section {
 	 *
 	 * @param $name
 	 *
-	 * @return AC_Settings_Column_FieldAbstract|false
+	 * @return AC_Settings_Column_Field|false
 	 */
 	public function __get( $name ) {
-		return $this->get( $name );
+		return $this->get_field( $name );
+	}
+
+	/**
+	 * @param string $name
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 *
+	 * @return $this;
+	 */
+	public function set_name( $name ) {
+		$this->name = $name;
+
+		return $this;
 	}
 
 	/**
@@ -131,14 +158,14 @@ class AC_Settings_Column_Section {
 	}
 
 	/**
-	 * @return AC_Settings_Column_FieldAbstract[]
+	 * @return AC_Settings_Column_Field[]
 	 */
 	public function get_fields() {
 		return $this->fields;
 	}
 
 	/**
-	 * @return false|AC_Settings_Column_FieldAbstract
+	 * @return false|AC_Settings_Column_Field
 	 */
 	public function get_first_field() {
 		return reset( $this->fields );
@@ -161,12 +188,20 @@ class AC_Settings_Column_Section {
 		return $value;
 	}
 
+	/**
+	 * Display individual fields of this sections
+	 */
+	protected function display_fields() {
+		foreach ( $this->fields as $field ) {
+			$field->display();
+		}
+	}
+
+	/**
+	 * Display section wrapper
+	 */
 	public function display() {
 		// todo: maybe start working with exceptions here when no section is present?
-
-		if ( ! $this->for && $this->get_first_field() ) {
-			$this->for = $this->get_first_field()->get_name();
-		}
 
 		$class = 'section';
 
@@ -177,45 +212,47 @@ class AC_Settings_Column_Section {
 		?>
 
 		<tr class="<?php echo esc_attr( $class ); ?>">
-			<?php $this->display_label( $this->label, $this->description, $this->for, $this->more_link ); ?>
+			<?php
 
-			<td class="input nopadding">
-				<?php
-
-				foreach ( $this->fields as $field ) {
-					$field->display();
+			if ( $field = $this->get_first_field() ) {
+				if ( ! $this->for ) {
+					$this->for = $field->get_name();
 				}
 
-				?>
+				if ( ! $this->label ) {
+					$this->label = $field->get_label();
+					$this->description = $field->get_description();
+					$this->more_link = $field->get_more_link();
+				}
+			}
+
+			$class = 'label';
+
+			if ( $this->description ) {
+				$class .= ' description';
+			}
+
+			?>
+
+			<td class="<?php echo esc_attr( $class ); ?>">
+				<label for="<?php esc_attr( $this->for ); ?>">
+					<span class="label"><?php echo $this->label; ?></span>
+					<?php if ( $this->more_link ) : ?>
+						<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more', 'codepress-admin-columns' ); ?>" href="<?php echo esc_url( $this->more_link ); ?>">
+							<span class="dashicons dashicons-external"></span>
+						</a>
+					<?php endif; ?>
+					<?php if ( $this->description ) : ?>
+						<p class="description"><?php echo $this->description; ?></p>
+					<?php endif; ?>
+				</label>
+			</td>
+			<td class="input nopadding">
+				<?php $this->display_fields(); ?>
 			</td>
 		</tr>
 
 		<?php
 	}
 
-	public function display_label() {
-		$class = 'label';
-
-		if ( $this->description ) {
-			$class .= ' description';
-		}
-
-		?>
-
-		<td class="<?php echo esc_attr( $class ); ?>">
-			<label for="<?php esc_attr( $this->for ); ?>">
-				<span class="label"><?php echo $this->label; ?></span>
-				<?php if ( $this->more_link ) : ?>
-					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more', 'codepress-admin-columns' ); ?>" href="<?php echo esc_url( $this->more_link ); ?>">
-						<span class="dashicons dashicons-external"></span>
-					</a>
-				<?php endif; ?>
-				<?php if ( $this->description ) : ?>
-					<p class="description"><?php echo $this->description; ?></p>
-				<?php endif; ?>
-			</label>
-		</td>
-
-		<?php
-	}
 }

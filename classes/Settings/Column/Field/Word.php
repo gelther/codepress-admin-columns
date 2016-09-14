@@ -6,8 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class AC_Settings_Column_Field_Word extends AC_Settings_Column_Field {
 
-	public function __construct( $name ) {
-		parent::__construct( $name );
+	public function __construct( $default = 30 ) {
+		parent::__construct( 'excerpt_length', $default );
 
 		$this->type = 'number';
 		$this->label = __( 'Word Limit', 'codepress-admin-columns' );
@@ -21,4 +21,3 @@ class AC_Settings_Column_Field_Word extends AC_Settings_Column_Field {
 	}
 
 }
-

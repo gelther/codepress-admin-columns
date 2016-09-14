@@ -49,15 +49,18 @@ class AC_Settings_Column {
 	/**
 	 * Add a new section, returns the section to add fields
 	 *
-	 * @param array $args
+	 * @param AC_Settings_Column_Section|null $section
 	 *
-	 * @return AC_Settings_Column_FieldGroup
+	 * @return AC_Settings_Column_Section
 	 */
-	public function add_section( $label, $name ) {
-		$section = new AC_Settings_Column_Section( $label, $name );
+	public function add_section( AC_Settings_Column_Section $section = null ) {
+		if ( null === $section ) {
+			$section = new AC_Settings_Column_Section();
+		}
+
 		$section->set_settings( $this );
 
-		$this->sections[] = $section;
+		$this->sections[ $section->get_name() ] = $section;
 
 		return $section;
 	}
@@ -118,12 +121,12 @@ class AC_Settings_Column {
 	 *
 	 * @return bool|string
 	 */
-	public function format_attr( $attribute, $value ) {
+	public function format_attr( $attribute, $name ) {
 		switch ( $attribute ) {
 			case 'id':
-				return sprintf( 'cpac-%s-%s', $this->column->get_name(), $value );
+				return sprintf( 'cpac-%s-%s', $this->column->get_name(), $name );
 			case 'name':
-				return sprintf( '%s[%s]', $this->column->get_name(), $value );
+				return sprintf( '%s[%s]', $this->column->get_name(), $name );
 		}
 
 		return false;

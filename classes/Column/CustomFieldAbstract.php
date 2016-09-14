@@ -31,25 +31,11 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 
 		//$group = new AC_Settings_Column_FieldGroup( $f );
 
-		$group = new AC_Settings_Column_FieldGroup( array(
-			'label'       => 'bla',
-			'description' => 'bla',
-		) );
+		$section = new AC_Settings_Column_Section_Width();
+		$section->width->set_default( '15' );
 
-		$group->add( new AC_Settings_Column_Field_BeforeAfter() );
-
-		/*$fields
-			->add( $fields->create( array(
-				'label' => 'bla',
-				'name' => 'zookinig',
-			) ) )
-			->add( array(
-				'label' => 'bla',
-				'name' => 'zookinig',
-			) )
-			->add( new AC_Settings_Column_Field_BeforeAfter() )
-			->add( 'word_limit' )
-			->add( $group );*/
+		$section = $this->settings()->add_section();
+		$section->add_field( new AC_Settings_Column_Field_Word() );
 
 		// Register settings field
 		// TODO remove
