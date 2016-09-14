@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-abstract class AC_Settings_Column_FieldAbstract {
+class AC_Settings_Column_Field {
 
 	/**
 	 * @var AC_Settings_Column_Section
@@ -30,13 +30,6 @@ abstract class AC_Settings_Column_FieldAbstract {
 	 * @var string
 	 */
 	protected $for;
-
-	/**
-	 * A link to more, e.g. admin page for a field
-	 *
-	 * @var string
-	 */
-	protected $more_link;
 
 	/**
 	 * @var string
@@ -84,20 +77,7 @@ abstract class AC_Settings_Column_FieldAbstract {
 	public function __construct( $name, array $defaults = array() ) {
 		$this->name = $name;
 		$this->defaults = $defaults;
-	}
-
-	public function set_default( $value, $key = null ) {
-		if ( null === $key ) {
-			$key = $this->get_name();
-		}
-
-		$this->defaults[ $key ] = $value;
-	}
-
-	public function set_defaults( array $defaults ) {
-		$this->defaults = $defaults;
-
-		return $this;
+		$this->type = 'text';
 	}
 
 	public function set_section( AC_Settings_Column_Section $section ) {
@@ -125,22 +105,40 @@ abstract class AC_Settings_Column_FieldAbstract {
 		return false;
 	}
 
+	public function set_default( $value, $key = null ) {
+		if ( null === $key ) {
+			$key = $this->get_name();
+		}
+
+		$this->defaults[ $key ] = $value;
+	}
+
+	public function set_defaults( array $defaults ) {
+		$this->defaults = $defaults;
+
+		return $this;
+	}
+
+	/**
+	 * Return the stored value
+	 *
+	 * @return string|array
+	 */
+	public function get_value() {
+		$value = $this->settings->get_value( $this->get_name() );
+
+		if ( false === $value ) {
+			$value = $this->get_default_value();
+		}
+
+		return $value;
+	}
+
 	/**
 	 * @return string
 	 */
 	public function get_name() {
 		return $this->name;
-	}
-
-	/**
-	 * @param $name
-	 *
-	 * @return AC_Settings_Column_FieldAbstract
-	 */
-	public function set_name( $name ) {
-		$this->name = $name;
-
-		return $this;
 	}
 
 	/**
@@ -247,11 +245,13 @@ abstract class AC_Settings_Column_FieldAbstract {
 			<tr>
 				<?php
 
-				if ( $this->label ) {
-					$this->section->display_label( $this->label, $this->description, $this->get_name(), $this->more_link );
-				}
+				$colspan = 2;
 
-				$colspan = $this->get_label() ? 1 : 2;
+				if ( $this->label ) {
+					$colspan = 1;
+
+					$this->display_label();
+				}
 
 				?>
 
@@ -266,6 +266,56 @@ abstract class AC_Settings_Column_FieldAbstract {
 				</td>
 			</tr>
 		</table>
+
+		<?php
+	}
+
+	public function display_field() {
+		$args = $this->to_formfield();
+
+		// todo: check if __get supports this chain
+		//$method = $this->get_arg( 'type' );
+		//if ( method_exists( ac_helper()->formfield, $this->get_arg( 'type' ) ) )
+
+		switch ( $this->get_type() ) {
+			case 'select' :
+				ac_helper()->formfield->select( $args );
+				break;
+			case 'radio' :
+				ac_helper()->formfield->radio( $args );
+				break;
+			case 'text' :
+				ac_helper()->formfield->text( $args );
+				break;
+			case 'hidden' :
+				ac_helper()->formfield->hidden( $args );
+				break;
+			case 'message' :
+				ac_helper()->formfield->message( $args );
+				break;
+			case 'number' :
+				ac_helper()->formfield->number( $args );
+				break;
+		}
+	}
+
+	public function display_label() {
+		$class = 'label';
+
+		if ( $this->description ) {
+			$class .= ' description';
+		}
+
+		?>
+
+		<td class="<?php echo esc_attr( $class ); ?>">
+			<label for="<?php esc_attr( $this->get_attribute( 'id', $this->name ) ); ?>">
+				<span class="label"><?php echo $this->label; ?></span>
+				<?php if ( $this->description ) : ?>
+					<p class="description"><?php echo $this->description; ?></p>
+				<?php endif; ?>
+			</label>
+		</td>
 
 		<?php
 	}

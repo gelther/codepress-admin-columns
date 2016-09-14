@@ -7,6 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AC_Settings_Column_Section {
 
 	/**
+	 * @var AC_Settings_Column
+	 */
+	private $settings;
+
+	/**
 	 * @var AC_Settings_Column_Field[]
 	 */
 	private $fields;
@@ -32,11 +37,13 @@ class AC_Settings_Column_Section {
 	private $description;
 
 	/**
+	 * A link to more, e.g. admin page for a field
+	 *
 	 * @var string
 	 */
-	private $more_link;
+	protected $more_link;
 
-	public function __construct( $label, $name = null ) {
+	public function __construct( $label, $name ) {
 		$this->label = $label;
 		$this->name = $name;
 		$this->fields = array();
@@ -82,8 +89,10 @@ class AC_Settings_Column_Section {
 	 */
 	public function add_field( AC_Settings_Column_Field $field ) {
 		$field->set_section( $this );
+		$field->set_settings( $this->settings );
+		$field->set_column( $this->settings->get_column );
 
-		// todo: maybe set column here too?
+		// todo: maybe start working with exceptions here? doing it wrong!
 
 		$this->fields[ $field->get_name() ] = $field;
 
@@ -173,25 +182,25 @@ class AC_Settings_Column_Section {
 		<?php
 	}
 
-	public function display_label( $label, $description, $for, $more_link ) {
+	public function display_label() {
 		$class = 'label';
 
-		if ( $description ) {
+		if ( $this->description ) {
 			$class .= ' description';
 		}
 
 		?>
 
 		<td class="<?php echo esc_attr( $class ); ?>">
-			<label for="<?php esc_attr( $for ); ?>">
-				<span class="label"><?php echo $label; ?></span>
-				<?php if ( $more_link ) : ?>
-					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more', 'codepress-admin-columns' ); ?>" href="<?php echo esc_url( $more_link ); ?>">
+			<label for="<?php esc_attr( $this->for ); ?>">
+				<span class="label"><?php echo $this->label; ?></span>
+				<?php if ( $this->more_link ) : ?>
+					<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more', 'codepress-admin-columns' ); ?>" href="<?php echo esc_url( $this->more_link ); ?>">
 						<span class="dashicons dashicons-external"></span>
 					</a>
 				<?php endif; ?>
-				<?php if ( $description ) : ?>
-					<p class="description"><?php echo $description; ?></p>
+				<?php if ( $this->description ) : ?>
+					<p class="description"><?php echo $this->description; ?></p>
 				<?php endif; ?>
 			</label>
 		</td>

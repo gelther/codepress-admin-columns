@@ -48,10 +48,9 @@ class AC_Settings_Column {
 	}
 
 	public function add( $field ) {
-		foreach( $field->settings() as $setting ) {
+		foreach ( $field->settings() as $setting ) {
 
 		}
-
 
 		$this->fields[ $field->get_name() ] = $field;
 
@@ -117,76 +116,30 @@ class AC_Settings_Column {
 	}
 
 	/**
-	 * Access fields quickly
+	 * Access sections quickly
 	 *
-	 * @param $field
+	 * @param $section
 	 *
 	 * @return AC_Settings_Column_FieldAbstract|false
 	 */
-	public function __get( $field ) {
-		return $this->fields()->$field;
+	public function __get( $section ) {
+		return $this->sections[ $section ];
 	}
 
 	/**
-	 * Add a new group to the fields, return the group for adding fields
+	 * Add a new section, returns the section to add fields
 	 *
 	 * @param array $args
 	 *
 	 * @return AC_Settings_Column_FieldGroup
 	 */
-	public function add_group( array $args = array() ) {
-		$group = new AC_Settings_Column_FieldGroup( $args );
-		$group->set_settings( $this );
+	public function add_section( $label, $name ) {
+		$section = new AC_Settings_Column_Section( $label, $name );
+		$section->set_settings( $this );
 
-		$this->fields()->add( $group );
+		$this->sections[] = $section;
 
-		return $group;
-	}
-
-	/**
-	 * Implements overloading to add a field.
-	 *
-	 * Signatures: (string) $field, (array) $args || (array) $args || AC_Settings_Column_Field $field, (array) $args
-	 *
-	 * @return false|AC_Settings_Column_Field
-	 */
-	public function add_field() {
-		$field = func_get_arg( 0 );
-		$args = func_get_arg( 1 );
-
-		if ( ! $field || is_array( $field ) ) {
-			$args = $field;
-			$field = new AC_Settings_Column_Field();
-		}
-
-		if ( is_string( $field ) ) {
-			$class = 'AC_Settings_Column_Field_' . implode( array_map( 'ucfirst', explode( '_', $field ) ) );
-
-			if ( ! class_exists( $class, true ) ) {
-				$field = new $class();
-			}
-		}
-
-		if ( $field instanceof AC_Settings_Column_Field ) {
-			// invoke setters
-			if ( is_array( $args ) ) {
-				foreach ( $args as $key => $value ) {
-					$method = 'set_' . $key;
-
-					if ( method_exists( $field, $method ) ) {
-						$field->$method( $value );
-					}
-				}
-			}
-
-			$field->set_settings( $this );
-
-			$this->fields()->add( $field );
-
-			return $field;
-		}
-
-		return false;
+		return $section;
 	}
 
 }
