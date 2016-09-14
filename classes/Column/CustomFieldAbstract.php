@@ -45,6 +45,12 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 		// constucct
 		$this->settings->image->add();
 
+		$this->settings()->add( 'image' );
+		$this->settings()->add( array(
+			'label' => 'label',
+			'name' => 'some_name',
+		) );
+
 		// get_value
 		$this->settings->image->value();
 
