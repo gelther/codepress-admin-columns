@@ -24,15 +24,8 @@ class AC_Settings_Column_Section_Width extends AC_Settings_Column_Section {
 		$this->add_field( $unit );
 	}
 
-	public function get_width() {
-		return $this->fields[ 'width' ];
-	}
-
-	public function get_unit() {
-		return $this->fields[ 'unit' ];
-	}
-
 	public function display_fields() {
+		// todo: test if esc_attr_e is parsed by gulp - wpPot
 		?>
 
 		<table class="widefat">

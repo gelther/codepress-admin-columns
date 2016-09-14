@@ -32,13 +32,29 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 		//$group = new AC_Settings_Column_FieldGroup( $f );
 
 		$section = new AC_Settings_Column_Section_Width();
-		$section->width->set_default( '15' );
+		$section->width->set_default( 15 );
+
+		$word = new AC_Settings_Column_Field_Word();
+		$word->set_default( 15 );
 
 		$section = $this->settings()->add_section();
-		$section->add_field( new AC_Settings_Column_Field_Word() );
+		$section->add_field( $word );
+
+		$this->settings()->field( 'image' )->value();
+
+		// constucct
+		$this->settings->image->add();
+
+		// get_value
+		$this->settings->image->value();
+
+
+
+		$this->settings()->add( 'word' );
 
 		// Register settings field
 		// TODO remove
+
 		//$this->settings()->register_field( 'image' );
 		//$this->settings()->register_field( 'link_label' );
 		//$this->settings()->register_field( 'date_format' );
@@ -195,6 +211,8 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 				$thumbnails = ac_helper()->image->get_images( $images, $this->format->image_sizes() );
 
 				$value = implode( $thumbnails );
+
+				$this->settings->image->format( $value );
 				break;
 
 			case "excerpt" :
@@ -302,8 +320,7 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 			foreach ( $keys as $field ) {
 				if ( substr( $field, 0, 10 ) == "cpachidden" ) {
 					$grouped_options['hidden']['options'][ $field ] = substr( $field, 10 );
-				}
-				else {
+				} else {
 					$grouped_options['public']['options'][ $field ] = $field;
 				}
 			}
