@@ -43,61 +43,8 @@ class AC_Settings_Column_Section {
 	 */
 	protected $more_link;
 
-	public function __construct( $label = null ) {
-		$this->label = $label;
+	public function __construct() {
 		$this->fields = array();
-	}
-
-	/**
-	 *
-	 * @return AC_Settings_Column
-	 */
-	public function get_settings() {
-		return $this->settings;
-	}
-
-	/**
-	 * @param AC_Settings_Column $settings
-	 *
-	 * @return $this
-	 */
-	public function set_settings( AC_Settings_Column $settings ) {
-		$this->settings = $settings;
-
-		return $this;
-	}
-
-	/**
-	 * @param string $description
-	 *
-	 * @return AC_Settings_Column_Section
-	 */
-	public function set_description( $description ) {
-		$this->description = $description;
-
-		return $this;
-	}
-
-	/**
-	 * @param string $more_link
-	 *
-	 * @return AC_Settings_Column_Section
-	 */
-	public function set_more_link( $more_link ) {
-		$this->more_link = $more_link;
-
-		return $this;
-	}
-
-	/**
-	 * @param string $more_link
-	 *
-	 * @return AC_Settings_Column_Section
-	 */
-	public function set_for( $for ) {
-		$this->for = $for;
-
-		return $this;
 	}
 
 	/**
@@ -125,6 +72,25 @@ class AC_Settings_Column_Section {
 	}
 
 	/**
+	 *
+	 * @return AC_Settings_Column
+	 */
+	public function get_settings() {
+		return $this->settings;
+	}
+
+	/**
+	 * @param AC_Settings_Column $settings
+	 *
+	 * @return $this
+	 */
+	public function set_settings( AC_Settings_Column $settings ) {
+		$this->settings = $settings;
+
+		return $this;
+	}
+
+	/**
 	 * @param string $name
 	 *
 	 * @return string
@@ -140,6 +106,78 @@ class AC_Settings_Column_Section {
 	 */
 	public function set_name( $name ) {
 		$this->name = $name;
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_label() {
+		return $this->label;
+	}
+
+	/**
+	 * @param string $label
+	 *
+	 * @return AC_Settings_Column_Section
+	 */
+	public function set_label( $label ) {
+		$this->label = $label;
+
+		return $this;
+	}
+
+	/**
+	 * @return for
+	 */
+	public function get_for() {
+		return $this->for;
+	}
+
+	/**
+	 * @param string $for
+	 *
+	 * @return AC_Settings_Column_Section
+	 */
+	public function set_for( $for ) {
+		$this->for = $for;
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_description() {
+		return $this->description;
+	}
+
+	/**
+	 * @param string $description
+	 *
+	 * @return AC_Settings_Column_Section
+	 */
+	public function set_description( $description ) {
+		$this->description = $description;
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_more_link() {
+		return $this->more_link;
+	}
+
+	/**
+	 * @param string $more_link
+	 *
+	 * @return AC_Settings_Column_Section
+	 */
+	public function set_more_link( $more_link ) {
+		$this->more_link = $more_link;
 
 		return $this;
 	}
@@ -183,7 +221,9 @@ class AC_Settings_Column_Section {
 			$value[ $field->get_name() ] = $field->get_value();
 		}
 
-		// todo: maybe cast to single value when only a single value is returned
+		if ( count( $value ) == 1 ) {
+			$value = reset( $value );
+		}
 
 		return $value;
 	}
@@ -191,68 +231,10 @@ class AC_Settings_Column_Section {
 	/**
 	 * Display individual fields of this sections
 	 */
-	protected function display_fields() {
+	public function display() {
 		foreach ( $this->fields as $field ) {
 			$field->display();
 		}
-	}
-
-	/**
-	 * Display section wrapper
-	 */
-	public function display() {
-		// todo: maybe start working with exceptions here when no section is present?
-
-		$class = 'section';
-
-		if ( $this->name ) {
-			$class .= ' ' . $this->name;
-		}
-
-		?>
-
-		<tr class="<?php echo esc_attr( $class ); ?>">
-			<?php
-
-			if ( $field = $this->get_first_field() ) {
-				if ( ! $this->for ) {
-					$this->for = $field->get_name();
-				}
-
-				if ( ! $this->label ) {
-					$this->label = $field->get_label();
-					$this->description = $field->get_description();
-					$this->more_link = $field->get_more_link();
-				}
-			}
-
-			$class = 'label';
-
-			if ( $this->description ) {
-				$class .= ' description';
-			}
-
-			?>
-
-			<td class="<?php echo esc_attr( $class ); ?>">
-				<label for="<?php esc_attr( $this->for ); ?>">
-					<span class="label"><?php echo $this->label; ?></span>
-					<?php if ( $this->more_link ) : ?>
-						<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more', 'codepress-admin-columns' ); ?>" href="<?php echo esc_url( $this->more_link ); ?>">
-							<span class="dashicons dashicons-external"></span>
-						</a>
-					<?php endif; ?>
-					<?php if ( $this->description ) : ?>
-						<p class="description"><?php echo $this->description; ?></p>
-					<?php endif; ?>
-				</label>
-			</td>
-			<td class="input nopadding">
-				<?php $this->display_fields(); ?>
-			</td>
-		</tr>
-
-		<?php
 	}
 
 }

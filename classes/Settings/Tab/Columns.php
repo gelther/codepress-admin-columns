@@ -603,6 +603,7 @@ class AC_Settings_Tab_Columns extends AC_Settings_TabAbstract {
 					<tbody>
 
 					<?php
+
 					$column->settings->display_field( array(
 						'type'            => 'select',
 						'name'            => 'type',

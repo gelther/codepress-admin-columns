@@ -65,10 +65,67 @@ class AC_Settings_Column {
 		return $section;
 	}
 
+	/**
+	 * Display section wrapper
+	 */
 	public function display() {
-		foreach ( $this->sections as $section ) {
-			$section->display();
-		}
+
+		foreach ( $this->sections as $section ) :
+
+			$class = 'section';
+
+			if ( $section->get_name() ) {
+				$class .= ' ' . $section->get_name();
+			}
+
+			?>
+
+			<tr class="<?php echo esc_attr( $class ); ?>">
+				<?php
+
+				if ( $field = $section->get_first_field() ) {
+					if ( ! $section->get_for() ) {
+						$section->set_for( $field->get_name() );
+					}
+
+					if ( ! $section->get_label() ) {
+						$section->set_label( $field->get_label() )
+						        ->set_description( $field->get_description() )
+						        ->set_more_link( $field->get_more_link() );
+					}
+				}
+
+				$description = $section->get_description();
+
+				$class = 'label';
+
+				if ( $description ) {
+					$class .= ' description';
+				}
+
+				?>
+
+				<td class="<?php echo esc_attr( $class ); ?>">
+					<label for="<?php esc_attr( $section->get_for() ); ?>">
+						<span class="label"><?php echo $section->get_label(); ?></span>
+						<?php if ( $section->get_more_link() ) : ?>
+							<a target="_blank" class="more-link" title="<?php esc_attr_e( 'View more', 'codepress-admin-columns' ); ?>" href="<?php echo esc_url( $section->get_more_link() ); ?>">
+								<span class="dashicons dashicons-external"></span>
+							</a>
+						<?php endif; ?>
+						<?php if ( $description ) : ?>
+							<p class="description"><?php echo $description; ?></p>
+						<?php endif; ?>
+					</label>
+				</td>
+				<td class="input nopadding">
+					<?php $section->display_fields(); ?>
+				</td>
+			</tr>
+
+			<?php
+
+		endforeach;
 	}
 
 	/**
