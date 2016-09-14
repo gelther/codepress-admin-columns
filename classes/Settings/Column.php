@@ -110,4 +110,23 @@ class AC_Settings_Column {
 		return isset( $this->data[ $name ] ) ? $this->data[ $name ] : false;
 	}
 
+	/**
+	 * Format attributes like name and id in a uniform way for correct processing of options and events
+	 *
+	 * @param string $key
+	 * @param string $value
+	 *
+	 * @return bool|string
+	 */
+	public function format_attr( $attribute, $value ) {
+		switch ( $attribute ) {
+			case 'id':
+				return sprintf( 'cpac-%s-%s', $this->column->get_name(), $value );
+			case 'name':
+				return sprintf( '%s[%s]', $this->column->get_name(), $value );
+		}
+
+		return false;
+	}
+
 }

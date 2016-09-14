@@ -29,12 +29,12 @@ class AC_Settings_Column_Field {
 	/**
 	 * @var string
 	 */
-	protected $for;
+	protected $type;
 
 	/**
-	 * @var string
+	 * @var array
 	 */
-	protected $type;
+	protected $options;
 
 	/**
 	 * Triggers a toggle event on toggle_handle
@@ -51,9 +51,16 @@ class AC_Settings_Column_Field {
 	protected $toggle_handle;
 
 	/**
+	 * Help message below input field
+	 *
+	 * @var string
+	 */
+	protected $help;
+
+	/**
 	 * When value is selected the column element will be refreshed with ajax
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $refresh_column;
 
@@ -61,13 +68,6 @@ class AC_Settings_Column_Field {
 	 * @var bool
 	 */
 	protected $hidden;
-
-	/**
-	 * Help message below input field
-	 *
-	 * @var string
-	 */
-	protected $help;
 
 	/**
 	 * AC_Settings_Column_FieldAbstract constructor.
@@ -78,6 +78,8 @@ class AC_Settings_Column_Field {
 		$this->name = $name;
 		$this->defaults = $defaults;
 		$this->type = 'text';
+		$this->hidden = false;
+		$this->refresh_column = false;
 	}
 
 	public function set_section( AC_Settings_Column_Section $section ) {
@@ -125,10 +127,10 @@ class AC_Settings_Column_Field {
 	 * @return string|array
 	 */
 	public function get_value() {
-		$value = $this->settings->get_value( $this->get_name() );
+		$value = $this->get_settings()->get_value( $this->get_name() );
 
 		if ( false === $value ) {
-			$value = $this->get_default_value();
+			$value = $this->defaults;
 		}
 
 		return $value;
@@ -192,6 +194,17 @@ class AC_Settings_Column_Field {
 	 */
 	public function set_refresh_column( $refresh_column ) {
 		$this->refresh_column = $refresh_column ? 'true' : 'false';
+
+		return $this;
+	}
+
+	/**
+	 * @param array $options
+	 *
+	 * return AC_Settings_Column_Field;
+	 */
+	public function set_options( array $options = array() ) {
+		$this->options = $options;
 
 		return $this;
 	}
@@ -273,32 +286,7 @@ class AC_Settings_Column_Field {
 	}
 
 	public function display_field() {
-		$args = $this->to_formfield();
-
-		// todo: check if __get supports this chain
-		//$method = $this->get_arg( 'type' );
-		//if ( method_exists( ac_helper()->formfield, $this->get_arg( 'type' ) ) )
-
-		switch ( $this->get_type() ) {
-			case 'select' :
-				ac_helper()->formfield->select( $args );
-				break;
-			case 'radio' :
-				ac_helper()->formfield->radio( $args );
-				break;
-			case 'text' :
-				ac_helper()->formfield->text( $args );
-				break;
-			case 'hidden' :
-				ac_helper()->formfield->hidden( $args );
-				break;
-			case 'message' :
-				ac_helper()->formfield->message( $args );
-				break;
-			case 'number' :
-				ac_helper()->formfield->number( $args );
-				break;
-		}
+		ac_helper()->formfield->{$this->type}( $this->to_formfield() );
 	}
 
 	public function display_label() {
@@ -327,11 +315,23 @@ class AC_Settings_Column_Field {
 	 *
 	 */
 	public function to_formfield() {
-		return wp_parse_args( $this->args, array(
+		$args = array(
 			'attr_name' => $this->get_attribute( 'name', $this->name ),
 			'attr_id'   => $this->get_attribute( 'id', $this->name ),
 			'value'     => $this->get_value(),
-		) );
+		);
+
+		switch ( $this->type ) {
+			case 'select' :
+			case 'radio' :
+				$args['value'] = $this->get_value();
+				$args['default_value'] = reset( $this->defaults );
+				$args['options'] = $this->options;
+
+				break;
+		}
+
+		return $args;
 	}
 
 }

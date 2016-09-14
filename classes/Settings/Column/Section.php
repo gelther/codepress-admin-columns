@@ -145,16 +145,18 @@ class AC_Settings_Column_Section {
 	}
 
 	/**
-	 * Return the stored value
+	 * Return the stored settings for this section
 	 *
-	 * @return string|array
+	 * @return array
 	 */
-	public function get_values() {
-		$value = $this->settings->get_value( $this->get_name() );
+	public function get_value() {
+		$value = array();
 
-		if ( false === $value ) {
-			$value = $this->get_default_value();
+		foreach ( $this->fields as $field ) {
+			$value[ $field->get_name() ] = $field->get_value();
 		}
+
+		// todo: maybe cast to single value when only a single value is returned
 
 		return $value;
 	}
