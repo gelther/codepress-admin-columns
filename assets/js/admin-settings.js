@@ -301,7 +301,7 @@ jQuery.fn.column_bind_events = function() {
 	var width_indicator = column.find( '.column-meta span.width' );
 	width_indicator.on( 'update', function() {
 		var _width = column.find( 'input.width' ).val();
-		var _unit = column.find( 'input.unit' ).filter( ':checked' ).val();
+		var _unit = column.find( '.unit-select input' ).filter( ':checked' ).val();
 		if ( _width > 0 ) {
 			jQuery( this ).text( _width + _unit );
 		} else {
@@ -310,7 +310,7 @@ jQuery.fn.column_bind_events = function() {
 	} );
 
 	// unit selector
-	var width_unit_select = column.find( '.column-width .unit-select label' );
+	var width_unit_select = column.find( '.section.width .unit-select label' );
 	width_unit_select.on( 'click', function() {
 
 		column.find( 'span.unit' ).text( jQuery( this ).find( 'input' ).val() );
@@ -384,10 +384,10 @@ jQuery.fn.column_remove = function() {
  */
 jQuery.fn.column_width_slider = function() {
 
-	var column_width = jQuery( this ).find( '.column-width' );
+	var column_width = jQuery( this ).find( '.section.width' );
 
 	var input_width = column_width.find( 'input.width' ),
-		input_unit = column_width.find( 'input.unit' ),
+		input_unit = column_width.find( '.unit-select input' ),
 		unit = input_unit.filter( ':checked' ).val(),
 		width = input_width.val(),
 		slider = column_width.find( '.width-slider' ),

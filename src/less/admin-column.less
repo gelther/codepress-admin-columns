@@ -811,13 +811,17 @@
 				}
 				// td
 
+				&.section:first-child td {
+					border-top: none;
+				}
+
 				&.column-label {
 					input {
 						.placeholder({ color: #9a9a9a; });
 					}
 				}
 
-				&.column-width {
+				&.section.width {
 					.input {
 						position: relative;
 
@@ -839,10 +843,10 @@
 							}
 						}
 						div.width-slider {
-							margin-left: 62px;
-							margin-right: 94px;
+							margin-left: 72px;
+							margin-right: 104px;
 							position: relative;
-							margin-top: 8px;
+							margin-top: 18px;
 
 							.ui-slider-handle {
 								cursor: ew-resize;

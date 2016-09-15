@@ -625,6 +625,9 @@
   width: 100%;
   height: 29px;
 }
+.cpac-column .column-form > table tr.section:first-child td {
+  border-top: none;
+}
 .cpac-column .column-form > table tr.column-label input::-webkit-input-placeholder {
   color: #9a9a9a;
 }
@@ -637,17 +640,17 @@
 .cpac-column .column-form > table tr.column-label input:-ms-input-placeholder {
   color: #9a9a9a;
 }
-.cpac-column .column-form > table tr.column-width .input {
+.cpac-column .column-form > table tr.section.width .input {
   position: relative;
 }
-.cpac-column .column-form > table tr.column-width .input div.description {
+.cpac-column .column-form > table tr.section.width .input div.description {
   font-size: 12px;
   width: 54px;
   position: absolute;
   top: 13px;
   left: 10px;
 }
-.cpac-column .column-form > table tr.column-width .input div.description input {
+.cpac-column .column-form > table tr.section.width .input div.description input {
   background: #efefef;
   border: none;
   height: 20px;
@@ -656,29 +659,29 @@
   width: 36px;
   font-size: 12px;
 }
-.cpac-column .column-form > table tr.column-width .input div.width-slider {
-  margin-left: 62px;
-  margin-right: 94px;
+.cpac-column .column-form > table tr.section.width .input div.width-slider {
+  margin-left: 72px;
+  margin-right: 104px;
   position: relative;
-  margin-top: 8px;
+  margin-top: 18px;
 }
-.cpac-column .column-form > table tr.column-width .input div.width-slider .ui-slider-handle {
+.cpac-column .column-form > table tr.section.width .input div.width-slider .ui-slider-handle {
   cursor: ew-resize;
 }
-.cpac-column .column-form > table tr.column-width .input div.unit-select {
+.cpac-column .column-form > table tr.section.width .input div.unit-select {
   position: absolute;
   top: 13px;
   right: 10px;
   width: 82px;
   text-align: right;
 }
-.cpac-column .column-form > table tr.column-width .input div.unit-select .radio-labels {
+.cpac-column .column-form > table tr.section.width .input div.unit-select .radio-labels {
   padding: 0;
 }
-.cpac-column .column-form > table tr.column-width .input div.unit-select .radio-labels label {
+.cpac-column .column-form > table tr.section.width .input div.unit-select .radio-labels label {
   margin-right: 4px;
 }
-.cpac-column .column-form > table tr.column-width .input div.unit-select .radio-labels label input {
+.cpac-column .column-form > table tr.section.width .input div.unit-select .radio-labels label input {
   margin-right: 2px;
 }
 .cpac-column .column-form > table tr.column_image_size {

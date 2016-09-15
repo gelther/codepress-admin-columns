@@ -7,9 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class AC_Settings_Column {
 
 	/**
-	 * @var CPAC_Column
+	 * @var string Column Name
 	 */
-	private $column;
+	private $column_name;
 
 	/**
 	 * @var AC_Settings_Column_Section[]
@@ -21,18 +21,10 @@ class AC_Settings_Column {
 	 */
 	private $data;
 
-	public function __construct( CPAC_Column $column ) {
-		$this->column = $column;
+	public function __construct( $column_name ) {
+		$this->column_name = $column_name;
 		$this->sections = array();
-
-		$this->load_data();
-	}
-
-	/**
-	 * @return CPAC_Column
-	 */
-	public function get_column() {
-		return $this->column;
+		$this->data = array();
 	}
 
 	/**
@@ -119,7 +111,7 @@ class AC_Settings_Column {
 					</label>
 				</td>
 				<td class="input nopadding">
-					<?php $section->display_fields(); ?>
+					<?php $section->display(); ?>
 				</td>
 			</tr>
 
@@ -142,24 +134,9 @@ class AC_Settings_Column {
 		$this->data = $data;
 	}
 
-	/**
-	 * Set column settings data
-	 */
-	private function load_data() {
-		$options = $this->column->get_storage_model()->get_stored_columns();
-
-		if ( isset( $options[ $this->column->get_name() ] ) ) {
-			$this->data = $options[ $this->column->get_name() ];
-		}
-
-		// TODO: make sure export still works with URL's
-		// replace urls, so export will not have to deal with them
-		//if ( isset( $options['label'] ) ) {
-		//	$options['label'] = stripslashes( str_replace( '[cpac_site_url]', site_url(), $options['label'] ) );
-		//}
-
-		//return $options ? array_merge( $this->default_options, $options ) : $this->default_options;
-	}
+	/*public function set_column_name( $column_name ) {
+		$this->column_name = $column_name;
+	}*/
 
 	/**
 	 * @param $name
@@ -181,9 +158,9 @@ class AC_Settings_Column {
 	public function format_attr( $attribute, $name ) {
 		switch ( $attribute ) {
 			case 'id':
-				return sprintf( 'cpac-%s-%s', $this->column->get_name(), $name );
+				return sprintf( 'cpac-%s-%s', $this->column_name, $name );
 			case 'name':
-				return sprintf( '%s[%s]', $this->column->get_name(), $name );
+				return sprintf( '%s[%s]', $this->column_name, $name );
 		}
 
 		return false;

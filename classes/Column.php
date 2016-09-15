@@ -42,20 +42,6 @@ abstract class CPAC_Column {
 	public $properties = array();
 
 	/**
-	 * Instance for adding field settings to the column
-	 *
-	 * @var AC_Settings_Column_Field
-	 */
-	//private $field_settings;
-
-	/**
-	 * Instance for formatting column values
-	 *
-	 * @var AC_ColumnFieldFormat
-	 */
-	//private $format;
-
-	/**
 	 * General helper methods
 	 *
 	 * @var AC_Helper
@@ -78,18 +64,26 @@ abstract class CPAC_Column {
 
 		$this->storage_model = $storage_model;
 
-		$this->settings = new AC_Settings_Column( $this );
-
 		$this->helper = ac_helper();
 
 		$this->init();
 		$this->after_setup();
+
+		// Settings
+		$this->settings()->add_section( new AC_Settings_Column_Section_ColumnType() );
+		$this->settings()->add_section( new AC_Settings_Column_Section_Label() );
+		$this->settings()->add_section( new AC_Settings_Column_Section_Width() );
 	}
 
 	/**
 	 * @return AC_Settings_Column
 	 */
 	public function settings() {
+		if ( null === $this->settings ) {
+			$this->settings = new AC_Settings_Column( $this->get_name() );
+			$this->settings->set_data( $this->get_options() );
+		}
+
 		return $this->settings;
 	}
 
@@ -240,13 +234,6 @@ abstract class CPAC_Column {
 	}
 
 	/**
-	 * @since 2.0
-	 */
-	public function display_settings() {
-		$this->settings()->display();
-	}
-
-	/**
 	 * Overwrite this function in child class to sanitize
 	 * user submitted values.
 	 *
@@ -359,7 +346,7 @@ abstract class CPAC_Column {
 	// todo: maybe rename or add get_settings()->get_field here
 	// todo: settings()->display()
 	public function get_option( $name ) {
-		$options = $this->settings->get_data();
+		$options = $this->settings()->get_data();
 
 		return isset( $options[ $name ] ) ? $options[ $name ] : false;
 	}
@@ -452,6 +439,23 @@ abstract class CPAC_Column {
 	}
 
 	/**
+	 * @since 2.3.4
+	 */
+	public function get_options() {
+		$options = $this->get_storage_model()->get_stored_columns();
+
+		return isset( $options[ $this->get_name() ] ) ? $options[ $this->get_name() ] : false;
+
+		// TODO: make sure export still works with URL's
+		// replace urls, so export will not have to deal with them
+		//if ( isset( $options['label'] ) ) {
+		//	$options['label'] = stripslashes( str_replace( '[cpac_site_url]', site_url(), $options['label'] ) );
+		//}
+
+		//return $options ? array_merge( $this->default_options, $options ) : $this->default_options;
+	}
+
+	/**
 	 * @since 2.5
 	 */
 	public function get_empty_char() {
@@ -472,15 +476,7 @@ abstract class CPAC_Column {
 	 * @since 2.0
 	 */
 	public function get_label() {
-		/**
-		 * Filter the column instance label
-		 *
-		 * @since 2.0
-		 *
-		 * @param string $label Column instance label
-		 * @param CPAC_Column $column_instance Column class instance
-		 */
-		return apply_filters( 'cac/column/settings_label', stripslashes( str_replace( '[cpac_site_url]', site_url(), $this->get_option( 'label' ) ) ), $this );
+		return $this->settings()->label->get_value();
 	}
 
 	/**
@@ -533,17 +529,20 @@ abstract class CPAC_Column {
 	}
 
 	public function display_indicator( $name, $label ) { ?>
-		<span class="indicator-<?php echo esc_attr( $name ); ?> <?php echo esc_attr( $this->settings->get_field( $name ) ); ?>" data-indicator-id="<?php echo $this->settings->get_attribute( 'id', $name ); ?>" title="<?php echo esc_attr( $label ); ?>"></span>
+		<span class="indicator-<?php echo esc_attr( $name ); ?> <?php echo esc_attr( $this->get_option( $name ) ); ?>" data-indicator-id="<?php $this->settings()->format_attr( 'id', $name ); ?>" title="<?php echo esc_attr( $label ); ?>"></span>
 		<?php
 	}
 
 
 	// Deprecated methods
 
-	public function get_options() {
-		_deprecated_function( __METHOD__, 'AC NEWVERSION', '$this->settings()->get_data()' );
+	/**
+	 * @since 2.0
+	 */
+	public function display_settings() {
+		_deprecated_function( __METHOD__, 'AC NEWVERSION', '$this->settings()->display()' );
 
-		return $this->settings->get_data();
+		$this->settings()->display();
 	}
 
 	/**

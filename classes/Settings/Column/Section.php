@@ -212,17 +212,21 @@ class AC_Settings_Column_Section {
 	/**
 	 * Return the stored settings for this section
 	 *
-	 * @return array
+	 * @return array|false
 	 */
-	public function get_value() {
+	public function get_value( $field_name = null ) {
 		$value = array();
 
 		foreach ( $this->fields as $field ) {
 			$value[ $field->get_name() ] = $field->get_value();
 		}
 
-		if ( count( $value ) == 1 ) {
-			$value = reset( $value );
+		if ( $field_name ) {
+			return isset( $value[ $field_name ] ) ? $value[ $field_name ] : false;
+		}
+
+		if ( count( $value ) === 1 ) {
+			return reset( $value );
 		}
 
 		return $value;

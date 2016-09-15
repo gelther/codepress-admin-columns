@@ -25,47 +25,7 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 		//$this->default_options['image_size_h'] = 80;
 		//$this->default_options['excerpt_length'] = 15;
 
-		//$fields = $this->settings()->fields();
-
-		//$f = new AC_Settings_Column_Field_BeforeAfter( );
-
-		//$group = new AC_Settings_Column_FieldGroup( $f );
-
-		$section = new AC_Settings_Column_Section_Width();
-		$section->width->set_default( 15 );
-
-		$word = new AC_Settings_Column_Field_Word();
-		$word->set_default( 15 );
-
-		$section = $this->settings()->add_section();
-		$section->add_field( $word );
-
-		$this->settings()->field( 'image' )->value();
-
-		// constucct
-		$this->settings->image->add();
-
-		$this->settings()->add( 'image' );
-		$this->settings()->add( array(
-			'label' => 'label',
-			'name' => 'some_name',
-		) );
-
-		// get_value
-		$this->settings->image->value();
-
-
-
-		$this->settings()->add( 'word' );
-
-		// Register settings field
-		// TODO remove
-
-		//$this->settings()->register_field( 'image' );
-		//$this->settings()->register_field( 'link_label' );
-		//$this->settings()->register_field( 'date_format' );
-		//$this->settings()->register_field( 'excerpt_length' );
-		//$this->settings()->add_field( new AC_Settings_Column_Field_Image() );
+		$this->init_settings();
 	}
 
 	public function get_field_key() {
@@ -335,6 +295,67 @@ abstract class AC_Column_CustomFieldAbstract extends CPAC_Column implements AC_C
 		}
 
 		return $grouped_options;
+	}
+
+	private function init_settings() {
+
+		$section = new AC_Settings_Column_Section();
+		$section->set_label( __( "Custom Field", 'codepress-admin-columns' ) );
+		$section->set_description( __( "Enter your custom field key.", 'codepress-admin-columns' ) );
+
+		$section->add_field( new AC_Settings_Column_Field( 'field' ) );
+
+		$this->settings()->add_section( $section );
+
+		return;
+
+		// DOM can get overloaded when dropdown contains to many custom fields. Use this filter to replace the dropdown with a text input.
+		if ( apply_filters( 'cac/column/meta/use_text_input', false ) ) {
+
+		}
+
+		return;
+		$before_after = new AC_Settings_Column_Section_DisplayOptions();
+
+		echo '<pre>'; print_r( $before_after ); echo '</pre>'; exit;
+
+		$section = new AC_Settings_Column_Section_Width();
+		$section->width->set_default( 15 );
+
+		$word = new AC_Settings_Column_Field_Word();
+		$word->set_default( 15 );
+
+		return;
+
+		$section = $this->settings()->add_section();
+		$section->add_field( $word );
+
+		$this->settings()->field( 'image' )->value();
+
+		// constucct
+		$this->settings->image->add();
+
+		$this->settings()->add( 'image' );
+		$this->settings()->add( array(
+			'label' => 'label',
+			'name' => 'some_name',
+		) );
+
+		// get_value
+		$this->settings->image->value();
+
+
+
+		$this->settings()->add( 'word' );
+
+		// Register settings field
+		// TODO remove
+
+		//$this->settings()->register_field( 'image' );
+		//$this->settings()->register_field( 'link_label' );
+		//$this->settings()->register_field( 'date_format' );
+		//$this->settings()->register_field( 'excerpt_length' );
+		//$this->settings()->add_field( new AC_Settings_Column_Field_Image() );
 	}
 
 	/**

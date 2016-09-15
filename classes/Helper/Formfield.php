@@ -113,7 +113,6 @@ class AC_Helper_FormField {
 	 */
 	public function input( $args ) {
 		$args = (object) wp_parse_args( $args, array(
-			'option'        => '',
 			'placeholder'   => '',
 			'type'          => 'text',
 			'default_value' => false,

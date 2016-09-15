@@ -80,6 +80,11 @@ class AC_Settings_Column_Field {
 	protected $more_link;
 
 	/**
+	 * @var string
+	 */
+	protected $placeholder;
+
+	/**
 	 *
 	 * @param string $name
 	 * @param null $default
@@ -104,7 +109,7 @@ class AC_Settings_Column_Field {
 	protected function get_settings() {
 		return $this->section->get_settings();
 	}
-	
+
 	/**
 	 * Wrapper for AC_Settings_Column::format_attr
 	 *
@@ -157,7 +162,7 @@ class AC_Settings_Column_Field {
 	/**
 	 * @param string $description
 	 *
-	 * @return AC_Settings_Column_FieldAbstract
+	 * @return AC_Settings_Column_Field
 	 */
 	public function set_description( $description ) {
 		$this->description = $description;
@@ -175,7 +180,7 @@ class AC_Settings_Column_Field {
 	/**
 	 * @param string $label
 	 *
-	 * @return AC_Settings_Column_FieldAbstract
+	 * @return AC_Settings_Column_Field
 	 */
 	public function set_label( $label ) {
 		$this->label = $label;
@@ -191,9 +196,18 @@ class AC_Settings_Column_Field {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function set_placeholder( $placeholder ) {
+		$this->placeholder = $placeholder;
+
+		return $this;
+	}
+
+	/**
 	 * @param string $more_link
 	 *
-	 * @return AC_Settings_Column_FieldAbstract
+	 * @return AC_Settings_Column_Field
 	 */
 	public function set_more_link( $more_link ) {
 		$this->more_link = $more_link;
@@ -346,18 +360,17 @@ class AC_Settings_Column_Field {
 	 */
 	public function to_formfield() {
 		$args = array(
-			'attr_name' => $this->format_attr( 'name' ),
-			'attr_id'   => $this->format_attr( 'id' ),
-			'value'     => $this->get_value(),
+			'attr_name'     => $this->format_attr( 'name' ),
+			'attr_id'       => $this->format_attr( 'id' ),
+			'value'         => $this->get_value(),
+			'default_value' => $this->default,
+			'placeholder'   => $this->placeholder,
 		);
 
 		switch ( $this->type ) {
 			case 'select' :
 			case 'radio' :
-				$args['value'] = $this->get_value();
-				$args['default_value'] = $this->default;
 				$args['options'] = $this->options;
-
 				break;
 		}
 
