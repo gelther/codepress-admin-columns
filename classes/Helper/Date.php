@@ -29,8 +29,7 @@ class AC_Helper_Date {
 			if ( 8 === $length && ( strpos( $date, '20' ) === 0 || strpos( $date, '19' ) === 0 ) ) {
 				$date = strtotime( $date );
 			}
-		}
-		else {
+		} else {
 			$date = strtotime( $date );
 		}
 
