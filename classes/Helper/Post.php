@@ -19,8 +19,8 @@ class AC_Helper_Post {
 			return false;
 		}
 
-		$sql = "
-			SELECT " . $wpdb->_real_escape( $field ) . "
+		$sql = '
+			SELECT ' . $wpdb->_real_escape( $field ) . "
 			FROM $wpdb->posts
 			WHERE ID = %d
 			LIMIT 1
@@ -67,9 +67,8 @@ class AC_Helper_Post {
 
 			if ( $term = get_term_by( 'name', $term_id, $taxonomy ) ) {
 				$term_ids[ $index ] = $term->term_id;
-			}
-			else {
-				$created_term = wp_insert_term( $term_id, $taxonomy );
+			} else {
+				$created_term       = wp_insert_term( $term_id, $taxonomy );
 				$created_term_ids[] = $created_term['term_id'];
 			}
 		}
@@ -83,11 +82,9 @@ class AC_Helper_Post {
 
 		if ( $taxonomy == 'category' && is_object_in_taxonomy( $post->post_type, 'category' ) ) {
 			wp_set_post_categories( $post->ID, $term_ids );
-		}
-		else if ( $taxonomy == 'post_tag' && is_object_in_taxonomy( $post->post_type, 'post_tag' ) ) {
+		} elseif ( $taxonomy == 'post_tag' && is_object_in_taxonomy( $post->post_type, 'post_tag' ) ) {
 			wp_set_post_tags( $post->ID, $term_ids );
-		}
-		else {
+		} else {
 			wp_set_object_terms( $post->ID, $term_ids, $taxonomy );
 		}
 	}
@@ -126,11 +123,11 @@ class AC_Helper_Post {
 		$query = $wpdb->prepare(
 			"SELECT t.term_id AS term_id, t.slug AS slug, t.name AS name, tt.taxonomy AS taxonomy, tt.parent AS parent
 			FROM $wpdb->terms AS t
-	        INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
-	        INNER JOIN $wpdb->term_relationships AS r ON r.term_taxonomy_id = tt.term_taxonomy_id
-	        INNER JOIN $wpdb->posts AS p ON p.ID = r.object_id
-	        WHERE p.post_type IN('%s') AND tt.taxonomy IN('%s')
-	        GROUP BY t.term_id",
+			INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
+			INNER JOIN $wpdb->term_relationships AS r ON r.term_taxonomy_id = tt.term_taxonomy_id
+			INNER JOIN $wpdb->posts AS p ON p.ID = r.object_id
+			WHERE p.post_type IN('%s') AND tt.taxonomy IN('%s')
+			GROUP BY t.term_id",
 			join( "', '", (array) $post_types ),
 			join( "', '", (array) $taxonomies )
 		);
@@ -192,12 +189,12 @@ class AC_Helper_Post {
 		global $post;
 
 		$save_post = $post;
-		$post = get_post( $post_id );
+		$post      = get_post( $post_id );
 
 		setup_postdata( $post );
 
 		$excerpt = get_the_excerpt();
-		$post = $save_post;
+		$post    = $save_post;
 
 		if ( $post ) {
 			setup_postdata( $post );
@@ -208,7 +205,7 @@ class AC_Helper_Post {
 
 	/**
 	 * @since NEWVERSION
-	 * 
+	 *
 	 * @param $post_id
 	 * @param $taxonomy
 	 *
@@ -216,7 +213,7 @@ class AC_Helper_Post {
 	 */
 	public function get_term_values( $post_id, $taxonomy ) {
 		$values = array();
-		$terms = get_the_terms( $post_id, $taxonomy );
+		$terms  = get_the_terms( $post_id, $taxonomy );
 		if ( $terms && ! is_wp_error( $terms ) ) {
 			foreach ( $terms as $term ) {
 				$values[ $term->term_id ] = $term->name;
