@@ -70,11 +70,10 @@ abstract class CPAC_Column {
 	 * @param object $storage_model CPAC_Storage_Model
 	 */
 	public function __construct( $storage_model ) {
-
 		$this->storage_model = $storage_model;
 
 		$this->field_settings = new AC_ColumnFieldSettings( $this );
-		$this->format = new AC_ColumnFieldFormat( $this );
+		$this->format         = new AC_ColumnFieldFormat( $this );
 
 		$this->init();
 		$this->after_setup();
@@ -108,7 +107,6 @@ abstract class CPAC_Column {
 	 * @since 2.2
 	 */
 	public function init() {
-
 		// Default properties
 		$this->properties = array(
 			'clone'            => null,    // Unique clone ID
@@ -141,7 +139,6 @@ abstract class CPAC_Column {
 
 	/**
 	 * After Setup
-	 *
 	 */
 	public function after_setup() {
 		$this->properties = (object) $this->properties;
@@ -166,7 +163,6 @@ abstract class CPAC_Column {
 	 * @return object
 	 */
 	public function set_clone( $id = null ) {
-
 		if ( $id !== null && $id > 0 ) {
 			$this->set_property( 'name', $this->get_type() . '-' . $id );
 			$this->set_property( 'clone', $id );
@@ -521,11 +517,10 @@ abstract class CPAC_Column {
 	public function get_sanitized_label() {
 		if ( $this->is_default() ) {
 			$string = $this->get_name();
-		}
-		else {
+		} else {
 			$string = $this->get_option( 'label' );
 			$string = strip_tags( $string );
-			$string = preg_replace( "/[^a-zA-Z0-9]+/", "", $string );
+			$string = preg_replace( '/[^a-zA-Z0-9]+/', '', $string );
 			$string = str_replace( 'http://', '', $string );
 			$string = str_replace( 'https://', '', $string );
 		}
@@ -553,8 +548,8 @@ abstract class CPAC_Column {
 			$value = $this->get_option( 'before' ) . $value . $this->get_option( 'after' );
 		}
 
-		$value = apply_filters( "cac/column/value", $value, $id, $this, $this->get_storage_model_key() );
-		$value = apply_filters( "cac/column/value/" . $this->get_type(), $value, $id, $this, $this->get_storage_model_key() );
+		$value = apply_filters( 'cac/column/value', $value, $id, $this, $this->get_storage_model_key() );
+		$value = apply_filters( 'cac/column/value/' . $this->get_type(), $value, $id, $this, $this->get_storage_model_key() );
 
 		return $value;
 	}
@@ -563,11 +558,10 @@ abstract class CPAC_Column {
 	 * @param string $name
 	 * @param string $label
 	 */
-	public function display_indicator( $name, $label ) { ?>
+	public function display_indicator( $name, $label ) {?>
 		<span class="indicator-<?php echo esc_attr( $name ); ?> <?php echo esc_attr( $this->get_option( $name ) ); ?>" data-indicator-id="<?php $this->field_settings->attr_id( $name ); ?>" title="<?php echo esc_attr( $label ); ?>"></span>
 		<?php
 	}
-
 
 	// Deprecated methods
 
@@ -740,7 +734,7 @@ abstract class CPAC_Column {
 	public function get_asset_image( $name = '', $title = '' ) {
 		_deprecated_function( __METHOD__, 'AC NEWVERSION' );
 
-		return $name ? sprintf( "<img alt='' src='%s' title='%s'/>", cpac()->get_plugin_url() . "assets/images/" . $name, esc_attr( $title ) ) : false;
+		return $name ? sprintf( "<img alt='' src='%s' title='%s'/>", cpac()->get_plugin_url() . 'assets/images/' . $name, esc_attr( $title ) ) : false;
 	}
 
 	/**
@@ -1045,7 +1039,6 @@ abstract class CPAC_Column {
 
 	/**
 	 * @since: 2.2.6
-	 *
 	 */
 	public function get_color_for_display( $color_hex ) {
 		_deprecated_function( __METHOD__, 'AC NEWVERSION', 'ac_helper()->string->get_color_block()' );
