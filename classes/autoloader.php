@@ -34,7 +34,7 @@ class AC_Autoloader {
 	 */
 	public function register_prefix( $prefix, $path ) {
 		$prefix = rtrim( $prefix, '_' ) . '_';
-		$path = trailingslashit( $path );
+		$path   = trailingslashit( $path );
 
 		$this->prefixes[ $prefix ] = $path;
 
@@ -79,8 +79,7 @@ class AC_Autoloader {
 	 * @return array|false Class names
 	 */
 	public function get_class_names_from_dir( $dir, $prefix ) {
-
-		$path = trailingslashit( $dir );
+		$path        = trailingslashit( $dir );
 		$classes_dir = $this->get_path_by_prefix( $prefix );
 
 		// skip if directory is not auto loaded
