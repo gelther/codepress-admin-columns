@@ -26,7 +26,7 @@ abstract class AC_Column_ActionsAbstract extends CPAC_Column {
 	public function init() {
 		parent::init();
 
-		$this->properties['type'] = 'column-actions';
+		$this->properties['type']  = 'column-actions';
 		$this->properties['label'] = __( 'Actions', 'codepress-admin-columns' );
 
 		$this->default_options['use_icons'] = false;
@@ -47,7 +47,7 @@ abstract class AC_Column_ActionsAbstract extends CPAC_Column {
 			return implode( '', $this->convert_actions_to_icons( $actions ) );
 		}
 
-		$i = 0;
+		$i           = 0;
 		$num_actions = count( $actions );
 
 		foreach ( $actions as $class => $action ) {
@@ -63,7 +63,6 @@ abstract class AC_Column_ActionsAbstract extends CPAC_Column {
 	 * @since 2.2.6
 	 */
 	public function get_raw_value( $id ) {
-
 		/**
 		 * Filter the action links for the actions column
 		 *
@@ -110,7 +109,7 @@ abstract class AC_Column_ActionsAbstract extends CPAC_Column {
 		$icons = $this->get_actions_icons();
 
 		foreach ( $actions as $action => $link ) {
-			$action1 = $action;
+			$action1  = $action;
 			$spacepos = $spacepos = strpos( $action1, ' ' );
 
 			if ( $spacepos !== false ) {
@@ -158,7 +157,6 @@ abstract class AC_Column_ActionsAbstract extends CPAC_Column {
 	 * @return array List of actions and icons ([action] => [dashicon]).
 	 */
 	public function get_actions_icons() {
-
 		return array(
 			'edit'      => 'edit',
 			'delete'    => 'trash',
