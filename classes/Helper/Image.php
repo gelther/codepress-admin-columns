@@ -35,7 +35,7 @@ class AC_Helper_Image {
 		}
 
 		$dest_file = $editor->generate_filename( $suffix, $dest_path );
-		$saved = $editor->save( $dest_file );
+		$saved     = $editor->save( $dest_file );
 
 		if ( is_wp_error( $saved ) ) {
 			return false;
@@ -80,13 +80,12 @@ class AC_Helper_Image {
 
 			if ( is_array( $size ) ) {
 				$image = $this->markup_cover( $src, $size[0], $size[1] );
-			}
-			else {
+			} else {
 				$image = $this->markup( $src, $attributes[1], $attributes[2] );
 			}
 		}
 		// Is File, use icon
-		else if ( $attributes = wp_get_attachment_image_src( $id, $size, true ) ) {
+		elseif ( $attributes = wp_get_attachment_image_src( $id, $size, true ) ) {
 			$image = $this->markup( $attributes[0], $this->scale_size( $attributes[1], 0.7 ), $this->scale_size( $attributes[2], 0.7 ) );
 		}
 
@@ -114,8 +113,7 @@ class AC_Helper_Image {
 
 		if ( is_string( $size ) && ( $sizes = $this->get_image_sizes_by_name( $size ) ) ) {
 			$dimensions = array( $sizes['width'], $sizes['height'] );
-		}
-		else if ( is_array( $size ) ) {
+		} elseif ( is_array( $size ) ) {
 			$dimensions = $size;
 		}
 
@@ -127,8 +125,7 @@ class AC_Helper_Image {
 				$src = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $resized );
 
 				$image = $this->markup( $src, $dimensions[0], $dimensions[1] );
-			}
-			else {
+			} else {
 
 				$image = $this->markup( $url, $dimensions[0], $dimensions[1] );
 			}
@@ -156,7 +153,7 @@ class AC_Helper_Image {
 				$thumbnails[] = $this->get_image_by_url( $value, $size );
 			}
 			// Media Attachment
-			else if ( is_numeric( $value ) && wp_get_attachment_url( $value ) ) {
+			elseif ( is_numeric( $value ) && wp_get_attachment_url( $value ) ) {
 				$thumbnails[] = $this->get_image_by_id( $value, $size );
 			}
 		}
@@ -165,11 +162,11 @@ class AC_Helper_Image {
 	}
 
 	private function markup_cover( $src, $width, $height ) {
-		return "<span class='cpac-column-value-image cpac-cover' style='width:" . esc_attr( $width ) . "px;height:" . esc_attr( $height ) . "px;background-size:cover;background-image:url(" . esc_attr( $src ) . ");background-position:center;'></span>";
+		return "<span class='cpac-column-value-image cpac-cover' style='width:" . esc_attr( $width ) . 'px;height:' . esc_attr( $height ) . 'px;background-size:cover;background-image:url(' . esc_attr( $src ) . ");background-position:center;'></span>";
 	}
 
 	private function markup( $src, $width, $height ) {
-		return "<span class='cpac-column-value-image'><img style='max-width:" . esc_attr( $width ) . "px;max-height:" . esc_attr( $height ) . "px;' src='" . esc_attr( $src ) . "' alt=''/></span>";
+		return "<span class='cpac-column-value-image'><img style='max-width:" . esc_attr( $width ) . 'px;max-height:' . esc_attr( $height ) . "px;' src='" . esc_attr( $src ) . "' alt=''/></span>";
 	}
 
 	/**
