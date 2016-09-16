@@ -21,8 +21,7 @@ class AC_Helper_Array {
 			foreach ( $pieces as $r_pieces ) {
 				if ( is_array( $r_pieces ) ) {
 					$retVal[] = $this->implode_recursive( $glue, $r_pieces );
-				}
-				else {
+				} else {
 					$retVal[] = $r_pieces;
 				}
 			}
@@ -48,7 +47,7 @@ class AC_Helper_Array {
 	 * @param int|string $new_key Key to replace $old_key with
 	 */
 	public function key_replace( $input, $old_key, $new_key ) {
-		$keys = array_keys( $input );
+		$keys        = array_keys( $input );
 		$old_key_pos = array_search( $old_key, $keys );
 
 		if ( $old_key_pos === false ) {
@@ -76,8 +75,7 @@ class AC_Helper_Array {
 	public function get_array_keys_sorted_by_value( $array, $type = 'string' ) {
 		if ( 'numeric' === strtolower( $type ) ) {
 			asort( $array, SORT_NUMERIC );
-		}
-		else {
+		} else {
 			natcasesort( $array );
 		}
 
