@@ -11,7 +11,7 @@ class AC_Helper_Taxonomy {
 	public function display( $terms, $post_type = null ) {
 		$value = '';
 		if ( $terms ) {
-			$out = array();
+			$out   = array();
 			$terms = (array) $terms;
 			foreach ( $terms as $t ) {
 				$args = array(
