@@ -110,7 +110,7 @@ class AC_Helper_String {
 	 * @return string
 	 */
 	public function hex_get_contrast( $hex ) {
-		$rgb = $this->hex_to_rgb( $hex );
+		$rgb      = $this->hex_to_rgb( $hex );
 		$contrast = ( $rgb[0] * 0.299 + $rgb[1] * 0.587 + $rgb[2] * 0.114 ) < 186 ? 'fff' : '333';
 
 		return $this->hex_format( $contrast, true );
@@ -139,12 +139,10 @@ class AC_Helper_String {
 		if ( is_scalar( $string ) ) {
 			if ( strpos( $string, ',' ) !== false ) {
 				$array = array_filter( explode( ',', ac_helper()->string->strip_trim( str_replace( ' ', '', $string ) ) ) );
-			}
-			else {
+			} else {
 				$array = array( $string );
 			}
-		}
-		else if ( is_array( $string ) ) {
+		} elseif ( is_array( $string ) ) {
 			$array = $string;
 		}
 
