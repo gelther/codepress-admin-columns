@@ -43,12 +43,11 @@ class AC_Helper_User {
 
 		if ( 'first_last_name' == $format ) {
 			$first = ! empty( $user->first_name ) ? $user->first_name : '';
-			$last = ! empty( $user->last_name ) ? " {$user->last_name}" : '';
+			$last  = ! empty( $user->last_name ) ? " {$user->last_name}" : '';
 			if ( $first || $last ) {
 				$name = $first . $last;
 			}
-		}
-		elseif ( ! empty( $user->{$format} ) ) {
+		} elseif ( ! empty( $user->{$format} ) ) {
 			$name = $user->{$format};
 		}
 
