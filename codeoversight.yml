@@ -1,7 +1,7 @@
 php:
     line_ending: auto
     align_array_elements: space
-    align_doc_tags: space
+    align_doc_tags: no_apply
     align_variables: space
     closing_newline: add
     closing_php_tag: remove
